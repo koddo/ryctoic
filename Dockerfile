@@ -19,7 +19,7 @@ RUN cd ~ && mkdir -p ~/bin && cd ~/bin && \
 
 RUN cd ~ && git clone https://github.com/koddo/ryctoicpab && cd ryctoicpab && make 
 
-CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "foreground"]
+CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "console"]
 
 EXPOSE 8080
 
