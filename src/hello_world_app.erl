@@ -25,3 +25,8 @@ start(_Type, _Args) ->
 -spec stop(_) -> 'ok'.
 stop(_State) ->
 	ok.
+
+service_echo(_Conn, init, state) -> {ok, state};
+service_echo(Conn, {recv, Data}, state) -> Conn:send(Data);
+service_echo(_Conn, {info, _Info}, state) -> {ok, state};
+service_echo(_Conn, closed, state) -> {ok, state}.

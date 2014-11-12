@@ -5,9 +5,14 @@
 
 -export([init/2]).
 
--spec init(cowboy_req:req(),_) -> {'ok',cowboy_req:req(),_}.
-init(Req, Opts) ->
-	Req2 = cowboy_req:reply(200, [
-		{<<"content-type">>, <<"text/plain">>}
-	], <<"Hello, motherfucking world!">>, Req),
-	{ok, Req2, Opts}.
+init({_Any, http}, Req, []) ->
+    {ok, Req, []}.
+
+handle(Req, State) ->
+    {ok, Data} = file:read_file("priv/index.html"),
+    {ok, Req1} = cowboy_req:reply(200, [{<<"Content-Type">>, "text/html"}],
+                                       Data, Req),
+    {ok, Req1, State}.
+
+terminate(_Reason, _Req, _State) ->
+    ok.
