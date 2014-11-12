@@ -8,5 +8,5 @@
 init(Req, Opts) ->
 	Req2 = cowboy_req:reply(200, [
 		{<<"content-type">>, <<"text/plain">>}
-	], <<"Hello world!">>, Req),
+	], <<"Hello, motherfucking world!">>, Req),
 	{ok, Req2, Opts}.
