@@ -10,6 +10,7 @@
 
 %% API.
 
+-spec start(_,_) -> {'ok',pid()}.
 start(_Type, _Args) ->
 	Dispatch = cowboy_router:compile([
 		{'_', [
@@ -21,5 +22,6 @@ start(_Type, _Args) ->
 	]),
 	hello_world_sup:start_link().
 
+-spec stop(_) -> 'ok'.
 stop(_State) ->
 	ok.

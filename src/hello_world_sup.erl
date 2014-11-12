@@ -13,11 +13,13 @@
 %% API.
 
 -spec start_link() -> {ok, pid()}.
+
 start_link() ->
 	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 %% supervisor.
 
+-spec init([]) -> {'ok',{{'one_for_one',10,10},[]}}.
 init([]) ->
 	Procs = [],
 	{ok, {{one_for_one, 10, 10}, Procs}}.

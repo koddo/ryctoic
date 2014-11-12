@@ -5,6 +5,7 @@
 
 -export([init/2]).
 
+-spec init(cowboy_req:req(),_) -> {'ok',cowboy_req:req(),_}.
 init(Req, Opts) ->
 	Req2 = cowboy_req:reply(200, [
 		{<<"content-type">>, <<"text/plain">>}
