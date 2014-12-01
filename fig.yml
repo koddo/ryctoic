@@ -1,10 +1,25 @@
 web:
   build: .
-  command: echo "fuck it"
+  entrypoint: /home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example
+  command: foreground
+
   volumes:
    - .:/home/theuser/ryctoicpab
+
+  ports:
+   - "8080:8080"
+
   links:
    - db
 
 db:
-  image: postgres
+  image: "postgres:latest"
+  expose:
+   - "5432"
+
+  # environment:     # TODO: secure postgres
+  #  - POSTGRES_PASSWORD=mysecretpassword3
+
+  volumes:
+   - tmp:/mnt
+  

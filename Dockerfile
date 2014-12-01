@@ -8,24 +8,24 @@ RUN apt-get update && apt-get install -y ca-certificates wget git build-essentia
     apt-get update && apt-get install -y erlang=$ERLANG_VERSION && \
     apt-get -y autoclean && apt-get -y autoremove
 
-# TODO: do I really need --system here?
-RUN groupadd --system theuser && useradd --system --create-home --gid theuser theuser
-USER theuser
+# at the moment of writing the docker volumes' owner is 1000
+# TODO: do I need useradd --system here?
+RUN groupadd theuser && useradd --create-home --gid theuser --uid 1000 theuser
 WORKDIR /home/theuser
+USER theuser
+
+RUN cd ~ && mkdir -p ~/bin && cd ~/bin && \
+    wget https://github.com/rebar/rebar/wiki/rebar && chmod a+x rebar
+    # git clone https://github.com/erlware/relx relx-tmp && cd relx-tmp && make && cd ~/bin && mv relx-tmp/relx . && rm -fr relx-tmp && \
+ENV PATH ~/bin:$PATH
 
 
 
 
 # VOLUME ["/data"]  
-
-# RUN cd ~ && mkdir -p ~/bin && cd ~/bin && \
-#     wget https://github.com/rebar/rebar/wiki/rebar && chmod a+x rebar && \
-#     git clone https://github.com/erlware/relx relx-tmp && cd relx-tmp && make && cd ~/bin && mv relx-tmp/relx . && rm -fr relx-tmp && \
-    
 # RUN cd ~ && git clone https://github.com/koddo/ryctoicpab && cd ryctoicpab && make 
-
-# CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "console"]
-
+# CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "foreground"]
+# ENTRYPOINT ["/home/theuser/ryctoicpab/entrypoint.sh"]
 # EXPOSE 8080
 
 

@@ -10,6 +10,9 @@
 
 -spec start(_,_) -> {'ok',pid()}.
 start(_Type, _Args) ->
+    io:format("node: ~w~n", [node()]),
+    io:format("cookie: ~w~n", [erlang:get_cookie()]),
+
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/asdf", toppage_handler, []},
                                              {"/[...]", cowboy_static, {priv_dir, hello_world, "", [{mimetypes, cow_mimetypes, all}]}}

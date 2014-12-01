@@ -9,7 +9,8 @@
 		kernel,
 		stdlib,
 		cowboy,
-        epgsql
+        epgsql,
+        jiffy
         %% , sockjs
 	]},
 	{mod, {hello_world_app, []}},

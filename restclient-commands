@@ -1,5 +1,11 @@
 # -*- mode: restclient; -*-
 
+#
 GET http://localhost:8080/asdf
+Accept: application/json
+
+
+#
+GET http://192.168.59.103:8080/asdf
 Accept: application/json
 
