@@ -10,8 +10,10 @@
 
 -spec start(_,_) -> {'ok',pid()}.
 start(_Type, _Args) ->
-    io:format("node: ~w~n", [node()]),
-    io:format("cookie: ~w~n", [erlang:get_cookie()]),
+    %% lager:set_loglevel(lager_console_backend, debug),
+    %% lager:set_loglevel(lager_file_backend, "console.log", debug),
+    lager:info("node: ~p", [node()]),
+    lager:info("cookie: ~p", [erlang:get_cookie()]),
 
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/asdf", toppage_handler, []},

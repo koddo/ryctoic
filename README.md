@@ -31,3 +31,13 @@ content-type: text/plain
 
 Hello world!
 ```
+
+notes and todos
+--------------
+
+$ erl -kernel inet_dist_listen_min 9100 inet_dist_listen_max 9102
+
+ TODO: I put mochijson2.erl to src. There is another way: https://github.com/bjnortier/mochijson2
+ TODO: logrotate
+
+ 

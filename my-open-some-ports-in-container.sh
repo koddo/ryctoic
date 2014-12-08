@@ -15,7 +15,7 @@ elif [[ $1 == "delete-rule" || $1 == "delete" ]]  &&  [[ $# -eq 2 ]] ; then
     
 
 elif [[ $1 == "-A" || $1 == "-D" ]]  &&  [[ $# -eq 2 ]] ; then
-    for port in 4369 {9100..9102}; do     # for erlang remote shell
+    for port in 4369 {9101..9105}; do     # for erlang remote shell
         # http://stackoverflow.com/questions/19897743/exposing-a-port-on-a-live-docker-container
         # $ sudo iptables -t nat -D DOCKER -p tcp --dport 9102 -j DNAT --to-destination 172.17.0.88:9102
         $BOOT2DOCKER_SSH_CMD sudo iptables -t nat $1 DOCKER -p tcp --dport $port -j DNAT --to-destination $2:$port

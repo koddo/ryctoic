@@ -16,7 +16,7 @@ USER theuser
 
 RUN cd ~ && mkdir -p ~/bin && cd ~/bin && \
     wget https://github.com/rebar/rebar/wiki/rebar && chmod a+x rebar
-    # git clone https://github.com/erlware/relx relx-tmp && cd relx-tmp && make && cd ~/bin && mv relx-tmp/relx . && rm -fr relx-tmp && \
+    # git clone https://github.com/erlware/relx relx-tmp && cd relx-tmp && make && cd ~/bin && mv relx-tmp/relx . && rm -fr relx-tmp && \   # erlang.mk downloads relx, but I leave this here for a while
 ENV PATH ~/bin:$PATH
 
 
