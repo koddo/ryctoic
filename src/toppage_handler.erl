@@ -23,19 +23,18 @@ hello_to_json(Req, State) ->
     {ok, _, Rows} = pgsql:equery(C, "select name from country limit 5"),
     ok = pgsql:close(C),
 
-	Body = <<"{\"rest\": \"Hello World!\"}">>,
+	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
     
-    
-    
-    lager:info("mochijson2: ~p", [
-                             mochijson2:decode(<<"{\"job\": {\"id\": \"1\"}}">>)
-                            ]),
+    %% lager:info("mochijson2: ~p", [
+    %%                          mochijson2:decode(<<"{\"job\": {\"id\": \"1\"}}">>)
+    %%                         ]),
 
-    lager:error("Rows: ~p", [Rows]),
-    lager:critical("Rows critical: ~p", [Rows]),
-    lager:debug("Rows debug: ~p", [Rows]),
+    %% lager:error("Rows: ~p", [Rows]),
+    %% lager:critical("Rows critical: ~p", [Rows]),
+    %% lager:debug("Rows debug: ~p", [Rows]),
  
-
+    Body = io_lib:format("Rows: ~p", [Rows]),
+    lager:info("Rows: ~p", [Rows]),
 
 	{Body, Req, State}.
 
