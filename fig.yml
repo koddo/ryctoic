@@ -1,13 +1,17 @@
 web:
   build: .
-  entrypoint: /home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example
-  command: foreground
+
+  entrypoint: ryctoic/entrypoint.sh
+  # was entrypoint: /home/theuser/ryctoic/_rel/hello_world_example/bin/hello_world_example     and command: foreground
 
   volumes:
-   - .:/home/theuser/ryctoicpab
+   - .:/home/theuser/ryctoic
 
   ports:
    - "8080:8080"
+
+  # expose:
+  # we'll have to expose some ports if we need to interconnect erlang nodes 
   #  - "4369:4369"
   #  - "9101:9101"
   #  - "9102:9102"
@@ -15,9 +19,10 @@ web:
   #  - "9104:9104"
   #  - "9105:9105"
    
-   
   links:
    - db
+
+
 
 db:
   image: "postgres:latest"

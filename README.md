@@ -1,43 +1,36 @@
-Hello world example
+Ryctoic
 ===================
 
-To try this example, you need GNU `make` and `git` in your PATH.
+ TODO: readme, svg diagram of components
 
-To build the example, run the following command:
+remote shell
+------------
 
-``` bash
-$ make
-```
+I'm using boot2docker, it's ip is 192.168.59.103.
+To access docker container directly via it's ip, which looks like 172.17.0.98, add this route:
 
-To start the release in the foreground:
+     $ sudo route -n add 172.17.0.0/16 192.168.59.103
 
-``` bash
-$ ./_rel/hello_world_example/bin/hello_world_example console
-```
+Test it:
 
-Then point your browser at [http://localhost:8080](http://localhost:8080).
+     $ docker run -it ubuntu bash
+     root@52eee3e2c7f6:/# hostname --ip-address
+     root@52eee3e2c7f6:/# nc -l 7777
 
-Example output
---------------
+     $ telnet _ip_from_ifconfig_above_ 7777
 
-``` bash
-$ curl -i http://localhost:8080
-HTTP/1.1 200 OK
-connection: keep-alive
-server: Cowboy
-date: Fri, 28 Sep 2012 04:10:25 GMT
-content-length: 12
-content-type: text/plain
+Get a remote shell on a running container with erlang node:
 
-Hello world!
-```
+     $ erl -name foo@$(hostname) -setcookie secret -remsh ryctoic@172.17.0.58
+     (ryctoic@172.17.0.58)1> error_logger:info_msg("test info messge~n", []).
 
+     
+To connect
+     
 notes and todos
 --------------
 
-$ erl -kernel inet_dist_listen_min 9100 inet_dist_listen_max 9102
+ TODO: I've put mochijson2.erl to src. There is another way: https://github.com/bjnortier/mochijson2
+ TODO: another container for logs with logrotate
+ TODO: --icc=false to disallow any communication between containers other than by links
 
- TODO: I put mochijson2.erl to src. There is another way: https://github.com/bjnortier/mochijson2
- TODO: logrotate
-
- 
