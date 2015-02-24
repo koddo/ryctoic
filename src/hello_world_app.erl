@@ -17,7 +17,8 @@ start(_Type, _Args) ->
 
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/asdf", toppage_handler, []},
-                                             {"/[...]", cowboy_static, {priv_dir, hello_world, "", [{mimetypes, cow_mimetypes, all}]}}
+                                             {"/static/[...]", cowboy_static, {priv_dir, hello_world, "", [{mimetypes, cow_mimetypes, all}]}},
+                                             {"/websocket", ws_handler, []}
                                             ]}]),
 	{ok, _} = cowboy:start_http(http, 100, [{port, 8080}], [{env, [{dispatch, Dispatch}]} ]),
 	hello_world_sup:start_link().

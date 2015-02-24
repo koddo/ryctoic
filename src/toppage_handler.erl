@@ -19,7 +19,7 @@ content_types_provided(Req, State) ->
 
 hello_to_json(Req, State) ->
     % TODO: put connection handler to State, this is for tests
-    {ok, C} = pgsql:connect("ryctoicpab_db_1", "postgres", "postgres", [{database, "world"}]),
+    {ok, C} = pgsql:connect("ryctoic_db_1", "postgres", "postgres", [{database, "world"}]),
     {ok, _, Rows} = pgsql:equery(C, "select name from country limit 5"),
     ok = pgsql:close(C),
 
