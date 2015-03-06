@@ -2,7 +2,7 @@ web:
   build: .
 
   entrypoint: ryctoic/entrypoint.sh
-  # was entrypoint: /home/theuser/ryctoic/_rel/hello_world_example/bin/hello_world_example     and command: foreground
+  # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
 
   volumes:
    - .:/home/theuser/ryctoic

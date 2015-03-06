@@ -16,8 +16,9 @@ start(_Type, _Args) ->
     lager:info("cookie: ~p", [erlang:get_cookie()]),
 
 	Dispatch = cowboy_router:compile([{'_', [
-                                             {"/asdf", toppage_handler, []},
+                                             {"/", cowboy_static, {priv_file, hello_world, "index.html"}},
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "", [{mimetypes, cow_mimetypes, all}]}},
+                                             {"/asdf", toppage_handler, []},
                                              {"/websocket", ws_handler, []}
                                             ]}]),
 	{ok, _} = cowboy:start_http(http, 100, [{port, 8080}], [{env, [{dispatch, Dispatch}]} ]),

@@ -34,12 +34,6 @@ ENV PATH ~/bin:$PATH
 
 
 
-## unused right now, these are set in fig.yml
-# VOLUME ["/data"]  
-# RUN cd ~ && git clone https://github.com/koddo/ryctoicpab && cd ryctoicpab && make 
-# CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "foreground"]
-# ENTRYPOINT ["/home/theuser/ryctoicpab/entrypoint.sh"]
-# EXPOSE 8080
 
 
 
