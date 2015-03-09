@@ -30,10 +30,15 @@ RUN cd ~ && mkdir -p ~/bin && cd ~/bin && \
     wget https://github.com/rebar/rebar/wiki/rebar && chmod a+x rebar
     ## erlang.mk downloads relx, but I leave this here for a while
     # git clone https://github.com/erlware/relx relx-tmp && cd relx-tmp && make && cd ~/bin && mv relx-tmp/relx . && rm -fr relx-tmp && \   
-ENV PATH ~/bin:$PATH
+ENV PATH /home/theuser/bin:$PATH
 
 
 
 
-
+# ## unused right now, these are set in fig.yml
+# # VOLUME ["/data"]  
+# # RUN cd ~ && git clone https://github.com/koddo/ryctoicpab && cd ryctoicpab && make 
+# # CMD ["/home/theuser/ryctoicpab/_rel/hello_world_example/bin/hello_world_example", "foreground"]
+# # ENTRYPOINT ["/home/theuser/ryctoicpab/entrypoint.sh"]
+# # EXPOSE 8080
 
