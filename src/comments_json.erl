@@ -15,7 +15,10 @@ content_types_provided(Req, State) ->
 
 comments_json(Req, State) ->
 	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
-	Body = <<"[{\"text\": \"you little\", \"author\": \"boris\"}]">>,
+	%% Body = <<"[{\"text\": \"you little\", \"author\": \"boris\"}]">>,
+    
+    {ok, Body} = file:read_file("priv/comments.json"),
+
 
     %% lager:info("mochijson2: ~p", [
     %%                          mochijson2:decode(<<"{\"job\": {\"id\": \"1\"}}">>)
@@ -29,9 +32,6 @@ comments_json(Req, State) ->
     %% lager:info("Rows: ~p", [Rows]),
 
 	{Body, Req, State}.
-
-
-
 
 
 
