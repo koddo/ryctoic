@@ -14,7 +14,7 @@ content_types_provided(Req, State) ->
      ], Req, State}.
 
 hello_to_json(Req, State) ->
-	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
+	Body = <<"{\"rest\": \"Hello World!\"}">>,
 
     %% lager:info("mochijson2: ~p", [
     %%                          mochijson2:decode(<<"{\"job\": {\"id\": \"1\"}}">>)
