@@ -17,7 +17,7 @@ comments_json(Req, State) ->
 	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
 	%% Body = <<"[{\"text\": \"you little\", \"author\": \"boris\"}]">>,
     
-    {ok, Body} = file:read_file(filename:join([code:priv_dir(comments_json), <<"comments.json">>])),
+    {ok, Body} = file:read_file(filename:join([code:priv_dir(hello_world), <<"comments.json">>])),
     
 
 
