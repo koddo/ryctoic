@@ -18,8 +18,8 @@ start(_Type, _Args) ->
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/", cowboy_static, {priv_file, hello_world, "index.html"}},
                                              {"/reactjs", cowboy_static, {priv_file, hello_world, "index-my-ass.html"}},
-                                             {"/comments.json", cowboy_static, {priv_file, hello_world, "comments.json"}},
-                                             %% {"/comments.json", comments_json, []},
+                                             %% {"/comments.json", cowboy_static, {priv_file, hello_world, "comments.json"}},
+                                             {"/comments.json", comments_json, []},
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "", [{mimetypes, cow_mimetypes, all}]}},
                                              {"/asdf", toppage_handler, []},
                                              {"/websocket", ws_handler, []}
