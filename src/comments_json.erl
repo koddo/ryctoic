@@ -17,7 +17,8 @@ comments_json(Req, State) ->
 	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
 	%% Body = <<"[{\"text\": \"you little\", \"author\": \"boris\"}]">>,
     
-    {ok, Body} = file:read_file(filename:join([code:priv_dir(my_application), <<"comments.json">>])).
+    {ok, Body} = file:read_file(filename:join([code:priv_dir(my_application), <<"comments.json">>])),
+    
 
 
     %% lager:info("mochijson2: ~p", [
