@@ -24,10 +24,14 @@ hello_to_json(Req, State) ->
     %% lager:critical("Rows critical: ~p", [Rows]),
     %% lager:debug("Rows debug: ~p", [Rows]),
 
-    Body = io_lib:format("Rows: ~p", [Rows]),
-    lager:info("Rows: ~p", [Rows]),
+    %% Body = io_lib:format("Rows: ~p", [Rows]),
+    %% lager:info("Rows: ~p", [Rows]),
 
 	{Body, Req, State}.
+
+
+
+
 
 
 
