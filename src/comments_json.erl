@@ -1,4 +1,3 @@
-%% @doc Hello world handler.
 -module(comments_json).
 
 -export([init/2]).
@@ -14,25 +13,11 @@ content_types_provided(Req, State) ->
      ], Req, State}.
 
 comments_json(Req, State) ->
-	%% Body = <<"{\"rest\": \"Hello World!\"}">>,
-	%% Body = <<"[{\"text\": \"you little\", \"author\": \"boris\"}]">>,
-    
-    {ok, Body} = file:read_file(filename:join([code:priv_dir(hello_world), <<"comments.json">>])),
-    
-
-
-    %% lager:info("mochijson2: ~p", [
-    %%                          mochijson2:decode(<<"{\"job\": {\"id\": \"1\"}}">>)
-    %%                         ]),
-
-    %% lager:error("Rows: ~p", [Rows]),
-    %% lager:critical("Rows critical: ~p", [Rows]),
-    %% lager:debug("Rows debug: ~p", [Rows]),
-
-    %% Body = io_lib:format("Rows: ~p", [Rows]),
-    %% lager:info("Rows: ~p", [Rows]),
-
+    {ok, Application} = application:get_application(),
+    file:read_file(filename:join([code:priv_dir(Application), <<"the_file.txt">>])),
+    {ok, Body} = file:read_file(filename:join([code:priv_dir(get_app()), <<"comments.json">>])),
 	{Body, Req, State}.
+
 
 
 
