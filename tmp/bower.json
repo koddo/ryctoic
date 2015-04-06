@@ -1,0 +1,13 @@
+{
+    "name": "RequireJS Starter",
+    "version": "0.0.1",
+    "dependencies": {
+        "requirejs": null,
+        "requirejs-text": null,
+        "jsx-requirejs-plugin": null,
+        "jquery": null,
+        "bootstrap": null,
+        "react": null,
+        "react-bootstrap": null
+    }
+}

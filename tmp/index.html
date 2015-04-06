@@ -1,51 +1,92 @@
 <html>
-  <head>
-    <title>Hello React</title>
-    <script src="https://fb.me/react-0.13.0.js"></script>
-    <script src="https://fb.me/JSXTransformer-0.13.0.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
-  </head>
-  <body>
-    <div id="content"></div>
-    <script type="text/jsx">
-
-     var CommentBox = React.createClass({
-         render: function() {
-             return (
-                 <div className="commentBox">
-                     <h1>Comments</h1>
-                     <CommentList />
-                     <CommentForm />
-                 </div>
-             );
+    <head>
+        <title>ryctoic</title>
+        <script src="https://fb.me/react-0.13.0.js"></script>
+        <script src="https://fb.me/JSXTransformer-0.13.0.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/0.11.6/react-router.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <style>
+         /* html, body {
+            margin: 0;
+            padding: 0;
+            } */
+         
+         .Content {
+             height: 80%;
          }
-     });
 
-     var CommentList = React.createClass({
-         render: function() {
-             return (
-                 <div className="commentList">
-                     Hello, world! I am a CommentList.
-                 </div>
-             );
+         .Header {
+             height: 100px;
+             background: #aaa;
          }
-     });
 
-     var CommentForm = React.createClass({
-         render: function() {
-             return (
-                 <div className="commentForm">
-                     Hello, world! I am a CommentForm.
-                 </div>
-             );
+         .deckList {
+             float: left;
+             width: 30%;
+             height: 100%;
+             background: #ccc;
+             overflow: auto;
          }
-     });
-     
-     React.render(
-         <CommentBox />,
-         document.getElementById('content')
-     );
 
-    </script>
-  </body>
+         .cardList {
+             float: left;
+             width: 70%;
+             height: 100%;
+             background: #eee;
+             overflow: auto;
+         }
+        </style>
+    </head>
+    <body>
+        <script type="text/jsx">
+         var Content = React.createClass({
+             render: function() {
+                 return (
+                     <div className="Content">
+                         <div className="Header"></div>
+                         <DeckList />
+                         <CardList />
+                     </div>
+                 );
+             }
+         });
+
+         var DeckList = React.createClass({
+             render: function() {
+                 return (
+                     <div className="deckList">
+                         <h2>DeckList</h2>
+                         <ul>
+                             <li>english language 5 10</li>
+                             <li>linear algebra 10 5</li>
+                             <li>probability theory 0 15</li>
+                         </ul>
+                     </div>
+                 );
+             }
+         });
+
+         var CardList = React.createClass({
+             render: function() {
+                 return (
+                     <div className="cardList">
+                         <h2>CardList</h2>
+                         <ul>
+                             <li>disestablishmentarianism</li>
+                             <li>abstentious</li>
+                             <li>squirrelled</li>
+                         </ul>
+                     </div>
+                 );
+             }
+         });
+         
+         
+         React.render(
+             <Content />,
+             document.body
+         );
+
+        </script>
+    </body>
 </html>
