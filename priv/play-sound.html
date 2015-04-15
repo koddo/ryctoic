@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script type="text/javascript">
+
+     var snd1  = new Audio();
+     var src1  = document.createElement("source");
+     src1.type = "audio/mpeg";
+     src1.src  = "file:///Users/alex/workspace.ryctoic/priv/play-sound.mp3";
+     snd1.appendChild(src1); 
+
+     snd1.play();
+
+     setTimeout(function() {
+         snd1.pause();
+     }, 3000);
+     
+     /* var snd = new Audio("play-sound.mp3"); // buffers automatically when created
+        snd.play(); */
+     
+    </script>
+  </head>
+  <body>
+      <p>hello</p>
+  </body>
+</html>

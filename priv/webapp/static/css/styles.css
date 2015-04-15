@@ -1,0 +1,24 @@
+/* ---------------------------------------------------------
+   HTML5 Bones
+   This stylesheet contains print styling and a section for 
+   you to simply add your own. This is a basic template 
+   after all.
+   ---------------------------------------------------------*/
+    body {
+   
+    }
+    /* Default link styling */
+    a:link { color:#0271fb; }
+    a:visited { color:#bd02fb; }
+    a:hover, a:focus { color:#000; }
+    a:active { color:#fb0e02; }
+    
+    
+    
+/* ---------------------------------------------------------
+   Author's styles
+   ---------------------------------------------------------*/
+    body {
+   
+    }
+

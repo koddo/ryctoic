@@ -1,0 +1,14 @@
+{
+    "name": "RequireJS Starter",
+    "version": "0.0.1",
+    "dependencies": {
+        "requirejs": null,
+        "requirejs-text": null,
+        "jquery": null,
+        "bootstrap": null,
+        "less": null,
+        "react": null,
+        "react-bootstrap": null,
+        "react-responsive": "wearefractal/react-responsive"
+    }
+}
