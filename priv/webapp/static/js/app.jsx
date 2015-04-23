@@ -53,11 +53,26 @@ var Deck = React.createClass({
             <div className="my-Deck">
                 <h3>Deck {this.context.router.getCurrentParams().deckId}</h3>
                 <ul>
-                    <li>card 1</li>
-                    <li>card 2</li>
-                    <li>card 3</li>
+                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:1}}>Card 1</Link></li>
+                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:2}}>Card 2</Link></li>
+                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:3}}>Card 3</Link></li>
                 </ul>
 
+            </div>
+        );
+    }
+});
+
+var Card = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+
+    render: function() {
+        return (
+            <div className="my-Card">
+                <h3>Deck {this.context.router.getCurrentParams().deckId}</h3>
+                <h3>Card {this.context.router.getCurrentParams().cardId}</h3>
             </div>
         );
     }
@@ -106,7 +121,7 @@ var Root = React.createClass({
    /decks
    /decks/123
    /decks/123/cards/456
-   /cards/456
+   we need also /cards/456
  */
 var routes = (
     <Route name="root" path="/" handler={Root}>
@@ -114,16 +129,17 @@ var routes = (
         <Route name="decks" handler={DecksCardsView}>
             <DefaultRoute handler={DeckList}/>
             <Route name="Deck" path=":deckId" handler={Deck}/>
+            <Route name="Card" path=":deckId/cards/:cardId" handler={Card}/>
         </Route>
         <NotFoundRoute handler={NotFound}/>
     </Route>
-    
 );
 
 // TODO: when inside cordova app, use #/urls, not real ones --- just write this: Router.run(routes, function (Handler) {
 Router.run(routes, Router.HistoryLocation, function (Handler) {
     React.render(<Handler/>, document.body);
 });
+
 
 
 
