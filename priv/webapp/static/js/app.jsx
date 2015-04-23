@@ -2,7 +2,7 @@ var NotFound = React.createClass({
     render: function() {
         return (
             <div className="my-NotFound">
-                <h2>NotFound</h2>
+                <h3>NotFound</h3>
             </div>
         );
     }
@@ -13,18 +13,7 @@ var Dashboard = React.createClass({
     render: function() {
         return (
             <div className="my-Dashboard">
-                <h2>Dashboard</h2>
-            </div>
-        );
-    }
-});
-
-var DecksCardsView = React.createClass({
-    render: function() {
-        return (
-            <div className="my-DecksCardsView">
-                <h2>DecksCardsView</h2>
-                <RouteHandler/>
+                <h3>Dashboard</h3>
             </div>
         );
     }
@@ -34,6 +23,7 @@ var DeckList = React.createClass({
     render: function() {
         return (
             <div className="my-DeckList">
+                <h3>DeckList</h3>
                 <ul>
                     <li><Link to="Deck" params={{deckId:1}}>Deck 1</Link></li>
                     <li><Link to="Deck" params={{deckId:2}}>Deck 2</Link></li>
@@ -102,11 +92,12 @@ var Root = React.createClass({
                 <header>
                     <h1>menu</h1>
                     <ul>
-                        <li><Link to="root">Dashboard</Link></li>
-                        <li><Link to="decks">DecksCardsView</Link></li>
+                        <li><Link to="Root">Dashboard</Link></li>
+                        <li><Link to="DeckList">DeckList</Link></li>
                     </ul>
                 </header>
 
+                <h2>routed part</h2>
                 <RouteHandler/>
             </div>
         );
@@ -121,16 +112,15 @@ var Root = React.createClass({
    /decks
    /decks/123
    /decks/123/cards/456
-   we need also /cards/456
+   /cards/456
  */
 var routes = (
-    <Route name="root" path="/" handler={Root}>
+    <Route name="Root" path="/" handler={Root}>
         <DefaultRoute handler={Dashboard}/>
-        <Route name="decks" handler={DecksCardsView}>
-            <DefaultRoute handler={DeckList}/>
-            <Route name="Deck" path=":deckId" handler={Deck}/>
-            <Route name="Card" path=":deckId/cards/:cardId" handler={Card}/>
-        </Route>
+        <Route path="decks" name="DeckList" handler={DeckList}/>
+        <Route path="decks/:deckId" name="Deck" handler={Deck}/>
+        <Route path="decks/:deckId/cards/:cardId" name="Card" handler={Card}/>
+        <Route path="cards/:cardId" name="CardWithoutDeck" handler={Card}/>
         <NotFoundRoute handler={NotFound}/>
     </Route>
 );
