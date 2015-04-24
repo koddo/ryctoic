@@ -1,3 +1,8 @@
+
+// getDeckList
+// getDeck
+// getCard
+
 var cardsData = {
     "1" : {
         "id" : "1",
@@ -35,12 +40,12 @@ var decksData = {
     "1" : {
         "id" : "1",
         "name" : "random facts",
-        "cards" : [ "1", "2", "3"]
+        "idList" : [ "1", "2", "3"]
     },
     "2" : {
         "id" : "2",
         "name" : "algebra",
-        "cards" : [ "4", "5", "6"]
+        "idList" : [ "4", "5", "6"]
     }
 };
 
@@ -93,7 +98,7 @@ var Deck = React.createClass({
 
     render: function() {
         var deckId = this.context.router.getCurrentParams().deckId;
-        var asdf = decksData[deckId].cards;
+        var asdf = decksData[deckId].idList;
         var cardslst = Object.keys(cardsData).map(
             function (cardId) {
                 if (asdf.indexOf(cardId) >= 0) {
