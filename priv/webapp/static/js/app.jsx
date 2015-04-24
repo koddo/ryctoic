@@ -1,3 +1,50 @@
+var cardsData = {
+    "1" : {
+        "id" : "1",
+        "question" : "radius of earth",
+        "answer" : "~6000km"
+    },
+    "2" : {
+    "id" : "2",
+        "question" : "first digits of pi",
+        "answer" : "3.1415"
+    },
+    "3" : {
+        "id" : "3",
+        "question" : "edge of space",
+        "answer" : "100km"
+    },
+    "4" : {
+        "id" : "4",
+        "question" : "definition of vector space",
+        "answer" : "abelian group with multiplication by numbers"
+    },
+    "5" : {
+        "id" : "5",
+        "question" : "Euclidian algorithm",
+        "answer" : "mod(a, b) = mod(a-b, b)"
+    },
+    "6" : {
+        "id" : "6",
+        "question" : "how many bases in vector space?",
+        "answer" : "(q^n - 1) * (q^n - q) * ... * (q^n - q^{n-1})"
+    }
+};
+
+var decksData = {
+    "1" : {
+        "id" : "1",
+        "name" : "random facts",
+        "cards" : [ "1", "2", "3"]
+    },
+    "2" : {
+        "id" : "2",
+        "name" : "algebra",
+        "cards" : [ "4", "5", "6"]
+    }
+};
+
+
 var NotFound = React.createClass({
     render: function() {
         return (
@@ -21,12 +68,18 @@ var Dashboard = React.createClass({
 
 var DeckList = React.createClass({
     render: function() {
+        var deckslst = Object.keys(decksData).map(
+            function (deckId) {
+                return (
+                    <li>{decksData[deckId].name} <Link to="Deck" params={{deckId:deckId}}>link</Link></li>
+                )
+            }
+        );
         return (
             <div className="my-DeckList">
                 <h3>DeckList</h3>
                 <ul>
-                    <li><Link to="Deck" params={{deckId:1}}>Deck 1</Link></li>
-                    <li><Link to="Deck" params={{deckId:2}}>Deck 2</Link></li>
+                    {deckslst}
                 </ul>
             </div>
         );
@@ -39,13 +92,23 @@ var Deck = React.createClass({
     },
 
     render: function() {
+        var deckId = this.context.router.getCurrentParams().deckId;
+        var asdf = decksData[deckId].cards;
+        var cardslst = Object.keys(cardsData).map(
+            function (cardId) {
+                if (asdf.indexOf(cardId) >= 0) {
+                    return (
+                        <li>{cardsData[cardId].question} <Link to="Card" params={{deckId:deckId, cardId:cardId}}>link</Link></li>
+                    )
+                }
+            }
+        );
+        
         return (
             <div className="my-Deck">
                 <h3>Deck {this.context.router.getCurrentParams().deckId}</h3>
                 <ul>
-                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:1}}>Card 1</Link></li>
-                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:2}}>Card 2</Link></li>
-                    <li><Link to="Card" params={{deckId:this.context.router.getCurrentParams().deckId, cardId:3}}>Card 3</Link></li>
+                    {cardslst}
                 </ul>
 
             </div>
@@ -59,21 +122,18 @@ var Card = React.createClass({
     },
 
     render: function() {
+        var deckId = this.context.router.getCurrentParams().deckId;
+        var cardId = this.context.router.getCurrentParams().cardId;
         return (
             <div className="my-Card">
-                <h3>Deck {this.context.router.getCurrentParams().deckId}</h3>
-                <h3>Card {this.context.router.getCurrentParams().cardId}</h3>
+                <h3>Deck {deckId}, Card {cardId}</h3>
+                <p>question: {cardsData[cardId].question}</p>
+                <p>answer: {cardsData[cardId].answer}</p>
             </div>
         );
     }
 });
 
-
-
-// React.render(
-//     <CommentBox />,
-//     document.body
-// );
 
 
 var Router = ReactRouter;
@@ -105,15 +165,6 @@ var Root = React.createClass({
 });
 
 
-/*
-   redirect to something instead of <NotFoundRoute handler={NotFound}/>
-   <Redirect to="dashboard" />
-
-   /decks
-   /decks/123
-   /decks/123/cards/456
-   /cards/456
- */
 var routes = (
     <Route name="Root" path="/" handler={Root}>
         <DefaultRoute handler={Dashboard}/>
