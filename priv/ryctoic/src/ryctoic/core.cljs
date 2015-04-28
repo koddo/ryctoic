@@ -1,5 +1,5 @@
 (ns ^:figwheel-always ryctoic.core
-    (:require))
+    (:require [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
 
@@ -10,3 +10,13 @@
 (defonce app-state (atom {:text "Hello world!"}))
 
 
+(defn simple-example []
+  [:div
+   [:p "Hello world, it is now"]
+   ]
+  )
+
+(defn init! []
+  (reagent/render [simple-example]
+                  (js/document.getElementById "app"))
+  )

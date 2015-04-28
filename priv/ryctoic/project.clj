@@ -5,7 +5,27 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-3165"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+
                  [figwheel "0.2.7"]
+
+                 ;; [org.clojure/clojurescript "0.0-3196" :scope "provided"]
+
+                 [cljsjs/react "0.13.1-0"]
+                 [reagent "0.5.0"]
+                 ;; [reagent-forms "0.5.0"]
+                 ;; [reagent-utils "0.1.4"]
+
+                 ;; [secretary "1.2.3"]
+
+                 ;; [ring-server "0.4.0"]
+                 ;; [ring "1.3.2"]
+                 ;; [ring/ring-defaults "0.1.4"]
+                 ;; [compojure "1.3.3"]
+                 ;; [prone "0.8.1"]
+                 ;; [selmer "0.8.2"]
+
+                 ;; [environ "1.0.0"]
+                 
                  ]
   :plugins [[lein-cljsbuild "1.0.5"]
             [lein-figwheel "0.2.7"]
@@ -71,3 +91,7 @@
 ;; [lein-less "1.7.2"]
 ;; :hooks [leiningen.cljsbuild, leiningen.less]
 ;; :less {:source-paths ["resources/public/less"] :target-path "resources/public/css"}
+
+
+
+

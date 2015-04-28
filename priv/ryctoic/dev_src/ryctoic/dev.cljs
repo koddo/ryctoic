@@ -8,3 +8,5 @@
   :on-jsload (fn []
                ;; (stop-and-start-my app)
                )})
+
+(ryctoic.core/init!)
