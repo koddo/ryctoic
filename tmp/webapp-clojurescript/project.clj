@@ -12,11 +12,12 @@
 
                  [cljsjs/react "0.13.1-0"]
                  [reagent "0.5.0"]
+                 [reagent-utils "0.1.4"]
                  ;; [reagent-forms "0.5.0"]
-                 ;; [reagent-utils "0.1.4"]
 
-                 ;; [secretary "1.2.3"]
-
+                 [secretary "1.2.3"]
+                 [kibu/pushy "0.3.0"]
+                 
                  ;; [ring-server "0.4.0"]
                  ;; [ring "1.3.2"]
                  ;; [ring/ring-defaults "0.1.4"]
@@ -43,7 +44,7 @@
                          :output-dir "resources/public/js/compiled/out"
                          :optimizations :none
                          :main ryctoic.dev
-                         :asset-path "js/compiled/out"
+                         :asset-path "static/js/compiled/out"
                          :source-map true
                          :source-map-timestamp true
                          :cache-analysis true }}
