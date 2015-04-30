@@ -3,7 +3,7 @@
 
 (enable-console-print!)
 
-(println "Edits to this text should show up in your developer console.")
+(println "----------------------------------------")
 
 ;; define your app data so that it doesn't get over-written on reload
 
@@ -16,7 +16,8 @@
    ]
   )
 
-(defn init! []
+(defn ^:export run []
   (reagent/render [simple-example]
                   (js/document.getElementById "app"))
   )
+
