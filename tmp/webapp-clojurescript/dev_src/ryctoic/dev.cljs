@@ -1,11 +1,14 @@
 (ns ryctoic.dev
     (:require
-     [ryctoic.core]
+     [ryctoic.core :as ryctoic]
      [figwheel.client :as fw]))
+
+(enable-console-print!)
 
 (fw/start {
   :websocket-url "ws://localhost:3449/figwheel-ws"
   :on-jsload (fn []
-               ;; (stop-and-start-my app)
+               (println "----------------------------------------")
+               (ryctoic/render)
                )})
 

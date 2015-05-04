@@ -50,8 +50,8 @@
                          :cache-analysis true }}
              {:id "min"
               :source-paths ["src"]
-              :compiler {:output-to "resources/public/js/compiled/ryctoic.js"
-                         :main ryctoic.core                         
+              :compiler {:output-to "resources/public/js/compiled/ryctoic-min.js"
+                         :main ryctoic.core
                          :optimizations :advanced
                          :pretty-print false}}]}
   
