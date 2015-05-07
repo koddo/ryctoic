@@ -1,53 +1,91 @@
 (ns ^:figwheel-always ryctoic.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
-              [secretary.core :as secretary :include-macros true]
+    (:require [reagent.core :as reagent]
+              [reagent.ratom]
+              [re-frame.core :as re-frame]
+              [secretary.core :as secretary]
               [pushy.core :as pushy]
               ))
 
-(defn current-page []
-  [(session/get :current-page)])
+(re-frame/register-sub :current-page
+                       (fn [state _]
+                         (reagent.ratom/reaction (:current-page @state))))
 
-(defn root-page []
-  [:div [:h2 "root"]
-   [:div [:a {:href "/about"} "about"]]
-   [:div [:a {:href "/asdf"} "asdf"]]
+(defn current-page []
+  (let [cp (re-frame/subscribe [:current-page])]
+    (println "current page " @cp)
+    (if-not @cp
+      [:div "initializing"]   ; never shown, because we render after :initialize and :router-event
+      (@cp))
+    ))
+
+(defn page-root []
+  [:div
+   [:h1 "root"]
+   [:ul
+    [:li [:a {:href "/about"} "about"]]
+    [:li [:a {:href "/asdf"} "asdf"]]]
    ])
 
-(defn about-page []
-  [:div [:h2 "about"]
-   [:div [:a {:href "/"} "root"]]])
+(defn page-about []
+  [:div
+   [:h1 "about"]
+   [:ul
+    [:li [:a {:href "/"} "root"]]]])
 
-(defn not-found []
-  [:div [:h2 "not found"]
-   [:div [:a {:href "/"} "root"]]
-   [:div [:a {:href "/about"} "about"]]])
+(defn page-not-found []
+  [:div
+   [:h1 "not found"]
+   [:ul
+    [:li [:a {:href "/"} "root"]]
+    [:li [:a {:href "/about"} "about"]]]])
 
+;; -----------------------------------------------
+
+(re-frame/register-handler :initialize
+                           (fn [_ v]
+                             (let [state {
+                                          :current-page nil   ; the router handles this, fail fast if not
+                                          }]
+                               (println ":initialize")
+                               state
+                              )
+                             ))
+
+(re-frame/register-handler :router-event
+                           (fn [state [_ new-current-page]]
+                             (println ":router-event " new-current-page)
+                             (-> state
+                                 (assoc :current-page new-current-page))))
+
+(re-frame/register-handler :render
+                           (fn [state _]
+                             (println ":render ")
+                             (reagent/render-component [current-page]
+                                                       (js/document.getElementById "app"))
+                             state))
+
+;; -----------------------------------------------
 
 (secretary/defroute "/" []
-  (session/put! :current-page #'root-page))
+  (re-frame/dispatch [:router-event #'page-root]))
 
 (secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
+  (re-frame/dispatch [:router-event #'page-about]))
 
 (secretary/defroute "*" []
-  (session/put! :current-page #'not-found))
+  (re-frame/dispatch [:router-event #'page-not-found]))
 
-
-(defn ^:export render []
-  (reagent/render-component [current-page]
-                            (js/document.getElementById "app")))
+;; -----------------------------------------------
 
 (defn ^:export run []
-  (def history (pushy/pushy secretary/dispatch!
-                            (fn [x] (when (secretary/locate-route x) x))))
-  (pushy/start! history)
-  (render)
+  (re-frame/dispatch [:initialize])
+  (do   ; this dispatches :router-event, which sets current-page
+    (def history
+      (pushy/pushy secretary/dispatch!
+                   (fn [x] (when (secretary/locate-route x) x))))
+    (pushy/start! history))
+  (re-frame/dispatch [:render])
   )
-
-
-
-
 
 
 
