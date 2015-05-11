@@ -45,8 +45,11 @@
                            (fn [_ v]
                              (let [state {
                                           :current-page nil   ; the router handles this, fail fast if not
+                                          :websocket-obj (new js/WebSocket "wss://echo.websocket.org")
                                           }]
                                (println ":initialize")
+                               (set! (.-onopen    (:websocket-obj state)) #(re-frame/dispatch [:ws-onopen]))
+                               (set! (.-onmessage (:websocket-obj state)) #(re-frame/dispatch [:ws-onmessage %]))
                                state
                               )
                              ))
@@ -62,6 +65,17 @@
                              (println ":render ")
                              (reagent/render-component [current-page]
                                                        (js/document.getElementById "app"))
+                             state))
+
+(re-frame/register-handler :ws-onopen
+                           (fn [state _]
+                             (println ":ws-onopen ")
+                             (.send (:websocket-obj state) "hello websocket")
+                             state))
+
+(re-frame/register-handler :ws-onmessage
+                           (fn [state [_ msg]]
+                             (println ":ws-onmessage " (.-data msg))
                              state))
 
 ;; -----------------------------------------------
