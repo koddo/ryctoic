@@ -34,3 +34,4 @@ notes and todos
  TODO: another container for logs with logrotate
  TODO: --icc=false to disallow any communication between containers other than by links
 
+ TODO: review authentication code
