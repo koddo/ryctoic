@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">  
+        <title>log in</title>
+        <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
+    </head>
+    <body>
+        <!-- This is a VERY bare bones version of a HTML5 template! -->
+
+
+        <h1>you are logged in</h1>
+        <p>continue to the app</p>
+        <button onclick='popup("/"); window.close();'>app</button>
+        <p>TODO: make this popup fancy -- user can see this if the opener is closed</p>
+
+
+
+        <script>
+         if (window.opener && "" != window.opener.location) {
+             window.opener.handler("{{ id }}", "{{ email }}", "{{ email_verified }}");
+             window.close();
+         }
+
+         function popup(url) {
+             var newWindow = window.open(url);
+             if (window.focus) {
+                 newWindow.focus();
+             }
+         }
+        </script>
+    </body>
+</html>

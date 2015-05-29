@@ -1,14 +1,16 @@
 RELX_CONFIG = relx-dev.config
 PROJECT = hello_world
 
-DEPS = cowboy sync epgsql lager gproc     # sockjs jiffy
+DEPS = cowboy sync epgsql lager pal_google_oauth2 erlydtl # gproc sockjs jiffy
 # dep_sockjs = git https://github.com/sockjs/sockjs-erlang master
 # dep_jiffy = git https://github.com/davisp/jiffy master
+# dep_gproc = git https://github.com/uwiger/gproc
 dep_cowboy = git https://github.com/ninenines/cowboy master
 dep_sync = git https://github.com/rustyio/sync master
 dep_epgsql = git https://github.com/epgsql/epgsql master
 dep_lager = git https://github.com/basho/lager master
-dep_gproc = git https://github.com/uwiger/gproc
+dep_pal_google_oauth2 = git git://github.com/manifest/pal-google-oauth2.git v0.2.1
+dep_erlydtl = git https://github.com/erlydtl/erlydtl master
 
 ERLC_OPTS = +debug_debug +'{parse_transform,lager_transform}'
 

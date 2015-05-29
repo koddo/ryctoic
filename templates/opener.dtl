@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">  
+        <title>opener</title>
+        <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
+    </head>
+    <body>
+        <!-- This is a VERY bare bones version of a HTML5 template! -->
+
+
+        <button onclick='popupCenter("/oauth2/google/callback", "", "300", "300")'>log in</button>
+
+        
+
+
+        <script>
+         handler = function (id, email, email_verified) {
+             console.log(id);
+             console.log(email);
+             console.log(email_verified);
+         }
+
+         // TODO: check centered login popup in triple monitor set up
+         // http://stackoverflow.com/a/16861050/159149
+         function popupCenter(url, title, w, h) {
+             // Fixes dual-screen position                         Most browsers      Firefox
+             var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+             var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+             width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+             height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+             var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+             var top = ((height / 2) - (h / 2)) + dualScreenTop;
+             var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+             if (window.focus) {
+                 newWindow.focus();
+             }
+         }
+
+        </script>
+    </body>
+</html>

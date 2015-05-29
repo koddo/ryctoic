@@ -7,3 +7,5 @@
 *.beam
 *.plt
 erl_crash.dump
+
+/.erlang.mk/

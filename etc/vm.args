@@ -1,0 +1,14 @@
+# TODO: using this ip/hostname I can connect to the node via emacs after opening ports, but I can't connect using docker-enter or docker exec --- understand the problem and fix this 
+
+-name ${NODENAME}
+
+
+# was -setcookie ${ERLCOOKIE}
+# secrets in env vars is bad, mkay
+# I don't know why it doesn't work without this arg, it should read ~/.erlang.cookie, right?
+-setcookie
+
+
+# -config etc/sync.config
+
+

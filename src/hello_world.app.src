@@ -8,12 +8,16 @@
                             {applications, [
                                             kernel,
                                             stdlib,
+                                            ssl,
+                                            
                                             cowboy,
                                             epgsql,
-                                            lager
+                                            lager,
+                                            pal_google_oauth2,
+                                            erlydtl
                                                 % jiffy
                                                 % sockjs
                                            ]},
                             {mod, {hello_world_app, []}},
-                            {env, []}
+                            {env, [{https_port, "8443"}]}
                            ]}.
