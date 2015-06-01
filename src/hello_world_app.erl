@@ -2,6 +2,8 @@
 -module(hello_world_app).
 -behaviour(application).
 
+-include("my-mnesia-records.hlr").
+
 %% API.
 -export([start/2]).
 -export([stop/1]).
@@ -24,6 +26,16 @@ start(_Type, _Args) ->
     lager:info("Conf: ~p", [Conf]),
     lager:info("PalOptions: ~p", [PalOptions]),
 
+    mnesia:create_schema([node()]),
+    mnesia:start(),
+    mnesia:create_table(asdftab, [
+                                  {attributes, record_info(fields, asdf)},
+                                  {ram_copies, [node()]}
+                                 ]),
+
+
+    mnesia:dirty_write(#asdf{id=1, value=1000}),
+
     {ok, Application} = application:get_application(),
     PrivDir = code:priv_dir(Application),
 	Dispatch = cowboy_router:compile([{'_', [
@@ -34,16 +46,16 @@ start(_Type, _Args) ->
                                              {"/websocket", ws_handler, []}
                                             ]}]),
 	{ok, _} = cowboy:start_https(https, 100, 
-                                [
-                                 {port, list_to_integer(env(https_port))},
-                                 {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
-                                 {certfile, PrivDir ++ "/ssl/server.crt"},
-                                 {keyfile, PrivDir ++ "/ssl/server.key"}
-                                ], 
-                                [
-                                 {env, [{dispatch, Dispatch}]} 
-                                 %% ,{max_keepalive, 100}
-                                ]),
+                                 [
+                                  {port, list_to_integer(env(https_port))},
+                                  {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
+                                  {certfile, PrivDir ++ "/ssl/server.crt"},
+                                  {keyfile, PrivDir ++ "/ssl/server.key"}
+                                 ], 
+                                 [
+                                  {env, [{dispatch, Dispatch}]} 
+                                  %% ,{max_keepalive, 100}
+                                 ]),
 	hello_world_sup:start_link().
 
 -spec stop(_) -> 'ok'.

@@ -14,7 +14,8 @@
                                             epgsql,
                                             lager,
                                             pal_google_oauth2,
-                                            erlydtl
+                                            erlydtl,
+                                            mnesia
                                                 % jiffy
                                                 % sockjs
                                            ]},
