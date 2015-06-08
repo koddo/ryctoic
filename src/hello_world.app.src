@@ -15,7 +15,8 @@
                                             lager,
                                             pal_google_oauth2,
                                             erlydtl,
-                                            mnesia
+                                            mnesia,
+                                            base64url
                                                 % jiffy
                                                 % sockjs
                                            ]},

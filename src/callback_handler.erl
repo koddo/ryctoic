@@ -8,7 +8,6 @@
          init/2,
          is_authorized/2,
          content_types_provided/2,
-         to_json/2,
          to_html/2
         ]).
 
@@ -61,8 +60,7 @@ is_authorized(Req, #state{ authw = PalWorkflow } = State) ->
 
 content_types_provided(Req, State) ->
 	{[
-      {{<<"text">>,  <<"html">>, '*'}, to_html},
-      {{<<"application">>,  <<"json">>, '*'}, to_json}
+      {{<<"text">>,  <<"html">>, '*'}, to_html}
      ], Req, State}.
 
 
@@ -77,10 +75,12 @@ to_html(Req, #state{ authm = M } = State) ->
     Email =          maps:get(<<"email">>, PayloadMap, <<"">>),   % TODO: can it absent?
     EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
     {ok, Body} = popup_dtl:render([{id, Id}, {email, Email}, {email_verified, EmailVerified}]),
-	{Body, Req, State}.
 
-to_json(Req, #state{authm = M} = State) ->
-	{jsx:prettify(jsx:encode(M)), Req, State}.
+    %% session
+    %% SessionID = generate_session_id(),
+    %% Req2 = cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, [], Req).
+
+	{Body, Req, State}.
 
 
 

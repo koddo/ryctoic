@@ -26,15 +26,16 @@ start(_Type, _Args) ->
     lager:info("Conf: ~p", [Conf]),
     lager:info("PalOptions: ~p", [PalOptions]),
 
+
     mnesia:create_schema([node()]),
     mnesia:start(),
-    mnesia:create_table(asdftab, [
-                                  {attributes, record_info(fields, asdf)},
-                                  {ram_copies, [node()]}
-                                 ]),
-
-
-    mnesia:dirty_write(#asdf{id=1, value=1000}),
+    mnesia:create_table(ryctoic_session, [
+                                          {attributes, record_info(fields, ryctoic_session)}
+                                          %% ,{disc_copies, [node()]}
+                                         ]),
+    mnesia:create_table(ryctoic_user, [
+                                       {attributes, record_info(fields, ryctoic_user)}
+                                      ]),
 
     {ok, Application} = application:get_application(),
     PrivDir = code:priv_dir(Application),

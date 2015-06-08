@@ -1,1 +1,16 @@
--record(asdf, {id, value}).
+%% TODO: why do I have to mnesia:delete_schema([node()]) to recreate it if I change this file?
+
+
+
+-record(ryctoic_session, {
+          sessionid,
+          sessioncsrf,
+          userid,
+          expires,
+          fuck
+         }).
+
+-record(ryctoic_user, {     % observer didn't show a table named just user, so I added a prefix
+          id,
+          from
+         }).

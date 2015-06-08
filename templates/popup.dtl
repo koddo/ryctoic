@@ -8,7 +8,6 @@
     <body>
         <!-- This is a VERY bare bones version of a HTML5 template! -->
 
-
         <h1>you are logged in</h1>
         <p>continue to the app</p>
         <button onclick='popup("/"); window.close();'>app</button>
