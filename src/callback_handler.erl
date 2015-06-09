@@ -3,6 +3,7 @@
 %% @doc Hello world handler.
 -module(callback_handler).
 
+-include("my-mnesia-records.hlr").
 
 -export([
          init/2,
@@ -65,7 +66,6 @@ content_types_provided(Req, State) ->
 
 
 
-%% TODO: erlydtl
 to_html(Req, #state{ authm = M } = State) ->
     IdToken = maps:get(id_token, M),
     [_, PayloadBase64, _] = binary:split(IdToken, <<".">>, [global]),
@@ -76,12 +76,11 @@ to_html(Req, #state{ authm = M } = State) ->
     EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
     {ok, Body} = popup_dtl:render([{id, Id}, {email, Email}, {email_verified, EmailVerified}]),
 
-    %% session
-    %% SessionID = generate_session_id(),
-    %% Req2 = cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, [], Req).
+    error_logger:info_msg("create_session: ~n", []),
+    Req2 = opener:create_session(Req, #ryctoic_user{ id = Id, from = google }),
 
-	{Body, Req, State}.
 
+	{Body, Req2, State}.
 
 
 

@@ -37,8 +37,7 @@ start(_Type, _Args) ->
                                        {attributes, record_info(fields, ryctoic_user)}
                                       ]),
 
-    {ok, Application} = application:get_application(),
-    PrivDir = code:priv_dir(Application),
+    PrivDir = code:priv_dir(?MYAPP),
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}},
                                              {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},

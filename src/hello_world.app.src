@@ -1,25 +1,30 @@
 %% Feel free to use, reuse and abuse the code in this file.
 
-{application, hello_world, [
-                            {description, "Cowboy Hello World example."},
-                            {vsn, "1"},
-                            {modules, []},
-                            {registered, [hello_world_sup]},
-                            {applications, [
-                                            kernel,
-                                            stdlib,
-                                            ssl,
-                                            
-                                            cowboy,
-                                            epgsql,
-                                            lager,
-                                            pal_google_oauth2,
-                                            erlydtl,
-                                            mnesia,
-                                            base64url
+{application, 
+ 
+ hello_world, % !!! when you change this, change also the MYAPP constant !!!
+                                                % TODO: how to use MYAPP constant from header file here?
+
+ [
+  {description, "Cowboy Hello World example."},
+  {vsn, "1"},
+  {modules, []},
+  {registered, [hello_world_sup]},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  ssl,
+
+                  cowboy,
+                  epgsql,
+                  lager,
+                  pal_google_oauth2,
+                  erlydtl,
+                  mnesia,
+                  base64url
                                                 % jiffy
                                                 % sockjs
-                                           ]},
-                            {mod, {hello_world_app, []}},
-                            {env, [{https_port, "8443"}]}
-                           ]}.
+                 ]},
+  {mod, {hello_world_app, []}},
+  {env, [{https_port, "8443"}, {maxage, 3600}]}
+ ]}.

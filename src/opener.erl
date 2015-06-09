@@ -5,7 +5,9 @@
 
 -include("my-mnesia-records.hlr").
 
--export([init/2]).
+-export([init/2,
+         create_session/2
+        ]).
 
 
 -define(MAXAGE, 1*10).   % seconds
@@ -28,27 +30,28 @@ init(Req, Opts) ->
     Cookies = cowboy_req:parse_cookies(Req),
     Req2 = case lists:keyfind(<<"sessionid">>, 1, Cookies) of
                false ->
-                   create_user_and_session(Req);
+                   create_anonymous_user_and_session(Req);
                {_, SessionID} ->   % TODO: validate user input
                    {atomic, SessionList} = mnesia:transaction(fun() ->
                                                                   mnesia:read(ryctoic_session, SessionID)
                                                           end),
                    case SessionList of
                        [] ->   % TODO: handle incorrect session. It maybe a malformed sessionid, or an expiresd one which should have been removed already
-                           create_user_and_session(Req);
+                           create_anonymous_user_and_session(Req);
                        [Session] ->
                            {ryctoic_session, SessionID, SessionCSRF, UserID, Expires, Fuck} = Session,
                            T = unixtime(),
                            if T > Expires 
                               -> error_logger:info_msg("expired !!!! Session: ~p~n", [Session]),
-                                 create_user_and_session(Req);
-                              true ->  
+                                 create_anonymous_user_and_session(Req);
+                              true ->
+                                   {ok, MaxAge} = application:get_env(?MYAPP, maxage),
                                    TR =  mnesia:transaction(fun() ->
                                                                     mnesia:write(#ryctoic_session{
                                                                                     sessionid = SessionID,
                                                                                     sessioncsrf = SessionCSRF,
                                                                                     userid = UserID,
-                                                                                    expires = T + ?MAXAGE,
+                                                                                    expires = T + MaxAge,
                                                                                     fuck = Fuck
                                                                                    })
                                                             end),
@@ -64,18 +67,16 @@ init(Req, Opts) ->
 	{ok, Req3, Opts}.
 
 
-
-
-create_user_and_session(Req) ->
-    UserID = base64url:encode(rnd()),    % TODO: generate again if exists
+create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
     SessionID = base64url:encode(rnd()),
     SessionCSRF = base64url:encode(rnd()),
-    Expires = unixtime() + ?MAXAGE,
+    {ok, MaxAge} = application:get_env(?MYAPP, maxage),
+    Expires = unixtime() + MaxAge,
     Fuck = 0,
     TR =  mnesia:transaction(fun() ->
                                      mnesia:write(#ryctoic_user{
                                                      id = UserID,
-                                                     from = nowhere   % can be google, facebook, etc
+                                                     from = From
                                                     }),
                                      mnesia:write(#ryctoic_session{
                                                      sessionid = SessionID,
@@ -86,21 +87,55 @@ create_user_and_session(Req) ->
                                                     })
                              end),
     error_logger:info_msg("transaction: ~p~n", [TR]),
+    error_logger:info_msg("update_cookie: ~p~n", [SessionID]),
     Req2 = update_cookie(Req, SessionID),
     Req2.
 
+create_anonymous_user_and_session(Req) ->
+    UserID = base64url:encode(rnd()),    % TODO: generate again if exists
+    From = nowhere,   % can be google, facebook, etc
+    R = create_session(Req, #ryctoic_user{ id = UserID, from = From }),
+    R.
+
+%% create_anonymous_user_and_session(Req) ->
+%%     UserID = base64url:encode(rnd()),    % TODO: generate again if exists
+%%     SessionID = base64url:encode(rnd()),
+%%     SessionCSRF = base64url:encode(rnd()),
+%%     {ok, MaxAge} = application:get_env(?MYAPP, maxage),
+%%     Expires = unixtime() + MaxAge,
+%%     Fuck = 0,
+%%     TR =  mnesia:transaction(fun() ->
+%%                                      mnesia:write(#ryctoic_user{
+%%                                                      id = UserID,
+%%                                                      from = nowhere   % can be google, facebook, etc
+%%                                                     }),
+%%                                      mnesia:write(#ryctoic_session{
+%%                                                      sessionid = SessionID,
+%%                                                      sessioncsrf = SessionCSRF,
+%%                                                      userid = UserID,
+%%                                                      expires = Expires,
+%%                                                      fuck = Fuck
+%%                                                     })
+%%                              end),
+%%     error_logger:info_msg("transaction: ~p~n", [TR]),
+%%     Req2 = update_cookie(Req, SessionID),
+%%     Req2.
+
+
 
 update_cookie(Req, SessionID) ->
+    {ok, MaxAge} = application:get_env(?MYAPP, maxage),
     R = cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, [
-                                                                  {domain, "localhost.ryctoic.com"},
-                                                                  {max_age, ?MAXAGE},   % TODO: maybe add an expires cookie preference
-                                                                  {secure, true},
-                                                                  {http_only, true}
-                                                                 ], Req),
+                                                                {domain, "localhost.ryctoic.com"},
+                                                                {path, "/"},    % TODO: maybe restrict this, but i'm not sure right now
+                                                                {max_age, MaxAge},   % TODO: maybe add an expires cookie preference
+                                                                {secure, true},
+                                                                {http_only, true}
+                                                               ], Req),
     R.
 
 
 
 
 
- 
+

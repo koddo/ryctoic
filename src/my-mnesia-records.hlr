@@ -1,6 +1,6 @@
 %% TODO: why do I have to mnesia:delete_schema([node()]) to recreate it if I change this file?
 
-
+-define(MYAPP, hello_world).
 
 -record(ryctoic_session, {
           sessionid,
