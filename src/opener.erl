@@ -93,8 +93,7 @@ create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
 
 create_anonymous_user_and_session(Req) ->
     UserID = base64url:encode(rnd()),    % TODO: generate again if exists
-    From = nowhere,   % can be google, facebook, etc
-    R = create_session(Req, #ryctoic_user{ id = UserID, from = From }),
+    R = create_session(Req, #ryctoic_user{ id = { UserID, anonymous}, from = 0 }),
     R.
 
 %% create_anonymous_user_and_session(Req) ->

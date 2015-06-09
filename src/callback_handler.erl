@@ -77,7 +77,7 @@ to_html(Req, #state{ authm = M } = State) ->
     {ok, Body} = popup_dtl:render([{id, Id}, {email, Email}, {email_verified, EmailVerified}]),
 
     error_logger:info_msg("create_session: ~n", []),
-    Req2 = opener:create_session(Req, #ryctoic_user{ id = Id, from = google }),
+    Req2 = opener:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),
 
 
 	{Body, Req2, State}.
