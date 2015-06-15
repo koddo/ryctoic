@@ -42,7 +42,7 @@ notes and todos
 make inappbrowser ignore ssl errors for dev env
 --------------------------------------
 
-**HUGE SECURITY HOLE!**
+**=== HUGE SECURITY HOLE! ===**
 
 Please use this for debugging only, when you haven't buy a proper ssl cert yet!
 
