@@ -48,7 +48,11 @@ make inappbrowser ignore ssl errors for dev env
 
 **=== HUGE SECURITY HOLE! ===**
 
-Please use this for debugging only, when you haven't buy a proper ssl cert yet!
+Please use this for development and debugging only!
+
+NEVER USE THIS IN PRODUCTION!
+
+You have been warned.
 
 Clone the inappbrowser plugin: https://github.com/apache/cordova-plugin-inappbrowser
 Add these lines to org.apache.cordova.inappbrowser/src/android/InAppBrowser.java:
