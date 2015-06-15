@@ -37,7 +37,7 @@
         </div>
 
         <button onclick='opennn();'>log in</button>
-
+        <button onclick="window.open('https://www.google.com/', '_blank', 'location=yes');">fuck</button>
         <script type="text/javascript" src="cordova.js"></script>
         <script type='application/javascript' src='js/fastclick.min.js'></script>
         <script type="text/javascript" src="js/index.js"></script>
@@ -47,12 +47,19 @@
          // TODO: test this with windows tablet
          // TODO: maybe use cordova.file.applicationDirectory instead of getting the path from window.location.href
          function opennn() {
-             var popup = window.open('popup.html', '_blank', 'location=yes');
-             popup.addEventListener('loadstart', function(event) {
-                 popup.executeScript({ code: "openerUrl = '" + window.location.href + "';" });
-                 if (event.url.match("close")) {
-                     popup.close();
-                     alert(event.url);
+             var popup = window.open('https://localhost.ryctoic.com:8443/oauth2/google/callback', '_blank', 'location=yes');
+             popup.addEventListener('loadstop', function(event) {
+                 // popup.executeScript({ code: "openerUrl = '" + window.location.href + "';" });
+                 if (event.url.match("callback")) {
+                     popup.executeScript({ code: "mystr;" },
+                                         function( values ) {
+                                             alert( "asdf" );
+                                             alert( values[0] );
+                                         }
+                     );
+
+                     // popup.close();
+                     // alert(event.url);
                  }
              });
          }

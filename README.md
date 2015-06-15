@@ -35,3 +35,46 @@ notes and todos
  TODO: --icc=false to disallow any communication between containers other than by links
 
  TODO: review authentication code
+
+
+
+ 
+cordova inappbrowser ignore ssl errors
+--------------------------------------
+
+HUGE SECURITY HOLE!
+Please use this for debugging only, when you haven't buy a proper ssl cert yet!
+
+Clone the inappbrowser plugin: https://github.com/apache/cordova-plugin-inappbrowser
+Add these lines to org.apache.cordova.inappbrowser/src/android/InAppBrowser.java:
+
+```
+...
+// <--- this
+import android.webkit.SslErrorHandler;
+import android.net.http.SslError;
+...
+
+public class InAppBrowser extends CordovaPlugin {
+...
+    public class InAppBrowserClient extends WebViewClient {
+    ...
+        // <--- and this 
+        public void onReceivedSslError(WebView view,
+                                       SslErrorHandler handler, SslError error) {
+            Log.e("Error", "Received SSL error"+ error.toString());
+            handler.proceed();
+        }
+    }
+...
+```
+
+Then add this modified plugin to the cordova project:
+
+```
+$ cordova plugins add ~/tmp/org.apache.cordova.inappbrowser
+```
+
+If you want to modify it further, edit some files in tmp, remove and re-add the plugin.
+
+

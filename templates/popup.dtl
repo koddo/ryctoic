@@ -23,7 +23,7 @@
              window.close();
          }
 
-
+         // web only
          function closeThisPopupAndGoto(url) {
              var newWindow = window.open(url);
              if (window.focus) {
