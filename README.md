@@ -48,6 +48,10 @@ make inappbrowser ignore ssl errors for dev env
 
 **=== HUGE SECURITY HOLE! ===**
 
+**=== HUGE SECURITY HOLE! ===**
+
+**=== HUGE SECURITY HOLE! ===**
+
 Please use this for development and debugging only!
 
 NEVER USE THIS IN PRODUCTION!
