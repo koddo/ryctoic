@@ -10,7 +10,8 @@
           fuck
          }).
 
+
 -record(ryctoic_user, {     % observer didn't show a table named just user, so I added a prefix
-          id,
+          id,      % TODO: now this is a complex key: { <<"base64url">>, anonymous | google | facebook }, how fast does this work? Should we change this?
           from
          }).

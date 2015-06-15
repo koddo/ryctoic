@@ -15,10 +15,8 @@
 
 
         <script>
-         handler = function (id, email, email_verified) {
-             console.log(id);
-             console.log(email);
-             console.log(email_verified);
+         myhandler = function (mystr) {
+             console.log(mystr);
          }
 
          // TODO: check centered login popup in triple monitor set up

@@ -10,21 +10,21 @@
 
         <h1>you are logged in</h1>
         <p>continue to the app</p>
-        <button onclick='popup("/"); window.close();'>app</button>
+        <button onclick='closeThisPopupAndGoto("/"); window.close();'>app</button>
         <p>TODO: make this popup fancy -- user can see this if the opener is closed</p>
 
 
 
         <script>
+         var mystr = "{{ id }}, {{ email }}, {{ email_verified }}";
           
-
          if (window.opener && "" != window.opener.location) {
-             window.opener.handler("{{ id }}", "{{ email }}", "{{ email_verified }}");
+             window.opener.myhandler(mystr);
              window.close();
          }
 
 
-         function popup(url) {
+         function closeThisPopupAndGoto(url) {
              var newWindow = window.open(url);
              if (window.focus) {
                  newWindow.focus();

@@ -35,7 +35,29 @@
                 <p class="event received">Device is Ready</p>
             </div>
         </div>
+
+        <button onclick='opennn();'>log in</button>
+
         <script type="text/javascript" src="cordova.js"></script>
+        <script type='application/javascript' src='js/fastclick.min.js'></script>
         <script type="text/javascript" src="js/index.js"></script>
+
+
+        <script>
+         // TODO: test this with windows tablet
+         // TODO: maybe use cordova.file.applicationDirectory instead of getting the path from window.location.href
+         function opennn() {
+             var popup = window.open('popup.html', '_blank', 'location=yes');
+             popup.addEventListener('loadstart', function(event) {
+                 popup.executeScript({ code: "openerUrl = '" + window.location.href + "';" });
+                 if (event.url.match("close")) {
+                     popup.close();
+                     alert(event.url);
+                 }
+             });
+         }
+        </script>
+
+        
     </body>
 </html>

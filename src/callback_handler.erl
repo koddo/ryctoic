@@ -27,7 +27,10 @@ init(Req, [ PalWorkflow ] = _Opts) ->
 is_authorized(Req, #state{ authw = PalWorkflow } = State) ->
 	%% retrieving "code", "state" and "error" from Req when they exist
     %% Data looks like #{code => <<"...">>, ...}
-	Data =
+	
+    %% TODO: do nothing when already logged in
+
+    Data =
 		lists:foldl(
           fun({Key, Val}, M) ->
                   maps:put(binary_to_existing_atom(Key, utf8), Val, M)
@@ -70,13 +73,15 @@ to_html(Req, #state{ authm = M } = State) ->
     IdToken = maps:get(id_token, M),
     [_, PayloadBase64, _] = binary:split(IdToken, <<".">>, [global]),
     PayloadMap = jsx:decode(decode_paddingless_base64(PayloadBase64), [return_maps]),
-    %% TODO: maybe verify the jwt properly -- but google says this is an optional step if jwt is received through a secure channel
+    %% TODO: maybe verify the jwt properly -- but google says this is an optional step if jwt is received through a secure channel --- http://blog.differentpla.net/blog/2015/04/19/jwt-rs256-erlang/
     Id =             maps:get(<<"sub">>, PayloadMap),
     Email =          maps:get(<<"email">>, PayloadMap, <<"">>),   % TODO: can it absent?
     EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
     {ok, Body} = popup_dtl:render([{id, Id}, {email, Email}, {email_verified, EmailVerified}]),
 
     error_logger:info_msg("create_session: ~n", []),
+
+    %% TODO: should we allow relogin after we are logged in already? or maybe just do nothing when this happens?
     Req2 = opener:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),
 
 

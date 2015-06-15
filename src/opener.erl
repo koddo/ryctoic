@@ -36,7 +36,7 @@ init(Req, Opts) ->
                                                                   mnesia:read(ryctoic_session, SessionID)
                                                           end),
                    case SessionList of
-                       [] ->   % TODO: handle incorrect session. It maybe a malformed sessionid, or an expiresd one which should have been removed already
+                       [] ->   % TODO: handle incorrect session. It maybe a malformed sessionid, or an expiresd one which should have been removed already in the browser
                            create_anonymous_user_and_session(Req);
                        [Session] ->
                            {ryctoic_session, SessionID, SessionCSRF, UserID, Expires, Fuck} = Session,
@@ -67,6 +67,7 @@ init(Req, Opts) ->
 	{ok, Req3, Opts}.
 
 
+%% TODO: mark old session as used
 create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
     SessionID = base64url:encode(rnd()),
     SessionCSRF = base64url:encode(rnd()),
@@ -92,35 +93,9 @@ create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
     Req2.
 
 create_anonymous_user_and_session(Req) ->
-    UserID = base64url:encode(rnd()),    % TODO: generate again if exists
-    R = create_session(Req, #ryctoic_user{ id = { UserID, anonymous}, from = 0 }),
+    NewID = base64url:encode(rnd()),    % TODO: generate again if exists
+    R = create_session(Req, #ryctoic_user{ id = { NewID, anonymous}, from = 0 }),
     R.
-
-%% create_anonymous_user_and_session(Req) ->
-%%     UserID = base64url:encode(rnd()),    % TODO: generate again if exists
-%%     SessionID = base64url:encode(rnd()),
-%%     SessionCSRF = base64url:encode(rnd()),
-%%     {ok, MaxAge} = application:get_env(?MYAPP, maxage),
-%%     Expires = unixtime() + MaxAge,
-%%     Fuck = 0,
-%%     TR =  mnesia:transaction(fun() ->
-%%                                      mnesia:write(#ryctoic_user{
-%%                                                      id = UserID,
-%%                                                      from = nowhere   % can be google, facebook, etc
-%%                                                     }),
-%%                                      mnesia:write(#ryctoic_session{
-%%                                                      sessionid = SessionID,
-%%                                                      sessioncsrf = SessionCSRF,
-%%                                                      userid = UserID,
-%%                                                      expires = Expires,
-%%                                                      fuck = Fuck
-%%                                                     })
-%%                              end),
-%%     error_logger:info_msg("transaction: ~p~n", [TR]),
-%%     Req2 = update_cookie(Req, SessionID),
-%%     Req2.
-
-
 
 update_cookie(Req, SessionID) ->
     {ok, MaxAge} = application:get_env(?MYAPP, maxage),
