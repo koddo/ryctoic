@@ -13,6 +13,7 @@
         ]).
 
 -define(CONTENT_TYPE_JSON, {<<"content-type">>, <<"application/json">>}).
+-define(CONTENT_TYPE_HTML, {<<"content-type">>, <<"text/html">>}).
 
 -record(state, {
           authw :: pal:workflow(),
@@ -38,16 +39,9 @@ is_authorized(Req, #state{ authw = PalWorkflow } = State) ->
           #{},
           pt_kvlist:with([<<"code">>, <<"state">>, <<"error">>],
                          cowboy_req:parse_qs(Req))),
-
+    %% TODO: CRITICAL there is anti-csrf token in oauth2 called state --- generate it and check it --- is it a session csrf token we already have in mnesia?
+    %% Data2 = Data#{ state => <<"123">> },
 	case pal:authenticate(Data, PalWorkflow) of
-		{ok, M} ->
-            %% M looks like
-            %% #{access_token => <<"...">>,
-            %%   code => <<"...">>,
-            %%   expires_in => 3599,
-            %%   id_token => <<"...">>,
-            %%   token_type => <<"Bearer">>}
-            {true, Req, #state{ authw = PalWorkflow, authm = M}};
 		{stop, Resp} ->
             %% Resp looks like 
             %% {resp,
@@ -56,11 +50,35 @@ is_authorized(Req, #state{ authw = PalWorkflow } = State) ->
             %%    <<"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=...&redirect_uri=...&scope=openid+email">>}],
             %%  <<>>}
             %% so we basicaly immediately stop and redirect to the oauth2 provider
-            HandleResult = pal_http:reply(Resp, fun(Status, Headers, Body) ->
-                                                        cowboy_req:reply(Status, Headers, Body, Req)
-                                                end),
+            Resp2 = add_prompt_consent_param_to_resp(Resp),
+            HandleResult = pal_http:reply(Resp2, fun(Status, Headers, Body) ->
+                                                         cowboy_req:reply(Status, Headers, Body, Req)
+                                                 end),
+            {stop, HandleResult, State};
+		{ok, M} ->
+            %% M looks like
+            %% #{access_token => <<"...">>,
+            %%   code => <<"...">>,
+            %%   expires_in => 3599,
+            %%   id_token => <<"...">>,
+            %%   token_type => <<"Bearer">>}
+            {true, Req, #state{ authw = PalWorkflow, authm = M}};
+        {error, Reason} ->
+            %% Reason looks like {oauth2,#{error => access_denied}}
+            error_logger:info_msg("pal:authenticate got an error: ~p~n", [Reason]),
+            {ok, Body} = popup_error_dtl:render([{reason, Reason}]),
+            HandleResult = cowboy_req:reply(422, [?CONTENT_TYPE_HTML], Body, Req),
             {stop, HandleResult, State}
 	end.
+
+%% PAL is not flexible enough
+add_prompt_consent_param_to_resp(Resp) ->
+    {resp, 303, [{<<"location">>, Url}], <<>>} = Resp,
+    Param = <<"&prompt=consent">>,
+    Resp2 = {resp, 303, [{<<"location">>, <<Url/bitstring, Param/bitstring>>}], <<>>},
+    Resp2.
+      
+    
 
 content_types_provided(Req, State) ->
 	{[

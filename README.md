@@ -91,3 +91,4 @@ $ cordova plugins add ~/tmp/org.apache.cordova.inappbrowser
 If you want to modify it further, edit some files in tmp, remove and re-add the plugin.
 
 
+TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl errors won't go into production

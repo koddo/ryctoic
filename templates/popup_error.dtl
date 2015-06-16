@@ -8,18 +8,15 @@
     <body>
         <!-- This is a VERY bare bones version of a HTML5 template! -->
 
-        <h1>you are logged in</h1>
+        <h1>Not logged in</h1>
+        <p>reason: {{ reason }}</p>
         <p>continue to the app</p>
         <button onclick='closeThisPopupAndGoto("/");'>app</button>
-        <p>TODO: make this popup and popup_erro fancy -- user can see them if the opener is closed</p>
-        <p>TODO: maybe even make them empty --- after login in mobile the text here is shown for only a quater of second, which is not cool</p>
 
 
         <script>
-         loginData = "{{ id }}, {{ email }}, {{ email_verified }}";   // global for 
-          
+         // TODO: maybe pass reason to both web and mobile clients --- right now it's discarded
          if (window.opener && "" != window.opener.location) {
-             window.opener.loginHandler(loginData);
              window.close();
          }
 

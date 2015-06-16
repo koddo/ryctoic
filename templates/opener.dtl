@@ -15,8 +15,8 @@
 
 
         <script>
-         myhandler = function (mystr) {
-             console.log(mystr);
+         loginHandler = function (loginData) {
+             console.log(loginData);
          }
 
          // TODO: check centered login popup in triple monitor set up
