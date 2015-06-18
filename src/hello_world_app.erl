@@ -37,7 +37,6 @@ start(_Type, _Args) ->
                                        {attributes, record_info(fields, ryctoic_user)}
                                       ]),
 
-    PrivDir = code:priv_dir(?MYAPP),
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}},
                                              {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
@@ -45,12 +44,13 @@ start(_Type, _Args) ->
                                              {"/opener", opener, []},
                                              {"/websocket", ws_handler, []}
                                             ]}]),
-	{ok, _} = cowboy:start_https(https, 100, 
+    %% PrivDir = code:priv_dir(?MYAPP),
+	{ok, _} = cowboy:start_http(http, 100,    % was start_https(https, ...)
                                  [
-                                  {port, list_to_integer(env(https_port))},
-                                  {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
-                                  {certfile, PrivDir ++ "/ssl/server.crt"},
-                                  {keyfile, PrivDir ++ "/ssl/server.key"}
+                                  {port, list_to_integer(env(https_port))}
+                                  %% {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
+                                  %% {certfile, PrivDir ++ "/ssl/server.crt"},
+                                  %% {keyfile, PrivDir ++ "/ssl/server.key"}
                                  ], 
                                  [
                                   {env, [{dispatch, Dispatch}]} 
@@ -81,5 +81,13 @@ env(Param) ->
         Other ->
             Other
     end.
+
+
+
+
+
+
+
+
 
 
