@@ -67,7 +67,7 @@ is_authorized(Req, #state{ authw = PalWorkflow } = State) ->
             %% Reason looks like {oauth2,#{error => access_denied}}
             error_logger:info_msg("pal:authenticate got an error: ~p~n", [Reason]),
             {ok, Body} = popup_error_dtl:render([{reason, Reason}]),
-            HandleResult = cowboy_req:reply(422, [?CONTENT_TYPE_HTML], Body, Req),
+            HandleResult = cowboy_req:reply(422, [?CONTENT_TYPE_HTML], Body, Req),   % TODO: confirt 422 is the right error here
             {stop, HandleResult, State}
 	end.
 
