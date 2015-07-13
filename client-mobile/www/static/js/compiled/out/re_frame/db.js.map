@@ -1,0 +1,1 @@
+{"version":3,"file":"\/Users\/alex\/workspace.ryctoic\/client-mobile\/src\/..\/www\/static\/js\/compiled\/out\/re_frame\/db.js","sources":["db.cljs?rel=1435073925433"],"lineCount":7,"mappings":";AAAA;;;AASA,AAAMA,qBAAO,4BAAA,5BAACC","names":["re-frame.db\/app-db","reagent.core\/atom"]}
