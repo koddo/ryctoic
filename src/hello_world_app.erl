@@ -16,7 +16,7 @@ start(_Type, _Args) ->
     %% lager:set_loglevel(lager_file_backend, "console.log", debug),
     lager:info("==================================================", []),
     lager:info("node: ~p", [node()]),
-    lager:info("port: ~p", [env(https_port)]),
+    lager:info("port: ~p", [env(http_port)]),
     lager:info("cookie: ~p", [erlang:get_cookie()]),
 
     {ok, Conf} = file:consult(secrets_file()),
@@ -47,7 +47,7 @@ start(_Type, _Args) ->
     %% PrivDir = code:priv_dir(?MYAPP),
 	{ok, _} = cowboy:start_http(http, 100,    % was start_https(https, ...)
                                  [
-                                  {port, list_to_integer(env(https_port))}
+                                  {port, list_to_integer(env(http_port))}
                                   %% {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
                                   %% {certfile, PrivDir ++ "/ssl/server.crt"},
                                   %% {keyfile, PrivDir ++ "/ssl/server.key"}

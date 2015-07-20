@@ -1,6 +1,8 @@
 FROM debian:wheezy
+# FROM debian:jessie
 
-ENV ERLANG_VERSION 1:17.4
+# ENV ERLANG_VERSION 1:18.0
+ENV ERLANG_VERSION 1:17.5.3
 
 # dockerfile best practices recommends to run apt-get update && apt-get install in a single RUN: https://docs.docker.com/articles/dockerfile_best-practices/#the-dockerfile-instructions
 # and without ca-certificates it won't install erlang-solutions_1.0_all.deb in debian, but in ubuntu it is not required
