@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cljsjs</groupId>
+  <artifactId>react</artifactId>
+  <version>0.13.1-0</version>
+  <name>react</name>
+  <description>React.js packaged up with Google Closure externs</description>
+  <url>http://facebook.github.io/react/</url>
+  <licenses>
+    <license>
+      <url>http://opensource.org/licenses/BSD-3-Clause</url>
+      <name>BSD</name>
+      <comments/>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/cljsjs/packages</url>
+    <tag>0b21832f7e2cd44c57bfe42f97dfa1ae61831ea4</tag>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>adzerk</groupId>
+      <artifactId>bootlaces</artifactId>
+      <version>0.1.9</version>
+      <scope>test</scope>
+      <exclusions/>
+    </dependency>
+    <dependency>
+      <groupId>cljsjs</groupId>
+      <artifactId>boot-cljsjs</artifactId>
+      <version>0.4.7</version>
+      <scope>test</scope>
+      <exclusions/>
+    </dependency>
+  </dependencies>
+</project>

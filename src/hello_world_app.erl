@@ -39,10 +39,10 @@ start(_Type, _Args) ->
 
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}},
-                                             {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
-                                             {"/oauth2/google/callback", callback_handler, [PalWorkflow]},
-                                             {"/opener", opener, []},
-                                             {"/websocket", ws_handler, []}
+                                             {"/", handler_index, []},   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
+                                             {"/oauth2/google/callback", handler_oauth2_google_callback, [PalWorkflow]},
+                                             %% {"/opener", handler_opener, []},
+                                             {"/websocket", handler_ws, []}
                                             ]}]),
     %% PrivDir = code:priv_dir(?MYAPP),
 	{ok, _} = cowboy:start_http(http, 100,    % was start_https(https, ...)

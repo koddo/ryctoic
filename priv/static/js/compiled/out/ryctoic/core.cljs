@@ -10,12 +10,20 @@
                        (fn [state _]
                          (reagent.ratom/reaction (:current-page @state))))
 
+(re-frame/register-sub :log-in-info
+                       (fn [state _]
+                         (reagent.ratom/reaction (:log-in-info @state))))
+
 (defn current-page []
-  (let [cp (re-frame/subscribe [:current-page])]
+  (let [cp (re-frame/subscribe [:current-page])
+        ss (re-frame/subscribe [:log-in-info])]
     (println "current page " @cp)
     (if-not @cp
       [:div "initializing"]   ; never shown, because we render after :initialize and :router-event
-      (@cp))
+      [:div
+       [:p "asdf"]
+       [:p @ss]
+       (@cp)])
     ))
 
 (defn page-root []
@@ -25,7 +33,11 @@
     [:li [:a {:href "/about"} "about"]]
     [:li [:a {:href "/wont_be_found"} "wont_be_found"]]]
    [:p "fuck1"]
-   [:p "fuck2"]
+   [:input {
+            :type "button"
+            :value "log in"
+            :on-click #(js/somecode.popupCenter "/oauth2/google/callback" "" "500", "500")   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
+            }]
    ])
 
 (defn page-about []
@@ -47,6 +59,7 @@
                            (fn [_ v]
                              (let [state {
                                           :current-page nil   ; the router handles this, fail fast if not
+                                          :log-in-info "anon"
                                           :websocket-obj (new js/WebSocket "wss://echo.websocket.org")
                                           }]
                                (println ":initialize")
@@ -80,6 +93,15 @@
                              (println ":ws-onmessage " (.-data msg))
                              state))
 
+(defn ^:export dispatch-login [s]   ; called from popup
+  (re-frame/dispatch [:log-in s]))
+
+(re-frame/register-handler :log-in
+                           (fn [state [_ s]]
+                             (println "---- log-in handler: " s)
+                             (-> state
+                                 (assoc :log-in-info s))))
+
 ;; -----------------------------------------------
 
 (secretary/defroute "/" []
@@ -102,6 +124,10 @@
     (pushy/start! history))
   (re-frame/dispatch [:render])
   )
+
+
+
+
 
 
 

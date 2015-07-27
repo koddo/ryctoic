@@ -16,10 +16,8 @@
 
 
         <script>
-         loginData = "{{ id }}, {{ email }}, {{ email_verified }}";   // global for 
-          
          if (window.opener && "" != window.opener.location) {
-             window.opener.loginHandler(loginData);
+             window.opener.ryctoic.core.dispatch_login("{{ id }}, {{ email }}, {{ email_verified }}");
              window.close();
          }
 

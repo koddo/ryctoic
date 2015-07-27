@@ -3,6 +3,16 @@ Ryctoic
 
  TODO: readme, svg diagram of components
 
+vmware instead of boot2docker(virtualbox)
+-----------------------------------------
+there is a bug in virtualbox's shared filesystem
+you read garbage after writing to a file
+https://github.com/ninenines/cowboy/issues/812
+
+
+/etc/hosts
+------------
+add localhost.ryctoic.com (vmware ip) to /etc/hosts, because redirect uri must end with a public top-level domain (such as .com or .org)
 
 remote shell
 ------------
@@ -10,19 +20,19 @@ remote shell
 I'm using boot2docker, it's ip is 192.168.59.103.
 To access docker container directly via it's ip, which looks like 172.17.0.98, add this route:
 
-     $ sudo route -n add 172.17.0.0/16 192.168.59.103
+     mac$ sudo route -n add 172.17.0.0/16 192.168.59.103
 
 Test it:
 
-     $ docker run -it ubuntu bash
+     mac$ docker run -it ubuntu bash
      root@52eee3e2c7f6:/# hostname --ip-address
      root@52eee3e2c7f6:/# nc -l 7777
 
-     $ telnet _ip_from_ifconfig_above_ 7777
+     mac$ telnet _ip_from_ifconfig_above_ 7777
 
 Get a remote shell on a running container with erlang node:
 
-     $ erl -name foo@$(hostname) -setcookie secret -remsh ryctoic@172.17.0.58
+     mac$ erl -name foo@$(hostname) -setcookie secret -remsh ryctoic@172.17.0.58
      (ryctoic@172.17.0.58)1> error_logger:info_msg("test info messge~n", []).
 
      
@@ -93,3 +103,16 @@ If you want to modify it further, edit some files in tmp, remove and re-add the 
 
 
 TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl errors won't go into production
+
+
+
+docker dynamic links with skydns+skydock
+--------------------------------------
+in debian add "--dns 172.17.42.1" to DOCKER_OPTS in /etc/default/docker
+this is better that adding dns param to every container
+then start skydns:
+```
+$ docker-skydns/run.sh [stop]
+```
+
+

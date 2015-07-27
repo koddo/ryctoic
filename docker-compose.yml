@@ -1,38 +1,69 @@
-web:
-  build: .
+nginx:   # TODO: this image runs nginx as root, is this a security issue?
+    image: nginx
+    links:
+        - backend
+        - figwheel
+    ports:
+        - "8443:8443"
+    volumes:
+        - nginx.conf:/etc/nginx/nginx.conf:ro
+        - priv/ssl/server.crt:/etc/nginx/server.crt:ro
+        - priv/ssl/server.key:/etc/nginx/server.key:ro
+    
+        
+backend:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_backend
 
-  entrypoint: ryctoic/bin/entrypoint.sh
-  # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
+    working_dir: /home/theuser/ryctoic
+    entrypoint: bin/entrypoint.sh     # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
 
-  volumes:
-   - .:/home/theuser/ryctoic
-   - ../secrets:/home/theuser/secrets
+    volumes:
+        - .:/home/theuser/ryctoic
+        - ../secrets:/home/theuser/secrets
 
-  ports:
-   - "8080:8080"
+    # ports:
+    #     - "8080:8080"
 
-  # expose:
-  # we'll have to expose some ports if we need to interconnect erlang nodes 
-  #  - "4369:4369"
-  #  - "9101:9101"
-  #  - "9102:9102"
-  #  - "9103:9103"
-  #  - "9104:9104"
-  #  - "9105:9105"
-   
-  links:
-   - db
+    # expose:
+    # we'll have to expose some ports if we need to interconnect erlang nodes 
+    #  - "4369:4369"
+    #  - "9101:9101"
+    #  - "9102:9102"
+    #  - "9103:9103"
+    #  - "9104:9104"
+    #  - "9105:9105"
+
+    # links:
+    #     - db
+
+figwheel:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_figwheel
+
+    volumes:
+        - .:/home/theuser/ryctoic
+        # cache dependencies of lein figwheel to avoid downloading them on every run, this is gitignored
+        - ./client-web/lein-deps:/home/theuser/.m2/
+
+    working_dir: /home/theuser/ryctoic/client-web
+    command: lein figwheel
+    # command: while true ; do echo "doing nothing" && sleep 5 ; done
+
+    # stdin_open: true
+    # tty: true
 
 
 
-db:
-  image: "postgres:latest"
-  expose:
-   - "5432"
+    
+# db:
+#     image: "postgres:latest"
+#     expose:
+#         - "5432"
 
-  # environment:     # TODO: secure postgres
-  #  - POSTGRES_PASSWORD=mysecretpassword3
+#     # environment:     # TODO: secure postgres
+#     #  - POSTGRES_PASSWORD=mysecretpassword3
 
-  volumes:
-   - tmp:/mnt
-  
+#     volumes:
+#         - tmp:/mnt
+

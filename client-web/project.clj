@@ -74,8 +74,9 @@
                                    }}]}
   
   :figwheel {
-             :http-server-root "public" ;; default and assumes "resources" 
-             :server-port 3449 ;; default
+             ;; :http-server-root "public" ;; default and assumes "resources" 
+             ;; :server-port 3449 ;; default
+
              ;; :css-dirs ["resources/public/css"]
              :css-dirs ["../priv/static/js/css"]
 
@@ -97,8 +98,7 @@
              ;;
              ;; :open-file-command "myfile-opener"
 
-             ;; if you want to disable the REPL
-             ;; :repl false
+             :repl false
 
              ;; to configure a different figwheel logfile path
              ;; :server-logfile "tmp/logs/figwheel-logfile.log" 
