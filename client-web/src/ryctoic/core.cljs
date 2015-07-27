@@ -10,20 +10,24 @@
                        (fn [state _]
                          (reagent.ratom/reaction (:current-page @state))))
 
-(re-frame/register-sub :log-in-info
+(re-frame/register-sub :username
                        (fn [state _]
-                         (reagent.ratom/reaction (:log-in-info @state))))
+                         (reagent.ratom/reaction (:username @state))))
 
 (defn current-page []
-  (let [cp (re-frame/subscribe [:current-page])
-        ss (re-frame/subscribe [:log-in-info])]
-    (println "current page " @cp)
-    (if-not @cp
+  (let [current-page  (re-frame/subscribe [:current-page])
+        username      (re-frame/subscribe [:username])]
+    (println "current page " @current-page)
+    (if-not @current-page
       [:div "initializing"]   ; never shown, because we render after :initialize and :router-event
       [:div
-       [:p "asdf"]
-       [:p @ss]
-       (@cp)])
+       [:p @username]
+       [:input {
+                :type "button"
+                :value "log in"
+                :on-click #(js/somecode.popupCenter "/oauth2/google/callback" "" "500", "500")   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
+                }]
+       (@current-page)])
     ))
 
 (defn page-root []
@@ -32,12 +36,6 @@
    [:ul
     [:li [:a {:href "/about"} "about"]]
     [:li [:a {:href "/wont_be_found"} "wont_be_found"]]]
-   [:p "fuck1"]
-   [:input {
-            :type "button"
-            :value "log in"
-            :on-click #(js/somecode.popupCenter "/oauth2/google/callback" "" "500", "500")   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
-            }]
    ])
 
 (defn page-about []
@@ -59,7 +57,7 @@
                            (fn [_ v]
                              (let [state {
                                           :current-page nil   ; the router handles this, fail fast if not
-                                          :log-in-info "anon"
+                                          :username js/somecode.userinfo
                                           :websocket-obj (new js/WebSocket "wss://echo.websocket.org")
                                           }]
                                (println ":initialize")
@@ -100,7 +98,7 @@
                            (fn [state [_ s]]
                              (println "---- log-in handler: " s)
                              (-> state
-                                 (assoc :log-in-info s))))
+                                 (assoc :username s))))
 
 ;; -----------------------------------------------
 

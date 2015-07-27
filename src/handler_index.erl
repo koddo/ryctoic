@@ -19,7 +19,8 @@ init(Req, Opts) ->
     Req_cookies = case lists:keyfind(<<"sessionid">>, 1, Cookies) of
                       false ->
                           error_logger:info_msg("--- no sessionid cookie --- creating anonymous user and cookies~n", []),
-                          create_anonymous_user_and_session(Req);
+                          {R, UserID} = create_anonymous_user_and_session(Req),
+                          R;
                       {_, SessionID} ->   % TODO: validate user input
                           {atomic, SessionList} = mnesia:transaction(fun() ->
                                                                              mnesia:read(ryctoic_session, SessionID)
@@ -27,13 +28,15 @@ init(Req, Opts) ->
                           case SessionList of
                               [] ->   % TODO: handle incorrect session. It maybe a malformed sessionid, or an expired one which should have been removed already in the browser
                                   error_logger:info_msg("--- sessionid cookie is not in the db, the invalid SessionID: ~p --- creating anonymous user and cookies~n", [SessionID]),
-                                  create_anonymous_user_and_session(Req);
+                                  {R, UserID} = create_anonymous_user_and_session(Req),
+                                  R;
                               [Session] ->
                                   {ryctoic_session, SessionID, SessionCSRF, UserID, Expires, Fuck} = Session,
                                   T = unixtime(),
                                   if T > Expires 
                                      -> error_logger:info_msg("--- sessionid cookie is expired in the db, the whole Session: ~p --- creating anonymous user and cookies~n", [Session]),
-                                        create_anonymous_user_and_session(Req);
+                                        {R, UserID} = create_anonymous_user_and_session(Req),
+                                        R;
                                      true ->
                                           {ok, MaxAge} = application:get_env(?MYAPP, maxage),
                                           TR =  mnesia:transaction(fun() ->
@@ -50,7 +53,7 @@ init(Req, Opts) ->
                                   end
                           end
                   end,
-    {ok, Body} = index_dtl:render([{sessioncsrf, <<"123">>}, {somedata, <<"321">>}]),
+    {ok, Body} = index_dtl:render([{sessioncsrf, <<"123">>}, {userinfo, UserID}]),
 	Req_body = cowboy_req:reply(200, [{<<"content-type">>, <<"text/html">>}], Body, Req_cookies),
 	{ok, Req_body, Opts}.
 
@@ -83,8 +86,9 @@ create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
 
 create_anonymous_user_and_session(Req) ->
     NewID = base64url:encode(rnd()),    % TODO: generate again if exists
-    R = create_session(Req, #ryctoic_user{ id = { NewID, anonymous}, from = 0 }),
-    R.
+    UserID = { NewID, anonymous },
+    R = create_session(Req, #ryctoic_user{ id = UserID, from = 0 }),
+    {R, UserID}.
 
 update_cookie(Req, SessionID) ->
     {ok, MaxAge} = application:get_env(?MYAPP, maxage),

@@ -15,3 +15,11 @@
           id,      % TODO: now this is a complex key: { <<"base64url">>, anonymous | google | facebook }, how fast does this work? Should we change this?
           from
          }).
+
+
+
+%% email
+%% email_verified
+%% iat
+%% exp
+

@@ -1,4 +1,4 @@
-// TODO: rewrite the namespace and everything to es6
+// TODO: rename the namespace and rewrite everything to es6
 
 
 (function( somecode, undefined ) {

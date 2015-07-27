@@ -88,16 +88,23 @@ content_types_provided(Req, State) ->
 
 
 to_html(Req, #state{ authm = M } = State) ->
-    error_logger:info_msg("--- oauth2_google_callback~n", []),
+    error_logger:info_msg("--- oauth2_google_callback --- logged in~n", []),
+
 
     IdToken = maps:get(id_token, M),
     [_, PayloadBase64, _] = binary:split(IdToken, <<".">>, [global]),
     PayloadMap = jsx:decode(decode_paddingless_base64(PayloadBase64), [return_maps]),
     %% TODO: maybe verify the jwt properly -- but google says this is an optional step if jwt is received through a secure channel --- http://blog.differentpla.net/blog/2015/04/19/jwt-rs256-erlang/
     Id =             maps:get(<<"sub">>, PayloadMap),
-    Email =          maps:get(<<"email">>, PayloadMap, <<"">>),   % TODO: can it absent?
-    EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
-    {ok, Body} = popup_dtl:render([{id, Id}, {email, Email}, {email_verified, EmailVerified}]),
+    %% Email =          maps:get(<<"email">>, PayloadMap, <<"">>),   % TODO: can it absent?
+    %% EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
+    %% Iat =            maps:get(<<"iat">>, PayloadMap),
+    %% Exp =            maps:get(<<"exp">>, PayloadMap),
+    {ok, Body} = popup_dtl:render([
+                                   {id, {Id, google}} 
+                                   %% {email, Email}, 
+                                   %% {email_verified, EmailVerified}
+                                  ]),
 
     %% TODO: should we allow relogin after we are logged in already? or maybe just do nothing when this happens?
     Req2 = handler_index:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),

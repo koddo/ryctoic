@@ -26,7 +26,8 @@ start(_Type, _Args) ->
     lager:info("Conf: ~p", [Conf]),
     lager:info("PalOptions: ~p", [PalOptions]),
 
-
+    
+    mnesia:delete_schema([node()]),   % TODO: learn how to change schema
     mnesia:create_schema([node()]),
     mnesia:start(),
     mnesia:create_table(ryctoic_session, [

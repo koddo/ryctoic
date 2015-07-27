@@ -17,7 +17,7 @@
 
         <script>
          if (window.opener && "" != window.opener.location) {
-             window.opener.ryctoic.core.dispatch_login("{{ id }}, {{ email }}, {{ email_verified }}");
+             window.opener.ryctoic.core.dispatch_login('{{ id }}');
              window.close();
          }
 
