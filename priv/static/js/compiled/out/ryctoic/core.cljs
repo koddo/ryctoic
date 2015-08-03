@@ -4,6 +4,7 @@
               [re-frame.core :as re-frame]
               [secretary.core :as secretary]
               [pushy.core :as pushy]
+              [ajax.core :refer [GET POST]]
               ))
 
 (re-frame/register-sub :current-page
@@ -26,6 +27,16 @@
                 :type "button"
                 :value "log in"
                 :on-click #(js/somecode.popupCenter "/oauth2/google/callback" "" "500", "500")   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
+                }]
+       [:input {
+                :type "button"
+                :value "get request"
+                :on-click #(re-frame/dispatch [:btn-click--get-request])
+                }]
+       [:input {
+                :type "button"
+                :value "post request"
+                :on-click #(re-frame/dispatch [:btn-click--post-request])
                 }]
        (@current-page)])
     ))
@@ -54,13 +65,13 @@
 ;; -----------------------------------------------
 
 (re-frame/register-handler :initialize
+                           [re-frame.core/debug]
                            (fn [_ v]
                              (let [state {
                                           :current-page nil   ; the router handles this, fail fast if not
                                           :username js/somecode.userinfo
                                           :websocket-obj (new js/WebSocket "wss://echo.websocket.org")
                                           }]
-                               (println ":initialize")
                                (set! (.-onopen    (:websocket-obj state)) #(re-frame/dispatch [:ws-onopen]))
                                (set! (.-onmessage (:websocket-obj state)) #(re-frame/dispatch [:ws-onmessage %]))
                                state
@@ -68,37 +79,78 @@
                              ))
 
 (re-frame/register-handler :router-event
+                           [re-frame.core/debug]
                            (fn [state [_ new-current-page]]
                              (println ":router-event " new-current-page)
                              (-> state
                                  (assoc :current-page new-current-page))))
 
 (re-frame/register-handler :render
+                           [re-frame.core/debug]
                            (fn [state _]
-                             (println ":render ")
                              (reagent/render-component [current-page]
                                                        (js/document.getElementById "app"))
                              state))
 
 (re-frame/register-handler :ws-onopen
+                           [re-frame.core/debug]
                            (fn [state _]
-                             (println ":ws-onopen ")
                              (.send (:websocket-obj state) "hello websocket")
                              state))
 
 (re-frame/register-handler :ws-onmessage
+                           [re-frame.core/debug]
                            (fn [state [_ msg]]
-                             (println ":ws-onmessage " (.-data msg))
+                             (println "--- the msg: " (.-data msg))
                              state))
 
 (defn ^:export dispatch-login [s]   ; called from popup
   (re-frame/dispatch [:log-in s]))
 
 (re-frame/register-handler :log-in
+                           [re-frame.core/debug]
                            (fn [state [_ s]]
-                             (println "---- log-in handler: " s)
                              (-> state
                                  (assoc :username s))))
+
+
+(re-frame/register-handler :btn-click--get-request
+                           [re-frame.core/debug]
+                           (fn [state _]
+                             (ajax.core/GET "https://localhost.ryctoic.com:8443/mongo"
+                              {:handler       #(re-frame/dispatch [:btn-click--get-request--handle %1])   ;; further dispatch !!
+                               :error-handler #(re-frame/dispatch [:btn-click--get-request--error %1])})
+                             state))
+(re-frame/register-handler :btn-click--get-request--handle
+                           [re-frame.core/debug]
+                           (fn [state [_ response]]
+                             (println "--- the response " (get response "field2"))
+                             state))
+(re-frame/register-handler :btn-click--get-request--error
+                           [re-frame.core/debug]
+                           (fn [state [_ response]]
+                             state))
+
+
+
+(re-frame/register-handler :btn-click--post-request
+                           [re-frame.core/debug]
+                           (fn [state _]
+                             (ajax.core/POST "https://localhost.ryctoic.com:8443/mongo"
+                              {:params {:fuck "you"}
+                               :format :json
+                               :handler       #(re-frame/dispatch [:btn-click--post-request--handle %1])   ;; further dispatch !!
+                               :error-handler #(re-frame/dispatch [:btn-click--post-request--error %1])})
+                             state))
+(re-frame/register-handler :btn-click--post-request--handle
+                           [re-frame.core/debug]
+                           (fn [state [_ response]]
+                             state))
+(re-frame/register-handler :btn-click--post-request--error
+                           [re-frame.core/debug]
+                           (fn [state [_ response]]
+                             state))
+
 
 ;; -----------------------------------------------
 

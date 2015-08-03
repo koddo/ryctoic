@@ -34,9 +34,10 @@ backend:
     #  - "9104:9104"
     #  - "9105:9105"
 
-    # links:
-    #     - db
+    links:
+        - db
 
+        
 figwheel:
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_figwheel
@@ -54,16 +55,32 @@ figwheel:
     # tty: true
 
 
-
     
-# db:
-#     image: "postgres:latest"
-#     expose:
-#         - "5432"
+db:
+    image: postgres
+    expose:
+        - "5432"
 
-#     # environment:     # TODO: secure postgres
-#     #  - POSTGRES_PASSWORD=mysecretpassword3
+    environment:     # TODO: CRITICAL secure postgres docker
+        - POSTGRES_PASSWORD=mysecretpassword3
+        - POSTGRES_USER=root
+        # - PGDATA:whatever
 
-#     volumes:
-#         - tmp:/mnt
+    volumes_from:
+        - data
 
+
+        
+data:
+    image: postgres
+    dockerfile: Dockerfile_postgres
+    volumes:
+        - /var/lib/postgresql
+        - tmp:/mnt
+    entrypoint: true
+
+
+
+mongo:
+    image: mongo
+    

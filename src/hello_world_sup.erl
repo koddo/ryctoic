@@ -21,5 +21,5 @@ start_link() ->
 
 -spec init([]) -> {'ok',{{'one_for_one',10,10},[]}}.
 init([]) ->
-	Procs = [],
-	{ok, {{one_for_one, 10, 10}, Procs}}.
+    Procs = [],
+    {ok, {{one_for_one, 10, 10}, Procs}}.

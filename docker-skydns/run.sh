@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-CMD=$1
+CMD="$@"
 PRJNAME=sky
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 DOCKER_COMPOSE_FILE=$SCRIPT_PATH/docker-compose.yml
 
 
-if [[ $CMD == "stop" ]]; then
-    docker-compose --file $DOCKER_COMPOSE_FILE --project-name $PRJNAME stop
+if [[ ! -z $CMD ]]; then
+    docker-compose --file $DOCKER_COMPOSE_FILE --project-name $PRJNAME $CMD
 else
     docker-compose --file $DOCKER_COMPOSE_FILE --project-name $PRJNAME up -d # --no-recreate
 fi

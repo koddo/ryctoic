@@ -27,20 +27,27 @@ start(_Type, _Args) ->
     lager:info("PalOptions: ~p", [PalOptions]),
 
     
-    mnesia:delete_schema([node()]),   % TODO: learn how to change schema
-    mnesia:create_schema([node()]),
+    %% mnesia:create_schema([node()]),  % for ram-only tables I don't have to create schema, right? http://www.erlang.org/doc/man/mnesia.html#create_schema-1
     mnesia:start(),
     mnesia:create_table(ryctoic_session, [
                                           {attributes, record_info(fields, ryctoic_session)}
+                                          %% ,{ram_copies, [node()]}   % this is the default value
                                           %% ,{disc_copies, [node()]}
                                          ]),
     mnesia:create_table(ryctoic_user, [
                                        {attributes, record_info(fields, ryctoic_user)}
                                       ]),
 
+    RM = emongo:add_pool(emongo, "mongo.dev.skydock", 27017, "test", 1),
+    error_logger:info_msg("--- emongo: ~p~n", [RM]),
+    
+
+
 	Dispatch = cowboy_router:compile([{'_', [
                                              {"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}},
                                              {"/", handler_index, []},   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
+                                             {"/sql", handler_sql, []},
+                                             {"/mongo", handler_mongo, []},
                                              {"/oauth2/google/callback", handler_oauth2_google_callback, [PalWorkflow]},
                                              %% {"/opener", handler_opener, []},
                                              {"/websocket", handler_ws, []}

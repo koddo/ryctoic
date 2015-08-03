@@ -48,7 +48,7 @@ init(Req, Opts) ->
                                                                                            fuck = Fuck
                                                                                           })
                                                                    end),
-                                          error_logger:info_msg("--- sessionid cookie is valid, the whole Session: ~p --- updating expire datetime in db and updating cookie, transaction: ~p~n", [Session, TR]),
+                                          error_logger:info_msg("--- valid sessionid cookie, the whole Session: ~p --- updating expire datetime in db and updating cookie, transaction: ~p~n", [Session, TR]),
                                           update_cookie(Req, SessionID)
                                   end
                           end

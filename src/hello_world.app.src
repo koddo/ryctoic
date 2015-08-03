@@ -2,7 +2,7 @@
 
 {application, 
  
- hello_world, % !!! when you change this, change also the MYAPP constant !!!
+ hello_world, % !!! when you change this, also change the MYAPP constant !!!
                                                 % TODO: how to use MYAPP constant from header file here?
 
  [
@@ -21,10 +21,25 @@
                   pal_google_oauth2,
                   erlydtl,
                   mnesia,
-                  base64url
+                  base64url,
+                  emongo,
+                  jsx,
+                  poolboy
                                                 % jiffy
                                                 % sockjs
                  ]},
   {mod, {hello_world_app, []}},
-  {env, [{http_port, "8080"}, {maxage, 3600}]}
+  {env, [
+         {http_port, "8080"}, 
+         {maxage, 3600},
+         {pools, [{pool1, [
+                           {size, 10},
+                           {max_overflow, 20}
+                          ], [
+                              {hostname, "127.0.0.1"},
+                              {database, "db1"},
+                              {username, "db1"},
+                              {password, "abc123"}
+                             ]}]}
+        ]}
  ]}.

@@ -23,6 +23,7 @@
                  [secretary "1.2.3"]   ; router
                  [kibu/pushy "0.3.0"]  ; html5 history for the router
 
+                 [cljs-ajax "0.3.14"]
                  
                  ;; [ring-server "0.4.0"]
                  ;; [ring "1.3.2"]
