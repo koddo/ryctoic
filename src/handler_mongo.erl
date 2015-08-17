@@ -37,7 +37,7 @@ hello_to_json(Req, State) ->
 	{Body, Req, State}.
 
 hello_from_json(Req, State) ->
-    error_logger:info_msg("--- handler_mongo post~n", []),
+    error_logger:info_msg("--- handler_mongo post~p~n", [Req]),
     
     %% Req2 = cowboy_req:set_resp_body(<<"{1:2}">>, Req),
 	{true, Req, State}.

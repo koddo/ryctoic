@@ -1,0 +1,17 @@
+# -*- mode: restclient; -*-
+
+#
+GET https://localhost.ryctoic.com:8443/mongo
+Accept: application/json
+
+
+
+
+#
+POST https://localhost.ryctoic.com:8443/mongo
+Accept: application/json
+Content-Type: application/json; charset=UTF-8
+
+{"fuck":"you"}
+
+

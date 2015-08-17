@@ -1,5 +1,8 @@
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
-    image: nginx
+    # image: nginx
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_nginx
+
     links:
         - backend
         - figwheel
