@@ -48,9 +48,12 @@ start(_Type, _Args) ->
                                              {"/", handler_index, []},   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
                                              {"/sql", handler_sql, []},
                                              {"/mongo", handler_mongo, []},
+                                             {"/form", handler_form, []},
                                              {"/oauth2/google/callback", handler_oauth2_google_callback, [PalWorkflow]},
                                              %% {"/opener", handler_opener, []},
                                              {"/websocket", handler_ws, []}
+
+                                             %% {"/v0", handler_}
                                             ]}]),
     %% PrivDir = code:priv_dir(?MYAPP),
 	{ok, _} = cowboy:start_http(http, 100,    % was start_https(https, ...)

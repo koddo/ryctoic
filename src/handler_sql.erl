@@ -14,9 +14,10 @@ init(Req, Opts) ->
 content_types_provided(Req, State) ->
 	{[
       %% {<<"text/html">>, hello_to_html},
+      {<<"text/plain">>, hello_to_text}
+      
       %% {<<"application/json">>, hello_to_json},
 
-      {<<"text/plain">>, hello_to_text}
      ], Req, State}.
 
 
@@ -33,6 +34,4 @@ hello_to_text(Req, State) ->
     error_logger:info_msg("--- SQL Rows: ~p~n", [Rows]),
 
 	{<<"REST Hello World as text!">>, Req, State}.
-
-
 
