@@ -1,8 +1,72 @@
-// Compiled by ClojureScript 0.0-3165 {}
+// Compiled by ClojureScript 1.7.48 {}
 goog.provide('re_frame.handlers');
 goog.require('cljs.core');
-goog.require('re_frame.utils');
 goog.require('re_frame.db');
+goog.require('re_frame.utils');
+/**
+ * See https://github.com/Day8/re-frame/issues/65
+ */
+re_frame.handlers.report_middleware_factories = (function re_frame$handlers$report_middleware_factories(v){
+var name_of_factory = (function re_frame$handlers$report_middleware_factories_$_name_of_factory(f){
+return new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null,f));
+});
+var factory_names_in = (function re_frame$handlers$report_middleware_factories_$_factory_names_in(v__$1){
+return cljs.core.remove.call(null,cljs.core.nil_QMARK_,cljs.core.map.call(null,name_of_factory,v__$1));
+});
+var seq__25043 = cljs.core.seq.call(null,factory_names_in.call(null,v));
+var chunk__25044 = null;
+var count__25045 = (0);
+var i__25046 = (0);
+while(true){
+if((i__25046 < count__25045)){
+var name = cljs.core._nth.call(null,chunk__25044,i__25046);
+re_frame.utils.error.call(null,"re-frame: \"",name,"\" used incorrectly. Must be used like this \"(",name," ...)\", whereas you just used \"",name,"\".");
+
+var G__25047 = seq__25043;
+var G__25048 = chunk__25044;
+var G__25049 = count__25045;
+var G__25050 = (i__25046 + (1));
+seq__25043 = G__25047;
+chunk__25044 = G__25048;
+count__25045 = G__25049;
+i__25046 = G__25050;
+continue;
+} else {
+var temp__4425__auto__ = cljs.core.seq.call(null,seq__25043);
+if(temp__4425__auto__){
+var seq__25043__$1 = temp__4425__auto__;
+if(cljs.core.chunked_seq_QMARK_.call(null,seq__25043__$1)){
+var c__17256__auto__ = cljs.core.chunk_first.call(null,seq__25043__$1);
+var G__25051 = cljs.core.chunk_rest.call(null,seq__25043__$1);
+var G__25052 = c__17256__auto__;
+var G__25053 = cljs.core.count.call(null,c__17256__auto__);
+var G__25054 = (0);
+seq__25043 = G__25051;
+chunk__25044 = G__25052;
+count__25045 = G__25053;
+i__25046 = G__25054;
+continue;
+} else {
+var name = cljs.core.first.call(null,seq__25043__$1);
+re_frame.utils.error.call(null,"re-frame: \"",name,"\" used incorrectly. Must be used like this \"(",name," ...)\", whereas you just used \"",name,"\".");
+
+var G__25055 = cljs.core.next.call(null,seq__25043__$1);
+var G__25056 = null;
+var G__25057 = (0);
+var G__25058 = (0);
+seq__25043 = G__25055;
+chunk__25044 = G__25056;
+count__25045 = G__25057;
+i__25046 = G__25058;
+continue;
+}
+} else {
+return null;
+}
+}
+break;
+}
+});
 /**
  * Given a vector of middleware, filter out any nils, and use "comp" to compose the elements.
  * v can have nested vectors, and will be flattened before "comp" is applied.
@@ -17,6 +81,7 @@ return v;
 } else {
 if(cljs.core.vector_QMARK_.call(null,v)){
 var v__$1 = cljs.core.remove.call(null,cljs.core.nil_QMARK_,cljs.core.flatten.call(null,v));
+var _ = re_frame.handlers.report_middleware_factories.call(null,v__$1);
 if(cljs.core.empty_QMARK_.call(null,v__$1)){
 return cljs.core.identity;
 } else {
@@ -48,9 +113,39 @@ return cljs.core.reset_BANG_.call(null,re_frame.handlers.id__GT_fn,cljs.core.Per
  * This is low level and it is expected that "re-frame.core/register-handler" would
  * generally be used.
  */
-re_frame.handlers.register_base = (function() {
-var re_frame$handlers$register_base = null;
-var re_frame$handlers$register_base__2 = (function (event_id,handler_fn){
+re_frame.handlers.register_base = (function re_frame$handlers$register_base(){
+var args25059 = [];
+var len__17511__auto___25062 = arguments.length;
+var i__17512__auto___25063 = (0);
+while(true){
+if((i__17512__auto___25063 < len__17511__auto___25062)){
+args25059.push((arguments[i__17512__auto___25063]));
+
+var G__25064 = (i__17512__auto___25063 + (1));
+i__17512__auto___25063 = G__25064;
+continue;
+} else {
+}
+break;
+}
+
+var G__25061 = args25059.length;
+switch (G__25061) {
+case 2:
+return re_frame.handlers.register_base.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
+
+break;
+case 3:
+return re_frame.handlers.register_base.cljs$core$IFn$_invoke$arity$3((arguments[(0)]),(arguments[(1)]),(arguments[(2)]));
+
+break;
+default:
+throw (new Error([cljs.core.str("Invalid arity: "),cljs.core.str(args25059.length)].join('')));
+
+}
+});
+
+re_frame.handlers.register_base.cljs$core$IFn$_invoke$arity$2 = (function (event_id,handler_fn){
 if(cljs.core.contains_QMARK_.call(null,cljs.core.deref.call(null,re_frame.handlers.id__GT_fn),event_id)){
 re_frame.utils.warn.call(null,"re-frame: overwriting an event-handler for: ",event_id);
 } else {
@@ -58,25 +153,14 @@ re_frame.utils.warn.call(null,"re-frame: overwriting an event-handler for: ",eve
 
 return cljs.core.swap_BANG_.call(null,re_frame.handlers.id__GT_fn,cljs.core.assoc,event_id,handler_fn);
 });
-var re_frame$handlers$register_base__3 = (function (event_id,middleware,handler_fn){
+
+re_frame.handlers.register_base.cljs$core$IFn$_invoke$arity$3 = (function (event_id,middleware,handler_fn){
 var mid_ware = re_frame.handlers.comp_middleware.call(null,middleware);
 var midware_PLUS_hfn = mid_ware.call(null,handler_fn);
-return re_frame$handlers$register_base.call(null,event_id,midware_PLUS_hfn);
+return re_frame.handlers.register_base.call(null,event_id,midware_PLUS_hfn);
 });
-re_frame$handlers$register_base = function(event_id,middleware,handler_fn){
-switch(arguments.length){
-case 2:
-return re_frame$handlers$register_base__2.call(this,event_id,middleware);
-case 3:
-return re_frame$handlers$register_base__3.call(this,event_id,middleware,handler_fn);
-}
-throw(new Error('Invalid arity: ' + arguments.length));
-};
-re_frame$handlers$register_base.cljs$core$IFn$_invoke$arity$2 = re_frame$handlers$register_base__2;
-re_frame$handlers$register_base.cljs$core$IFn$_invoke$arity$3 = re_frame$handlers$register_base__3;
-return re_frame$handlers$register_base;
-})()
-;
+
+re_frame.handlers.register_base.cljs$lang$maxFixedArity = 3;
 re_frame.handlers._STAR_handling_STAR_ = null;
 /**
  * Given an event vector, look up the handler, then call it.
@@ -96,13 +180,13 @@ return re_frame.utils.error.call(null,"re-frame: no event handler registered for
 if(cljs.core.truth_(re_frame.handlers._STAR_handling_STAR_)){
 return re_frame.utils.error.call(null,"re-frame: while handling \"",re_frame.handlers._STAR_handling_STAR_,"\"  dispatch-sync was called for \"",event_v,"\". You can't call dispatch-sync in an event handler.");
 } else {
-var _STAR_handling_STAR_12144 = re_frame.handlers._STAR_handling_STAR_;
+var _STAR_handling_STAR_25067 = re_frame.handlers._STAR_handling_STAR_;
 re_frame.handlers._STAR_handling_STAR_ = event_v;
 
 try{return handler_fn.call(null,re_frame.db.app_db,event_v);
-}finally {re_frame.handlers._STAR_handling_STAR_ = _STAR_handling_STAR_12144;
+}finally {re_frame.handlers._STAR_handling_STAR_ = _STAR_handling_STAR_25067;
 }}
 }
 });
 
-//# sourceMappingURL=handlers.js.map?rel=1434562322519
+//# sourceMappingURL=handlers.js.map?rel=1440504631768

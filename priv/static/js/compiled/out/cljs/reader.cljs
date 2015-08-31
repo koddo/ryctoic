@@ -443,9 +443,10 @@ nil if the end of stream has been reached")
 (defn read-string
   "Reads one object from the string s"
   [s]
+  (when-not (string? s)
+    (throw (js/Error. "Cannot read from non-string object.")))
   (let [r (push-back-reader s)]
     (read r false nil false)))
-
 
 ;; read instances
 
@@ -561,7 +562,7 @@ nil if the end of stream has been reached")
 (defn ^:private read-uuid
   [uuid]
   (if (string? uuid)
-    (UUID. uuid)
+    (cljs.core/uuid uuid)
     (reader-error nil "UUID literal expects a string as its representation.")))
 
 (def ^:dynamic *tag-table*

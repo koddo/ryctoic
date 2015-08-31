@@ -1,18 +1,18 @@
-// Compiled by ClojureScript 0.0-3165 {}
+// Compiled by ClojureScript 1.7.48 {}
 goog.provide('re_frame.subs');
 goog.require('cljs.core');
-goog.require('re_frame.utils');
-goog.require('re_frame.db');
 goog.require('reagent.ratom');
+goog.require('re_frame.db');
+goog.require('re_frame.utils');
 re_frame.subs.key__GT_fn = cljs.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);
 /**
- * Unregister all subscription handlers
+ * Unregisters all subscription handlers
  */
 re_frame.subs.clear_handlers_BANG_ = (function re_frame$subs$clear_handlers_BANG_(){
 return cljs.core.reset_BANG_.call(null,re_frame.subs.key__GT_fn,cljs.core.PersistentArrayMap.EMPTY);
 });
 /**
- * register a hander function for an id
+ * Registers a handler function for an id
  */
 re_frame.subs.register = (function re_frame$subs$register(key_v,handler_fn){
 if(cljs.core.contains_QMARK_.call(null,cljs.core.deref.call(null,re_frame.subs.key__GT_fn),key_v)){
@@ -23,7 +23,7 @@ re_frame.utils.warn.call(null,"re-frame: overwriting subscription-handler for: "
 return cljs.core.swap_BANG_.call(null,re_frame.subs.key__GT_fn,cljs.core.assoc,key_v,handler_fn);
 });
 /**
- * returns a reagent/reaction which observes a part of app-db
+ * Returns a reagent/reaction which observes a part of app-db
  */
 re_frame.subs.subscribe = (function re_frame$subs$subscribe(v){
 var key_v = re_frame.utils.first_in_vector.call(null,v);
@@ -35,4 +35,4 @@ return handler_fn.call(null,re_frame.db.app_db,v);
 }
 });
 
-//# sourceMappingURL=subs.js.map?rel=1434562322426
+//# sourceMappingURL=subs.js.map?rel=1440504631525

@@ -90,12 +90,15 @@
                 (on-click
                  (fn [e]
                    (when-let [el (recur-href (-> e .-target))]
-                     (let [href (.-href el)
-                           path (->> href (.parse Uri) .getPath)]
+                     (let [uri (.parse Uri (.-href el))
+                           path (.getPath uri)
+                           query (.getQuery uri)
+                           ;; Include query string in token
+                           next-token (if (empty? query) path (str path "?" query))]
                        ;; Proceed if `identity-fn` returns a value and
                        ;; the user did not trigger the event via one of the
                        ;; keys we should bypass
-                       (when (and (identity-fn (match-fn path))
+                       (when (and (identity-fn (match-fn next-token))
                                   ;; Bypass dispatch if any of these keys
                                   (not (.-altKey e))
                                   (not (.-ctrlKey e))
@@ -107,8 +110,8 @@
                                   (not= 1 (.-button e)))
                          ;; Dispatch!
                          (if-let [title (-> el .-title)]
-                           (set-token! this path title)
-                           (set-token! this path))
+                           (set-token! this next-token title)
+                           (set-token! this next-token))
                          (.preventDefault e)))))))
          nil)
 
@@ -121,3 +124,12 @@
   "Returns whether Html5History is supported"
   ([] (supported? js/window))
   ([window] (.isSupported Html5History window)))
+
+;; Backwards compatibility with pushy <= 0.2.2
+(defn push-state!
+  ([dispatch-fn match-fn]
+   (push-state! dispatch-fn match-fn identity))
+  ([dispatch-fn match-fn identity-fn]
+   (let [h (pushy dispatch-fn match-fn identity-fn)]
+     (start! h)
+     h)))

@@ -10,7 +10,8 @@
    ;; to support repl doc
    [cljs.repl])
   (:require-macros
-   [cljs.core.async.macros :refer [go go-loop]]))
+   [cljs.core.async.macros :refer [go go-loop]])
+  (:import [goog]))
 
 ;; exception formatting
 
@@ -106,8 +107,8 @@
   (take-while #(not (re-matches #".*eval_javascript_STAR__STAR_.*" %))
               (string/split-lines stack-str)))
 
-(let [base-path (string/replace (.-basePath js/goog) #"(.*)goog/" #(str %2))]
-  (defn eval-javascript** [code result-handler]
+(let [base-path (utils/base-url-path)]
+  (defn eval-javascript** [code opts result-handler]
     (try
       (binding [*print-fn* (fn [& args]
                              (-> args
@@ -116,7 +117,7 @@
                 *print-newline* false]
         (result-handler
          {:status :success,
-          :value (str (js* "eval(~{code})"))}))
+          :value (str (utils/eval-helper code opts))}))
       (catch js/Error e
         (result-handler
          {:status :exception
@@ -140,7 +141,7 @@
   (fn [[{:keys [msg-name] :as msg} & _]]
     (when (= :repl-eval msg-name)
       (ensure-cljs-user)
-      (eval-javascript** (:code msg)
+      (eval-javascript** (:code msg) opts
        (fn [res]
          (socket/send! {:figwheel-event "callback"
                         :callback-name (:callback-name  msg)
@@ -223,11 +224,7 @@
 ;; you can listen to this event easily like so:
 ;; document.body.addEventListener("figwheel.js-reload", function (e) { console.log(e.detail);} );
 
-(defn default-on-jsload [url]
-  (when (and (utils/html-env?) (js*  "(\"CustomEvent\" in window)"))
-    (.dispatchEvent (.-body js/document)
-                    (js/CustomEvent. "figwheel.js-reload"
-                                     (js-obj "detail" url)))))
+(def default-on-jsload identity)
 
 (defn default-on-compile-fail [{:keys [formatted-exception exception-data cause] :as ed}]
   (utils/log :debug "Figwheel: Compile Exception")
@@ -274,6 +271,8 @@
    :heads-up-display true
 
    :load-unchanged-files true
+
+   :eval-fn false
    })
 
 (defn handle-deprecated-jsload-callback [config]
@@ -289,7 +288,7 @@
               :comp-fail-warning-plugin compile-fail-warning-plugin
               :css-reloader-plugin      css-reloader-plugin
               :repl-plugin      repl-plugin}
-       base  (if (not (.. js/goog inHtmlDocument_)) ;; we are in node?
+       base  (if (not (utils/html-env?)) ;; we are in an html environment?
                (select-keys base [#_:enforce-project-plugin
                                   :file-reloader-plugin
                                   :comp-fail-warning-plugin
@@ -312,21 +311,22 @@
 
 (defn start
   ([opts]
-   (defonce __figwheel-start-once__
-     (js/setTimeout
-      #(let [plugins' (:plugins opts) ;; plugins replaces all plugins
-             merge-plugins (:merge-plugins opts) ;; merges plugins
-             system-options (handle-deprecated-jsload-callback
-                             (merge config-defaults
-                                    (dissoc opts :plugins :merge-plugins)))
-             plugins  (if plugins'
-                        plugins'
-                        (merge (base-plugins system-options) merge-plugins))]
-         (set! utils/*print-debug* (:debug opts))
-         #_(enable-repl-print!)         
-         (add-plugins plugins system-options)
-         (reloading/patch-goog-base)
-         (socket/open system-options)))))
+   (when-not (nil? goog/dependencies_)
+       (defonce __figwheel-start-once__
+         (js/setTimeout
+          #(let [plugins' (:plugins opts) ;; plugins replaces all plugins
+                 merge-plugins (:merge-plugins opts) ;; merges plugins
+                 system-options (-> config-defaults
+                                  (merge (dissoc opts :plugins :merge-plugins))
+                                  (handle-deprecated-jsload-callback))
+                 plugins  (if plugins'
+                            plugins'
+                            (merge (base-plugins system-options) merge-plugins))]
+             (set! utils/*print-debug* (:debug opts))
+             #_(enable-repl-print!)         
+             (add-plugins plugins system-options)
+             (reloading/patch-goog-base)
+             (socket/open system-options))))))
   ([] (start {})))
 
 ;; legacy interface

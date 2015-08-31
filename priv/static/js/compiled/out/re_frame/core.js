@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 0.0-3165 {}
+// Compiled by ClojureScript 1.7.48 {}
 goog.provide('re_frame.core');
 goog.require('cljs.core');
 goog.require('re_frame.subs');
@@ -22,27 +22,46 @@ re_frame.core.after = re_frame.middleware.after;
 re_frame.core.log_ex = re_frame.middleware.log_ex;
 re_frame.core.on_changes = re_frame.middleware.on_changes;
 re_frame.core.set_loggers_BANG_ = re_frame.utils.set_loggers_BANG_;
-re_frame.core.register_handler = (function() {
-var re_frame$core$register_handler = null;
-var re_frame$core$register_handler__2 = (function (id,handler){
+re_frame.core.register_handler = (function re_frame$core$register_handler(){
+var args24915 = [];
+var len__17511__auto___24918 = arguments.length;
+var i__17512__auto___24919 = (0);
+while(true){
+if((i__17512__auto___24919 < len__17511__auto___24918)){
+args24915.push((arguments[i__17512__auto___24919]));
+
+var G__24920 = (i__17512__auto___24919 + (1));
+i__17512__auto___24919 = G__24920;
+continue;
+} else {
+}
+break;
+}
+
+var G__24917 = args24915.length;
+switch (G__24917) {
+case 2:
+return re_frame.core.register_handler.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
+
+break;
+case 3:
+return re_frame.core.register_handler.cljs$core$IFn$_invoke$arity$3((arguments[(0)]),(arguments[(1)]),(arguments[(2)]));
+
+break;
+default:
+throw (new Error([cljs.core.str("Invalid arity: "),cljs.core.str(args24915.length)].join('')));
+
+}
+});
+
+re_frame.core.register_handler.cljs$core$IFn$_invoke$arity$2 = (function (id,handler){
 return re_frame.handlers.register_base.call(null,id,re_frame.core.pure,handler);
 });
-var re_frame$core$register_handler__3 = (function (id,middleware,handler){
+
+re_frame.core.register_handler.cljs$core$IFn$_invoke$arity$3 = (function (id,middleware,handler){
 return re_frame.handlers.register_base.call(null,id,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.pure,middleware], null),handler);
 });
-re_frame$core$register_handler = function(id,middleware,handler){
-switch(arguments.length){
-case 2:
-return re_frame$core$register_handler__2.call(this,id,middleware);
-case 3:
-return re_frame$core$register_handler__3.call(this,id,middleware,handler);
-}
-throw(new Error('Invalid arity: ' + arguments.length));
-};
-re_frame$core$register_handler.cljs$core$IFn$_invoke$arity$2 = re_frame$core$register_handler__2;
-re_frame$core$register_handler.cljs$core$IFn$_invoke$arity$3 = re_frame$core$register_handler__3;
-return re_frame$core$register_handler;
-})()
-;
 
-//# sourceMappingURL=core.js.map?rel=1434562321190
+re_frame.core.register_handler.cljs$lang$maxFixedArity = 3;
+
+//# sourceMappingURL=core.js.map?rel=1440504630153

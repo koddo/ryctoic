@@ -1,9 +1,19 @@
+dnsdock:
+    image: tonistiigi/dnsdock
+    command: -domain skydock -environment dev
+    ports:
+        - 172.17.42.1:53:53/udp
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    
+
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
     # image: nginx
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_nginx
 
     links:
+        - dnsdock
         - backend
         - figwheel
     ports:

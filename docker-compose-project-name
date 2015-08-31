@@ -1,0 +1,7 @@
+ryctoic
+
+# only the first line is read from this file
+
+# right now docker-compose.yml doesn't have project-name parameter
+# a quick and dirty workaround
+# https://github.com/docker/compose/issues/45#issuecomment-134931179

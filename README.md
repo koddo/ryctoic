@@ -106,13 +106,12 @@ TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl error
 
 
 
-docker dynamic links with skydns+skydock
+docker dynamic links with dnsdock
 --------------------------------------
-in debian add "--dns 172.17.42.1" to DOCKER_OPTS in /etc/default/docker
+I tried skydns+skydock, but this pair didn't survive my laptop's sleep.
+
+in debian add "--dns 172.17.42.1 --bip=172.17.42.1/24" to DOCKER_OPTS in /etc/default/docker
 this is better that adding dns param to every container
-then start skydns:
-```
-$ docker-skydns/run.sh [stop]
-```
+
 
 

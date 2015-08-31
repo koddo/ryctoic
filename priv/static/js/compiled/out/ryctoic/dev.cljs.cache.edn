@@ -1,2 +1,2 @@
-;; Analyzed by ClojureScript 0.0-3165
-{:cljs.analyzer/constants {:order [:websocket-url :on-jsload :render], :seen #{:on-jsload :render :websocket-url}}, :imports nil, :requires {fw figwheel.client, figwheel.client figwheel.client, re-frame re-frame.core, re-frame.core re-frame.core, ryctoic.core ryctoic.core, ryctoic ryctoic.core}, :uses nil, :require-macros nil, :use-macros nil, :excludes #{}, :doc nil, :name ryctoic.dev}
+;; Analyzed by ClojureScript 1.7.48
+{:name ryctoic.dev, :doc nil, :excludes #{}, :use-macros nil, :require-macros nil, :uses nil, :requires {ryctoic ryctoic.core, ryctoic.core ryctoic.core, re-frame re-frame.core, re-frame.core re-frame.core, fw figwheel.client, figwheel.client figwheel.client}, :imports nil, :cljs.analyzer/constants {:seen #{:on-jsload :render :websocket-url}, :order [:websocket-url :on-jsload :render]}}

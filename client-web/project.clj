@@ -6,22 +6,24 @@
   ;;           :url "http://www.eclipse.org/legal/epl-v10.html"
   ;;           :distribution :repo}
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-3165"]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.48"]  ;; TODO: :scope "provided"? :classifier :aot?
+                 ;; [org.clojure/clojure "1.6.0"]
+                 ;; [org.clojure/clojurescript "0.0-3165"]
                  ;; [org.clojure/clojurescript "0.0-3196" :scope "provided"]
-                 ;; [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
 
-                 [figwheel "0.2.7"]
+                 [figwheel "0.3.7"]
 
-                 [cljsjs/react "0.13.1-0"]
+                 [cljsjs/react "0.13.3-0"]
                  [reagent "0.5.0"]
                  ;; [reagent-utils "0.1.4"]   ; for cookies
                  ;; [reagent-forms "0.5.0"]
 
-                 [re-frame "0.4.0"]
+                 [re-frame "0.4.1"]
 
                  [secretary "1.2.3"]   ; router
-                 [kibu/pushy "0.3.0"]  ; html5 history for the router
+                 [kibu/pushy "0.3.2"]  ; html5 history for the router
 
                  [cljs-ajax "0.3.14"]
                  
@@ -35,8 +37,8 @@
                  ;; [environ "1.0.0"]
                  ]
   
-  :plugins [[lein-cljsbuild "1.0.5"]
-            [lein-figwheel "0.2.7"]
+  :plugins [[lein-cljsbuild "1.1.0"]
+            [lein-figwheel "0.3.7"]
             ]
   :hooks [leiningen.cljsbuild]
   
@@ -81,25 +83,15 @@
              ;; :css-dirs ["resources/public/css"]
              :css-dirs ["../priv/static/js/css"]
 
-             ;; Start an nREPL server into the running figwheel process
-             ;; :nrepl-port 7888
-
-             ;; Server Ring Handler (optional)
-             ;; if you want to embed a ring handler into the figwheel http-kit
-             ;; server, this is for simple ring servers, if this
-             ;; doesn't work for you just run your own server :)
-             ;; :ring-handler hello_world.server/handler
-
-             ;; To be able to open files in your editor from the heads up display
-             ;; you will need to put a script on your path.
-             ;; that script will have to take a file path and a line number
-             ;; ie. in  ~/bin/myfile-opener
-             ;; #! /bin/sh
-             ;; emacsclient -n +$2 $1
-             ;;
-             ;; :open-file-command "myfile-opener"
-
+             
              :repl false
+             ;; but!
+             :nrepl-port 7888
+
+             
+             ;; sadly, this won't work since my figwheel is inside a docker container, can't access my emacsclient from inside of it
+             :open-file-command "../bin/figwheel-file-opener.sh"
+
 
              ;; to configure a different figwheel logfile path
              ;; :server-logfile "tmp/logs/figwheel-logfile.log" 

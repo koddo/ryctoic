@@ -8,6 +8,9 @@
 -export([start/2]).
 -export([stop/1]).
 
+-export([router_live_update/0]).
+
+
 %% API.
 
 -spec start(_,_) -> {'ok',pid()}.
@@ -18,14 +21,6 @@ start(_Type, _Args) ->
     lager:info("node: ~p", [node()]),
     lager:info("port: ~p", [env(http_port)]),
     lager:info("cookie: ~p", [erlang:get_cookie()]),
-
-    {ok, Conf} = file:consult(secrets_file()),
-    {_, PalOptions} = lists:keyfind(google_oauth, 1, Conf),
-    PalWorkflow = pal:new(pal_google_oauth2_authcode, PalOptions),
-
-    lager:info("Conf: ~p", [Conf]),
-    lager:info("PalOptions: ~p", [PalOptions]),
-
     
     %% mnesia:create_schema([node()]),  % for ram-only tables I don't have to create schema, right? http://www.erlang.org/doc/man/mnesia.html#create_schema-1
     mnesia:start(),
@@ -43,30 +38,18 @@ start(_Type, _Args) ->
     
 
 
-	Dispatch = cowboy_router:compile([{'_', [
-                                             {"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}},
-                                             {"/", handler_index, []},   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}},
-                                             {"/sql", handler_sql, []},
-                                             {"/mongo", handler_mongo, []},
-                                             {"/form", handler_form, []},
-                                             {"/oauth2/google/callback", handler_oauth2_google_callback, [PalWorkflow]},
-                                             %% {"/opener", handler_opener, []},
-                                             {"/websocket", handler_ws, []}
-
-                                             %% {"/v0", handler_}
-                                            ]}]),
     %% PrivDir = code:priv_dir(?MYAPP),
-	{ok, _} = cowboy:start_http(http, 100,    % was start_https(https, ...)
-                                 [
-                                  {port, list_to_integer(env(http_port))}
-                                  %% {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
-                                  %% {certfile, PrivDir ++ "/ssl/server.crt"},
-                                  %% {keyfile, PrivDir ++ "/ssl/server.key"}
-                                 ], 
-                                 [
-                                  {env, [{dispatch, Dispatch}]} 
-                                  %% ,{max_keepalive, 100}
-                                 ]),
+	{ok, _} = cowboy:start_http(my_http_listener, 100,
+                                [
+                                 {port, list_to_integer(env(http_port))}
+                                 %% {cacertfile, PrivDir ++ "/ssl/cowboy-ca.crt"},   % TODO: move certs out and add path to secrets file
+                                 %% {certfile, PrivDir ++ "/ssl/server.crt"},
+                                 %% {keyfile, PrivDir ++ "/ssl/server.key"}
+                                ], 
+                                [
+                                 {env, [{dispatch, dispatch()}]} 
+                                 %% ,{max_keepalive, 100}
+                                ]),
 	hello_world_sup:start_link().
 
 -spec stop(_) -> 'ok'.
@@ -95,10 +78,31 @@ env(Param) ->
 
 
 
+palworkflow() ->
+    {ok, Conf} = file:consult(secrets_file()),
+    {_, PalOptions} = lists:keyfind(google_oauth, 1, Conf),
+
+    error_logger:info_msg("Conf: ~p~n", [Conf]),
+    error_logger:info_msg("PalOptions: ~p~n", [PalOptions]),
+
+    PalWorkflow = pal:new(pal_google_oauth2_authcode, PalOptions),
+    PalWorkflow.
+
+dispatch() ->
+    cowboy_router:compile([{'_', [{"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
+                                  ,{"/", handler_index, []}   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}}
+                                  ,{"/sql", handler_sql, []}
+                                  ,{"/mongo", handler_mongo, []}
+                                  ,{"/form", handler_form, []}
+                                  ,{"/oauth2/google/callback", handler_oauth2_google_callback, [palworkflow()]}
+                                  %% ,{"/opener", handler_opener, []}
+                                  ,{"/websocket", handler_ws, []}
+
+                                  ,{"/api/v0/[:asdf]", handler_api_entrypoint, []}
+                                 ]}]).
 
 
 
-
-
-
-
+%% http://ninenines.eu/docs/en/cowboy/HEAD/guide/routing/#live_update
+router_live_update() ->
+    cowboy:set_env(my_http_listener, dispatch, dispatch()).

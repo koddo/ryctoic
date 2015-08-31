@@ -8,9 +8,20 @@
    [clojure.set :refer [difference]]
    [cljs.core.async :refer [put! chan <! map< close! timeout alts!] :as async])
   (:require-macros
-   [cljs.core.async.macros :refer [go go-loop]]))
+   [cljs.core.async.macros :refer [go go-loop]])
+  (:import [goog]))
 
 (declare reload-file* resolve-ns)
+
+;; you can listen to this event easily like so:
+;; document.body.addEventListener("figwheel.js-reload", function (e) {console.log(e.detail);} );
+(defn on-jsload-custom-event [url]
+  (utils/dispatch-custom-event "figwheel.js-reload" url))
+
+;; you can listen to this event easily like so:
+;; document.body.addEventListener("figwheel.before-js-reload", function (e) { console.log(e.detail);} );
+(defn before-jsload-custom-event [files]
+  (utils/dispatch-custom-event "figwheel.before-js-reload" files))
 
 (defn all? [pred coll]
   (reduce #(and %1 %2) true (map pred coll)))
@@ -37,27 +48,28 @@
 
 (defn resolve-ns [ns]
   (dev-assert (string? ns))
-  (str (string/replace (.-basePath js/goog) #"(.*)goog/" #(str %2))
+  (str (utils/base-url-path)
        (ns-to-js-file ns)))
 
 ;; still don't know how I feel about this
 (defn patch-goog-base []
-  (set! (.-isProvided_ js/goog) (fn [x] false))
+  (set! goog/isProvided (fn [x] false))
   (when (or (nil? *loaded-libs*) (empty? *loaded-libs*))
     (set! *loaded-libs*
-          (let [gntp (.. js/goog -dependencies_ -nameToPath)]
+          (let [gntp (.. goog/dependencies_
+                         -nameToPath)]
             (into #{}
                   (filter
                    (fn [name]
-                     (aget (.. js/goog -dependencies_ -visited) (aget gntp name)))
+                     (aget (.. goog/dependencies_ -visited) (aget gntp name)))
                    (js-keys gntp))))))
-  (set! (.-require js/goog)
+  (set! goog/require
         (fn [name reload]           
           (when (or (not (contains? *loaded-libs* name)) reload)
             (set! *loaded-libs* (conj (or *loaded-libs* #{}) name))
             (reload-file* (resolve-ns name)))))
-  (set! (.-provide js/goog) (.-exportPath_ js/goog))
-  (set! (.-CLOSURE_IMPORT_SCRIPT (.-global js/goog)) reload-file*))
+  (set! goog/provide goog/exportPath_)
+  (set! (.-CLOSURE_IMPORT_SCRIPT goog/global) reload-file*))
 
 (defmulti resolve-url :type)
 
@@ -120,7 +132,7 @@
            (or
             (not (contains? meta-data :file-changed-on-disk))
             (:file-changed-on-disk meta-data)))
-      #_(.isProvided_ js/goog (name namespace))))))
+      #_(goog/isProvided_ (name namespace))))))
 
 (defn js-reload [{:keys [request-url namespace] :as file-msg} callback]
   (dev-assert (namespace-file-map? file-msg))
@@ -161,12 +173,12 @@
 (defn add-request-urls [opts files]
   (map (partial add-request-url opts) files))
 
-(defn eval-body [{:keys [eval-body file]}]
+(defn eval-body [{:keys [eval-body file]} opts]
   (when (and eval-body (string? eval-body))
     (let [code eval-body]
       (try
         (utils/debug-prn (str "Evaling file " file))
-        (js* "eval(~{code})")
+        (utils/eval-helper code opts)
         (catch :default e
           (utils/log :error (str "Unable to evaluate " file)))))))
 
@@ -174,6 +186,7 @@
                        {:keys [files] :as msg}]
   (go
     (before-jsload files)
+    (before-jsload-custom-event files)
     ;; evaluate the eval bodies first
     ;; for now this is only for updating dependencies
     ;; we are not handling removals
@@ -181,7 +194,7 @@
     (let [eval-bodies (filter #(:eval-body %) files)]
       (when (not-empty eval-bodies)
         (doseq [eval-body-file eval-bodies]
-          (eval-body eval-body-file))))
+          (eval-body eval-body-file opts))))
     
     (let [all-files (filter #(and (:namespace %)
                                   (not (:eval-body %)))
@@ -200,7 +213,9 @@
                                   (if namespace
                                     (ns-to-js-file namespace)
                                     file)) res)))
-        (js/setTimeout #(apply on-jsload [res]) 10))
+        (js/setTimeout #(do
+                          (on-jsload-custom-event res)
+                          (apply on-jsload [res])) 10))
       (when (not-empty files-not-loaded)
         (utils/log :debug "Figwheel: NOT loading these files ")
         (let [{:keys [figwheel-no-load file-changed-on-disk not-required]}

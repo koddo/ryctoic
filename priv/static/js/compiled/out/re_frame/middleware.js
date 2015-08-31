@@ -1,10 +1,10 @@
-// Compiled by ClojureScript 0.0-3165 {}
+// Compiled by ClojureScript 1.7.48 {}
 goog.provide('re_frame.middleware');
 goog.require('cljs.core');
-goog.require('clojure.data');
-goog.require('re_frame.utils');
-goog.require('re_frame.undo');
 goog.require('reagent.ratom');
+goog.require('re_frame.undo');
+goog.require('re_frame.utils');
+goog.require('clojure.data');
 /**
  * Acts as an adaptor, allowing handlers to be writen as pure functions.
  * The re-frame router passes the `app-db` atom as the first parameter to any handler.
@@ -18,28 +18,7 @@ goog.require('reagent.ratom');
  */
 re_frame.middleware.pure = (function re_frame$middleware$pure(handler){
 return (function re_frame$middleware$pure_$_pure_handler(app_db,event_vec){
-if(!((function (){var G__12058 = app_db;
-if(G__12058){
-var bit__4823__auto__ = null;
-if(cljs.core.truth_((function (){var or__4149__auto__ = bit__4823__auto__;
-if(cljs.core.truth_(or__4149__auto__)){
-return or__4149__auto__;
-} else {
-return G__12058.reagent$ratom$IReactiveAtom$;
-}
-})())){
-return true;
-} else {
-if((!G__12058.cljs$lang$protocol_mask$partition$)){
-return cljs.core.native_satisfies_QMARK_.call(null,reagent.ratom.IReactiveAtom,G__12058);
-} else {
-return false;
-}
-}
-} else {
-return cljs.core.native_satisfies_QMARK_.call(null,reagent.ratom.IReactiveAtom,G__12058);
-}
-})())){
+if(!(((!((app_db == null)))?(((false) || (app_db.reagent$ratom$IReactiveAtom$))?true:(((!app_db.cljs$lang$protocol_mask$partition$))?cljs.core.native_satisfies_QMARK_.call(null,reagent.ratom.IReactiveAtom,app_db):false)):cljs.core.native_satisfies_QMARK_.call(null,reagent.ratom.IReactiveAtom,app_db)))){
 if(cljs.core.map_QMARK_.call(null,app_db)){
 re_frame.utils.warn.call(null,"re-frame: Looks like \"pure\" is in the middleware pipeline twice. Ignoring.");
 } else {
@@ -74,10 +53,10 @@ return null;
  */
 re_frame.middleware.log_ex = (function re_frame$middleware$log_ex(handler){
 return (function re_frame$middleware$log_ex_$_log_ex_handler(db,v){
-re_frame.utils.warn.call(null,"re-frame: use of \"log-ex\" is deprecated. You don't need it any more. Chrome seems to now produce good stack traces.");
+re_frame.utils.warn.call(null,"re-frame: use of \"log-ex\" is deprecated. You don't need it any more IF YOU ARE USING CHROME 44. Chrome now seems to now produce good stack traces.");
 
 try{return handler.call(null,db,v);
-}catch (e12062){var e = e12062;
+}catch (e24931){var e = e24931;
 console.error(e.stack);
 
 throw e;
@@ -129,40 +108,38 @@ return handler.call(null,db,cljs.core.vec.call(null,cljs.core.rest.call(null,v))
  * (path [:some :path] :to :here)
  * (path [:some :path] [:to] :here)
  * 
- * @param {...*} var_args
  */
-re_frame.middleware.path = (function() { 
+re_frame.middleware.path = cljs.core.with_meta((function() { 
 var re_frame$middleware$path__delegate = function (args){
 var path__$1 = cljs.core.flatten.call(null,args);
 var _ = ((cljs.core.empty_QMARK_.call(null,path__$1))?re_frame.utils.error.call(null,"re-frame: \"path\" middleware given no params."):null);
-var ___$1 = ((cljs.core.fn_QMARK_.call(null,cljs.core.first.call(null,args)))?re_frame.utils.error.call(null,"re-frame: you've used \"path\" incorrectly. It is a middleare factory and must be called like this \"(path something)\", whereas you just supplied \"path\"."):null);
-return ((function (path__$1,_,___$1){
+return ((function (path__$1,_){
 return (function re_frame$middleware$path_$_path_middleware(handler){
-return ((function (path__$1,_,___$1){
+return ((function (path__$1,_){
 return (function re_frame$middleware$path_$_path_middleware_$_path_handler(db,v){
 return cljs.core.assoc_in.call(null,db,path__$1,handler.call(null,cljs.core.get_in.call(null,db,path__$1),v));
 });
-;})(path__$1,_,___$1))
+;})(path__$1,_))
 });
-;})(path__$1,_,___$1))
+;})(path__$1,_))
 };
 var re_frame$middleware$path = function (var_args){
 var args = null;
 if (arguments.length > 0) {
-var G__12063__i = 0, G__12063__a = new Array(arguments.length -  0);
-while (G__12063__i < G__12063__a.length) {G__12063__a[G__12063__i] = arguments[G__12063__i + 0]; ++G__12063__i;}
-  args = new cljs.core.IndexedSeq(G__12063__a,0);
+var G__24932__i = 0, G__24932__a = new Array(arguments.length -  0);
+while (G__24932__i < G__24932__a.length) {G__24932__a[G__24932__i] = arguments[G__24932__i + 0]; ++G__24932__i;}
+  args = new cljs.core.IndexedSeq(G__24932__a,0);
 } 
 return re_frame$middleware$path__delegate.call(this,args);};
 re_frame$middleware$path.cljs$lang$maxFixedArity = 0;
-re_frame$middleware$path.cljs$lang$applyTo = (function (arglist__12064){
-var args = cljs.core.seq(arglist__12064);
+re_frame$middleware$path.cljs$lang$applyTo = (function (arglist__24933){
+var args = cljs.core.seq(arglist__24933);
 return re_frame$middleware$path__delegate(args);
 });
 re_frame$middleware$path.cljs$core$IFn$_invoke$arity$variadic = re_frame$middleware$path__delegate;
 return re_frame$middleware$path;
 })()
-;
+,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462),"path"], null));
 /**
  * A Middleware factory which stores an undo checkpoint.
  * "explanation" can be either a string or a function. If it is a
@@ -170,7 +147,7 @@ return re_frame$middleware$path;
  * "explanation" can be nil. in which case "" is recorded.
  * 
  */
-re_frame.middleware.undoable = (function re_frame$middleware$undoable(explanation){
+re_frame.middleware.undoable = cljs.core.with_meta((function re_frame$middleware$undoable(explanation){
 return (function re_frame$middleware$undoable_$_undoable_middleware(handler){
 return (function re_frame$middleware$undoable_$_undoable_middleware_$_undoable_handler(db,event_vec){
 var explanation__$1 = ((cljs.core.fn_QMARK_.call(null,explanation))?explanation.call(null,db,event_vec):((typeof explanation === 'string')?explanation:(((explanation == null))?"":re_frame.utils.error.call(null,"re-frame: \"undoable\" middleware given a bad parameter. Got: ",explanation)
@@ -180,7 +157,7 @@ re_frame.undo.store_now_BANG_.call(null,explanation__$1);
 return handler.call(null,db,event_vec);
 });
 });
-});
+}),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462),"undoable"], null));
 /**
  * Middleware factory which runs a given function "f" in the after position.
  * "f" is (db v) -> db
@@ -200,13 +177,13 @@ return handler.call(null,db,event_vec);
  * By applying "f" in middleware, we keep the handlers simple and yet we
  * ensure this important step is not missed.
  */
-re_frame.middleware.enrich = (function re_frame$middleware$enrich(f){
+re_frame.middleware.enrich = cljs.core.with_meta((function re_frame$middleware$enrich(f){
 return (function re_frame$middleware$enrich_$_enrich_middleware(handler){
 return (function re_frame$middleware$enrich_$_enrich_middleware_$_enrich_handler(db,v){
 return f.call(null,handler.call(null,db,v),v);
 });
 });
-});
+}),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462),"enrich"], null));
 /**
  * Middleware factory which runs a function "f" in the "after handler"
  * position presumably for side effects.
@@ -215,7 +192,7 @@ return f.call(null,handler.call(null,db,v),v);
  * In effect, "f" is meant to sideeffect. It gets no chance to change db. See "enrich"
  * (if you need that.)
  */
-re_frame.middleware.after = (function re_frame$middleware$after(f){
+re_frame.middleware.after = cljs.core.with_meta((function re_frame$middleware$after(f){
 return (function re_frame$middleware$after_$_after_middleware(handler){
 return (function re_frame$middleware$after_$_after_middleware_$_after_handler(db,v){
 var new_db = handler.call(null,db,v);
@@ -224,7 +201,7 @@ f.call(null,new_db,v);
 return new_db;
 });
 });
-});
+}),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462),"after"], null));
 /**
  * Middleware factory which acts a bit like "reaction"  (but it flows into db , rather than out)
  * It observes N  inputs (paths into db) and if any of them change (as a result of the
@@ -245,21 +222,20 @@ return new_db;
  * - call 'f' with the values extracted from [:a] [:b]
  * - assoc the return value from 'f' into the path  [:c]
  * 
- * @param {...*} var_args
  */
-re_frame.middleware.on_changes = (function() { 
+re_frame.middleware.on_changes = cljs.core.with_meta((function() { 
 var re_frame$middleware$on_changes__delegate = function (f,out_path,in_paths){
 return (function re_frame$middleware$on_changes_$_on_changed_middleware(handler){
 return (function re_frame$middleware$on_changes_$_on_changed_middleware_$_on_changed_handler(db,v){
 var new_db = handler.call(null,db,v);
 var new_ins = cljs.core.map.call(null,((function (new_db){
-return (function (p1__12065_SHARP_){
-return cljs.core.get_in.call(null,new_db,p1__12065_SHARP_);
+return (function (p1__24934_SHARP_){
+return cljs.core.get_in.call(null,new_db,p1__24934_SHARP_);
 });})(new_db))
 ,in_paths);
 var old_ins = cljs.core.map.call(null,((function (new_db,new_ins){
-return (function (p1__12066_SHARP_){
-return cljs.core.get_in.call(null,db,p1__12066_SHARP_);
+return (function (p1__24935_SHARP_){
+return cljs.core.get_in.call(null,db,p1__24935_SHARP_);
 });})(new_db,new_ins))
 ,in_paths);
 var changed_ins_QMARK_ = cljs.core.some.call(null,cljs.core.false_QMARK_,cljs.core.map.call(null,cljs.core.identical_QMARK_,new_ins,old_ins));
@@ -274,22 +250,22 @@ return new_db;
 var re_frame$middleware$on_changes = function (f,out_path,var_args){
 var in_paths = null;
 if (arguments.length > 2) {
-var G__12067__i = 0, G__12067__a = new Array(arguments.length -  2);
-while (G__12067__i < G__12067__a.length) {G__12067__a[G__12067__i] = arguments[G__12067__i + 2]; ++G__12067__i;}
-  in_paths = new cljs.core.IndexedSeq(G__12067__a,0);
+var G__24936__i = 0, G__24936__a = new Array(arguments.length -  2);
+while (G__24936__i < G__24936__a.length) {G__24936__a[G__24936__i] = arguments[G__24936__i + 2]; ++G__24936__i;}
+  in_paths = new cljs.core.IndexedSeq(G__24936__a,0);
 } 
 return re_frame$middleware$on_changes__delegate.call(this,f,out_path,in_paths);};
 re_frame$middleware$on_changes.cljs$lang$maxFixedArity = 2;
-re_frame$middleware$on_changes.cljs$lang$applyTo = (function (arglist__12068){
-var f = cljs.core.first(arglist__12068);
-arglist__12068 = cljs.core.next(arglist__12068);
-var out_path = cljs.core.first(arglist__12068);
-var in_paths = cljs.core.rest(arglist__12068);
+re_frame$middleware$on_changes.cljs$lang$applyTo = (function (arglist__24937){
+var f = cljs.core.first(arglist__24937);
+arglist__24937 = cljs.core.next(arglist__24937);
+var out_path = cljs.core.first(arglist__24937);
+var in_paths = cljs.core.rest(arglist__24937);
 return re_frame$middleware$on_changes__delegate(f,out_path,in_paths);
 });
 re_frame$middleware$on_changes.cljs$core$IFn$_invoke$arity$variadic = re_frame$middleware$on_changes__delegate;
 return re_frame$middleware$on_changes;
 })()
-;
+,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"re-frame-factory-name","re-frame-factory-name",-1205706462),"on-changes"], null));
 
-//# sourceMappingURL=middleware.js.map?rel=1434562321424
+//# sourceMappingURL=middleware.js.map?rel=1440504630370

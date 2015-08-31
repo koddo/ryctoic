@@ -49,3 +49,4 @@ hello_from_json(Req, State) ->
 get_rid_of_mongo_object_id(Lst) ->
     [T || {K, _} = T <- Lst, K =/= <<"_id">>].
 
+

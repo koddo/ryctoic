@@ -1,19 +1,37 @@
-// Compiled by ClojureScript 0.0-3165 {}
+// Compiled by ClojureScript 1.7.48 {}
 goog.provide('re_frame.undo');
 goog.require('cljs.core');
-goog.require('re_frame.subs');
-goog.require('re_frame.handlers');
-goog.require('re_frame.db');
 goog.require('reagent.core');
 goog.require('re_frame.utils');
+goog.require('re_frame.db');
+goog.require('re_frame.handlers');
+goog.require('re_frame.subs');
+/**
+ * Maximum number of undo states maintained
+ */
 re_frame.undo.max_undos = cljs.core.atom.call(null,(50));
 re_frame.undo.set_max_undos_BANG_ = (function re_frame$undo$set_max_undos_BANG_(n){
 return cljs.core.reset_BANG_.call(null,re_frame.undo.max_undos,n);
 });
+/**
+ * A list of history states
+ */
 re_frame.undo.undo_list = reagent.core.atom.call(null,cljs.core.PersistentVector.EMPTY);
+/**
+ * A list of future states, caused by undoing
+ */
 re_frame.undo.redo_list = reagent.core.atom.call(null,cljs.core.PersistentVector.EMPTY);
+/**
+ * Mirrors app-db
+ */
 re_frame.undo.app_explain = reagent.core.atom.call(null,"");
+/**
+ * Mirrors undo-list
+ */
 re_frame.undo.undo_explain_list = reagent.core.atom.call(null,cljs.core.PersistentVector.EMPTY);
+/**
+ * Mirrors redo-list
+ */
 re_frame.undo.redo_explain_list = reagent.core.atom.call(null,cljs.core.PersistentVector.EMPTY);
 re_frame.undo.clear_undos_BANG_ = (function re_frame$undo$clear_undos_BANG_(){
 cljs.core.reset_BANG_.call(null,re_frame.undo.undo_list,cljs.core.PersistentVector.EMPTY);
@@ -33,7 +51,7 @@ re_frame.undo.clear_redos_BANG_.call(null);
 return cljs.core.reset_BANG_.call(null,re_frame.undo.app_explain,"");
 });
 /**
- * stores the value currently in app-db, so the user can later undo
+ * Stores the value currently in app-db, so the user can later undo
  */
 re_frame.undo.store_now_BANG_ = (function re_frame$undo$store_now_BANG_(explanation){
 re_frame.undo.clear_redos_BANG_.call(null);
@@ -44,17 +62,23 @@ cljs.core.reset_BANG_.call(null,re_frame.undo.undo_explain_list,cljs.core.vec.ca
 
 return cljs.core.reset_BANG_.call(null,re_frame.undo.app_explain,explanation);
 });
+/**
+ * Returns true if undos exist, false otherwise
+ */
 re_frame.undo.undos_QMARK_ = (function re_frame$undo$undos_QMARK_(){
 return (cljs.core.count.call(null,cljs.core.deref.call(null,re_frame.undo.undo_list)) > (0));
 });
+/**
+ * Returns true if redos exist, false otherwise
+ */
 re_frame.undo.redos_QMARK_ = (function re_frame$undo$redos_QMARK_(){
 return (cljs.core.count.call(null,cljs.core.deref.call(null,re_frame.undo.redo_list)) > (0));
 });
 /**
- * return list of undo descriptions or empty list if no undos
+ * Returns list of undo descriptions or empty list if no undos
  */
 re_frame.undo.undo_explanations = (function re_frame$undo$undo_explanations(){
-if(re_frame.undo.undos_QMARK_.call(null)){
+if(cljs.core.truth_(re_frame.undo.undos_QMARK_.call(null))){
 return cljs.core.conj.call(null,cljs.core.deref.call(null,re_frame.undo.undo_explain_list),cljs.core.deref.call(null,re_frame.undo.app_explain));
 } else {
 return cljs.core.PersistentVector.EMPTY;
@@ -90,17 +114,23 @@ cljs.core.reset_BANG_.call(null,redos,r);
 return cljs.core.reset_BANG_.call(null,undos,cljs.core.pop.call(null,u));
 });
 /**
- * undo until we reach n or run out of undos
+ * undo n steps or until we run out of undos
  */
 re_frame.undo.undo_n = (function re_frame$undo$undo_n(n){
 while(true){
-if(((n > (0))) && (re_frame.undo.undos_QMARK_.call(null))){
+if(cljs.core.truth_((function (){var and__16460__auto__ = (n > (0));
+if(and__16460__auto__){
+return re_frame.undo.undos_QMARK_.call(null);
+} else {
+return and__16460__auto__;
+}
+})())){
 re_frame.undo.undo.call(null,re_frame.undo.undo_list,re_frame.db.app_db,re_frame.undo.redo_list);
 
 re_frame.undo.undo.call(null,re_frame.undo.undo_explain_list,re_frame.undo.app_explain,re_frame.undo.redo_explain_list);
 
-var G__12129 = (n - (1));
-n = G__12129;
+var G__25025 = (n - (1));
+n = G__25025;
 continue;
 } else {
 return null;
@@ -108,16 +138,16 @@ return null;
 break;
 }
 });
-re_frame.handlers.register_base.call(null,new cljs.core.Keyword(null,"undo","undo",-1818036302),(function re_frame$undo$handler(_,p__12130){
-var vec__12132 = p__12130;
-var ___$1 = cljs.core.nth.call(null,vec__12132,(0),null);
-var n = cljs.core.nth.call(null,vec__12132,(1),null);
-if(!(re_frame.undo.undos_QMARK_.call(null))){
+re_frame.handlers.register_base.call(null,new cljs.core.Keyword(null,"undo","undo",-1818036302),(function re_frame$undo$handler(_,p__25026){
+var vec__25028 = p__25026;
+var ___$1 = cljs.core.nth.call(null,vec__25028,(0),null);
+var n = cljs.core.nth.call(null,vec__25028,(1),null);
+if(cljs.core.not.call(null,re_frame.undo.undos_QMARK_.call(null))){
 return re_frame.utils.warn.call(null,"re-frame: you did a (dispatch [:undo]), but there is nothing to undo.");
 } else {
-return re_frame.undo.undo_n.call(null,(function (){var or__4149__auto__ = n;
-if(cljs.core.truth_(or__4149__auto__)){
-return or__4149__auto__;
+return re_frame.undo.undo_n.call(null,(function (){var or__16472__auto__ = n;
+if(cljs.core.truth_(or__16472__auto__)){
+return or__16472__auto__;
 } else {
 return (1);
 }
@@ -134,17 +164,23 @@ cljs.core.reset_BANG_.call(null,redos,cljs.core.rest.call(null,r));
 return cljs.core.reset_BANG_.call(null,undos,u);
 });
 /**
- * redo until we reach n or run out of redos
+ * redo n steps or until we run out of redos
  */
 re_frame.undo.redo_n = (function re_frame$undo$redo_n(n){
 while(true){
-if(((n > (0))) && (re_frame.undo.redos_QMARK_.call(null))){
+if(cljs.core.truth_((function (){var and__16460__auto__ = (n > (0));
+if(and__16460__auto__){
+return re_frame.undo.redos_QMARK_.call(null);
+} else {
+return and__16460__auto__;
+}
+})())){
 re_frame.undo.redo.call(null,re_frame.undo.undo_list,re_frame.db.app_db,re_frame.undo.redo_list);
 
 re_frame.undo.redo.call(null,re_frame.undo.undo_explain_list,re_frame.undo.app_explain,re_frame.undo.redo_explain_list);
 
-var G__12133 = (n - (1));
-n = G__12133;
+var G__25029 = (n - (1));
+n = G__25029;
 continue;
 } else {
 return null;
@@ -152,16 +188,16 @@ return null;
 break;
 }
 });
-re_frame.handlers.register_base.call(null,new cljs.core.Keyword(null,"redo","redo",501190664),(function re_frame$undo$handler(_,p__12134){
-var vec__12136 = p__12134;
-var ___$1 = cljs.core.nth.call(null,vec__12136,(0),null);
-var n = cljs.core.nth.call(null,vec__12136,(1),null);
-if(!(re_frame.undo.redos_QMARK_.call(null))){
+re_frame.handlers.register_base.call(null,new cljs.core.Keyword(null,"redo","redo",501190664),(function re_frame$undo$handler(_,p__25030){
+var vec__25032 = p__25030;
+var ___$1 = cljs.core.nth.call(null,vec__25032,(0),null);
+var n = cljs.core.nth.call(null,vec__25032,(1),null);
+if(cljs.core.not.call(null,re_frame.undo.redos_QMARK_.call(null))){
 return re_frame.utils.warn.call(null,"re-frame: you did a (dispatch [:redo]), but there is nothing to redo.");
 } else {
-return re_frame.undo.redo_n.call(null,(function (){var or__4149__auto__ = n;
-if(cljs.core.truth_(or__4149__auto__)){
-return or__4149__auto__;
+return re_frame.undo.redo_n.call(null,(function (){var or__16472__auto__ = n;
+if(cljs.core.truth_(or__16472__auto__)){
+return or__16472__auto__;
 } else {
 return (1);
 }
@@ -169,11 +205,11 @@ return (1);
 }
 }));
 re_frame.handlers.register_base.call(null,new cljs.core.Keyword(null,"purge-redos","purge-redos",1815721624),(function re_frame$undo$handler(_,___$1){
-if(!(re_frame.undo.redos_QMARK_.call(null))){
+if(cljs.core.not.call(null,re_frame.undo.redos_QMARK_.call(null))){
 return re_frame.utils.warn.call(null,"re-frame: you did a (dispatch [:purge-redos]), but there is nothing to redo.");
 } else {
 return re_frame.undo.clear_redos_BANG_.call(null);
 }
 }));
 
-//# sourceMappingURL=undo.js.map?rel=1434562322365
+//# sourceMappingURL=undo.js.map?rel=1440504631383

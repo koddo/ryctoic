@@ -1,5 +1,10 @@
 FROM clojure:lein-2.5.1
 
+RUN apt-get update && apt-get install -y \
+            curl && \
+    apt-get -y autoclean && apt-get -y autoremove
+
+
 # at the moment of writing the docker volumes' owner uid is 1000 and can't be changed
 RUN groupadd theuser && useradd --create-home --gid theuser --uid 1000 theuser
 WORKDIR /home/theuser
