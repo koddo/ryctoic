@@ -14,3 +14,5 @@ erl_crash.dump
 node_modules
 
 /trash/**
+
+/priv/static/js/compiled/
