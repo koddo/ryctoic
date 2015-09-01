@@ -4,6 +4,7 @@ goog.require('cljs.core');
 goog.require('reagent.core');
 goog.require('ajax.core');
 goog.require('secretary.core');
+goog.require('ryctoic.rest_client');
 goog.require('reagent.ratom');
 goog.require('ryctoic.async_error_handling_helpers');
 goog.require('cljs.core.async');
@@ -60,17 +61,17 @@ return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 1, 
 ;
 
 new cljs.core.Keyword(null,"websocket-obj","websocket-obj",-1810626284).cljs$core$IFn$_invoke$arity$1(state).onmessage = ((function (state){
-return (function (p1__20842_SHARP_){
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ws-onmessage","ws-onmessage",609093133),p1__20842_SHARP_], null));
+return (function (p1__23822_SHARP_){
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ws-onmessage","ws-onmessage",609093133),p1__23822_SHARP_], null));
 });})(state))
 ;
 
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20843){
-var vec__20844 = p__20843;
-var _ = cljs.core.nth.call(null,vec__20844,(0),null);
-var new_current_page = cljs.core.nth.call(null,vec__20844,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23823){
+var vec__23824 = p__23823;
+var _ = cljs.core.nth.call(null,vec__23824,(0),null);
+var new_current_page = cljs.core.nth.call(null,vec__23824,(1),null);
 cljs.core.println.call(null,":router-event ",new_current_page);
 
 return cljs.core.assoc.call(null,state,new cljs.core.Keyword(null,"current-page","current-page",-101294180),new_current_page);
@@ -85,10 +86,10 @@ new cljs.core.Keyword(null,"websocket-obj","websocket-obj",-1810626284).cljs$cor
 
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"ws-onmessage","ws-onmessage",609093133),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20845){
-var vec__20846 = p__20845;
-var _ = cljs.core.nth.call(null,vec__20846,(0),null);
-var msg = cljs.core.nth.call(null,vec__20846,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"ws-onmessage","ws-onmessage",609093133),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23825){
+var vec__23826 = p__23825;
+var _ = cljs.core.nth.call(null,vec__23826,(0),null);
+var msg = cljs.core.nth.call(null,vec__23826,(1),null);
 cljs.core.println.call(null,"--- the msg: ",msg.data);
 
 return state;
@@ -97,103 +98,96 @@ ryctoic.core.dispatch_login = (function ryctoic$core$dispatch_login(s){
 return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"log-in","log-in",526627385),s], null));
 });
 goog.exportSymbol('ryctoic.core.dispatch_login', ryctoic.core.dispatch_login);
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"log-in","log-in",526627385),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20847){
-var vec__20848 = p__20847;
-var _ = cljs.core.nth.call(null,vec__20848,(0),null);
-var s = cljs.core.nth.call(null,vec__20848,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"log-in","log-in",526627385),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23827){
+var vec__23828 = p__23827;
+var _ = cljs.core.nth.call(null,vec__23828,(0),null);
+var s = cljs.core.nth.call(null,vec__23828,(1),null);
 return cljs.core.assoc.call(null,state,new cljs.core.Keyword(null,"username","username",1605666410),s);
 }));
-ryctoic.core.MYGET2 = (function ryctoic$core$MYGET2(url,ch){
-ajax.core.GET.call(null,url,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"response-format","response-format",1664465322),cljs.core.assoc.call(null,ajax.core.json_response_format.call(null),new cljs.core.Keyword(null,"content-type","content-type",-508222634),"application/hal+json"),new cljs.core.Keyword(null,"handler","handler",-195596612),(function (p1__20849_SHARP_){
-return cljs.core.async.put_BANG_.call(null,ch,p1__20849_SHARP_);
-}),new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (p__20853){
-var map__20854 = p__20853;
-var map__20854__$1 = ((((!((map__20854 == null)))?((((map__20854.cljs$lang$protocol_mask$partition0$ & (64))) || (map__20854.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__20854):map__20854);
-var status = cljs.core.get.call(null,map__20854__$1,new cljs.core.Keyword(null,"status","status",-1997798413));
-var status_text = cljs.core.get.call(null,map__20854__$1,new cljs.core.Keyword(null,"status-text","status-text",-1834235478));
-var failure = cljs.core.get.call(null,map__20854__$1,new cljs.core.Keyword(null,"failure","failure",720415879));
-return cljs.core.async.put_BANG_.call(null,ch,(new Error([cljs.core.str("Oops: "),cljs.core.str(status),cljs.core.str(", "),cljs.core.str(status_text),cljs.core.str(", "),cljs.core.str(failure)].join(''))));
-})], null));
-
-return ch;
-});
 re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--get-request","btn-click--get-request",-1654264357),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,_){
-var c__19245__auto___20898 = cljs.core.async.chan.call(null,(1));
-cljs.core.async.impl.dispatch.run.call(null,((function (c__19245__auto___20898){
+var c__19173__auto___23872 = cljs.core.async.chan.call(null,(1));
+cljs.core.async.impl.dispatch.run.call(null,((function (c__19173__auto___23872){
 return (function (){
-var f__19246__auto__ = (function (){var switch__19224__auto__ = ((function (c__19245__auto___20898){
-return (function (state_20885){
-var state_val_20886 = (state_20885[(1)]);
-if((state_val_20886 === (1))){
-var state_20885__$1 = state_20885;
-var statearr_20887_20899 = state_20885__$1;
-(statearr_20887_20899[(2)] = null);
+var f__19174__auto__ = (function (){var switch__19152__auto__ = ((function (c__19173__auto___23872){
+return (function (state_23859){
+var state_val_23860 = (state_23859[(1)]);
+if((state_val_23860 === (1))){
+var state_23859__$1 = state_23859;
+var statearr_23861_23873 = state_23859__$1;
+(statearr_23861_23873[(2)] = null);
 
-(statearr_20887_20899[(1)] = (4));
+(statearr_23861_23873[(1)] = (4));
 
 
 return new cljs.core.Keyword(null,"recur","recur",-437573268);
 } else {
-if((state_val_20886 === (2))){
-var inst_20883 = (state_20885[(2)]);
-var state_20885__$1 = state_20885;
-return cljs.core.async.impl.ioc_helpers.return_chan.call(null,state_20885__$1,inst_20883);
+if((state_val_23860 === (2))){
+var inst_23857 = (state_23859[(2)]);
+var state_23859__$1 = state_23859;
+return cljs.core.async.impl.ioc_helpers.return_chan.call(null,state_23859__$1,inst_23857);
 } else {
-if((state_val_20886 === (3))){
-var inst_20856 = (state_20885[(2)]);
-var inst_20857 = console.error("!!! --- WTF --- !!!: ",inst_20856);
-var state_20885__$1 = state_20885;
-var statearr_20888_20900 = state_20885__$1;
-(statearr_20888_20900[(2)] = inst_20857);
+if((state_val_23860 === (3))){
+var inst_23832 = (state_23859[(2)]);
+var inst_23833 = console.error("!!! --- WTF --- !!!: ",inst_23832);
+var state_23859__$1 = state_23859;
+var statearr_23862_23874 = state_23859__$1;
+(statearr_23862_23874[(2)] = inst_23833);
 
 
-cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_20885__$1);
+cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_23859__$1);
 
 return new cljs.core.Keyword(null,"recur","recur",-437573268);
 } else {
-if((state_val_20886 === (4))){
-var inst_20861 = (state_20885[(7)]);
-var ___$1 = cljs.core.async.impl.ioc_helpers.add_exception_frame.call(null,state_20885,(3),Error,null,(2));
-var inst_20861__$1 = cljs.core.async.chan.call(null);
-var inst_20862 = ryctoic.core.MYGET2.call(null,"https://localhost.ryctoic.com:8443/api/v0",inst_20861__$1);
-var state_20885__$1 = (function (){var statearr_20889 = state_20885;
-(statearr_20889[(7)] = inst_20861__$1);
-
-return statearr_20889;
+if((state_val_23860 === (4))){
+var inst_23837 = (state_23859[(7)]);
+var ___$1 = cljs.core.async.impl.ioc_helpers.add_exception_frame.call(null,state_23859,(3),Error,null,(2));
+var inst_23837__$1 = cljs.core.async.chan.call(null);
+var inst_23838 = (function (){var ch23830 = inst_23837__$1;
+return ((function (ch23830,inst_23837,___$1,inst_23837__$1,state_val_23860,c__19173__auto___23872){
+return (function (p1__23829_SHARP_){
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"btn-click--get-request--handle","btn-click--get-request--handle",-1956662338),p1__23829_SHARP_], null));
+});
+;})(ch23830,inst_23837,___$1,inst_23837__$1,state_val_23860,c__19173__auto___23872))
 })();
-return cljs.core.async.impl.ioc_helpers.take_BANG_.call(null,state_20885__$1,(6),inst_20862);
+var inst_23839 = ryctoic.rest_client.MYGET2.call(null,"https://localhost.ryctoic.com:8443/api/v0",inst_23837__$1);
+var state_23859__$1 = (function (){var statearr_23863 = state_23859;
+(statearr_23863[(8)] = inst_23838);
+
+(statearr_23863[(7)] = inst_23837__$1);
+
+return statearr_23863;
+})();
+return cljs.core.async.impl.ioc_helpers.take_BANG_.call(null,state_23859__$1,(6),inst_23839);
 } else {
-if((state_val_20886 === (5))){
-var inst_20872 = (state_20885[(2)]);
-var inst_20873 = ryctoic.async_error_handling_helpers.throw_err.call(null,inst_20872);
-var inst_20874 = cljs.core.PersistentVector.EMPTY_NODE;
-var inst_20875 = ["data"];
-var inst_20876 = (new cljs.core.PersistentVector(null,1,(5),inst_20874,inst_20875,null));
-var inst_20877 = cljs.core.get_in.call(null,inst_20873,inst_20876);
-var inst_20878 = cljs.core.PersistentVector.EMPTY_NODE;
-var inst_20879 = [new cljs.core.Keyword(null,"btn-click--get-request--handle","btn-click--get-request--handle",-1956662338),inst_20877];
-var inst_20880 = (new cljs.core.PersistentVector(null,2,(5),inst_20878,inst_20879,null));
-var inst_20881 = re_frame.core.dispatch.call(null,inst_20880);
-var state_20885__$1 = state_20885;
-var statearr_20890_20901 = state_20885__$1;
-(statearr_20890_20901[(2)] = inst_20881);
+if((state_val_23860 === (5))){
+var inst_23838 = (state_23859[(8)]);
+var inst_23849 = (state_23859[(2)]);
+var inst_23850 = ryctoic.async_error_handling_helpers.throw_err.call(null,inst_23849);
+var inst_23851 = cljs.core.PersistentVector.EMPTY_NODE;
+var inst_23852 = ["data"];
+var inst_23853 = (new cljs.core.PersistentVector(null,1,(5),inst_23851,inst_23852,null));
+var inst_23854 = cljs.core.get_in.call(null,inst_23850,inst_23853);
+var inst_23855 = inst_23838.call(null,inst_23854);
+var state_23859__$1 = state_23859;
+var statearr_23864_23875 = state_23859__$1;
+(statearr_23864_23875[(2)] = inst_23855);
 
 
-cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_20885__$1);
+cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_23859__$1);
 
 return new cljs.core.Keyword(null,"recur","recur",-437573268);
 } else {
-if((state_val_20886 === (6))){
-var inst_20861 = (state_20885[(7)]);
-var inst_20864 = (state_20885[(2)]);
-var inst_20865 = ryctoic.async_error_handling_helpers.throw_err.call(null,inst_20864);
-var inst_20866 = cljs.core.PersistentVector.EMPTY_NODE;
-var inst_20867 = ["_links","ry:test","href"];
-var inst_20868 = (new cljs.core.PersistentVector(null,3,(5),inst_20866,inst_20867,null));
-var inst_20869 = cljs.core.get_in.call(null,inst_20865,inst_20868);
-var inst_20870 = ryctoic.core.MYGET2.call(null,inst_20869,inst_20861);
-var state_20885__$1 = state_20885;
-return cljs.core.async.impl.ioc_helpers.take_BANG_.call(null,state_20885__$1,(5),inst_20870);
+if((state_val_23860 === (6))){
+var inst_23837 = (state_23859[(7)]);
+var inst_23841 = (state_23859[(2)]);
+var inst_23842 = ryctoic.async_error_handling_helpers.throw_err.call(null,inst_23841);
+var inst_23843 = cljs.core.PersistentVector.EMPTY_NODE;
+var inst_23844 = ["_links","ry:test","href"];
+var inst_23845 = (new cljs.core.PersistentVector(null,3,(5),inst_23843,inst_23844,null));
+var inst_23846 = cljs.core.get_in.call(null,inst_23842,inst_23845);
+var inst_23847 = ryctoic.rest_client.MYGET2.call(null,inst_23846,inst_23837);
+var state_23859__$1 = state_23859;
+return cljs.core.async.impl.ioc_helpers.take_BANG_.call(null,state_23859__$1,(5),inst_23847);
 } else {
 return null;
 }
@@ -202,163 +196,163 @@ return null;
 }
 }
 }
-});})(c__19245__auto___20898))
+});})(c__19173__auto___23872))
 ;
-return ((function (switch__19224__auto__,c__19245__auto___20898){
+return ((function (switch__19152__auto__,c__19173__auto___23872){
 return (function() {
-var ryctoic$core$state_machine__19225__auto__ = null;
-var ryctoic$core$state_machine__19225__auto____0 = (function (){
-var statearr_20894 = [null,null,null,null,null,null,null,null];
-(statearr_20894[(0)] = ryctoic$core$state_machine__19225__auto__);
+var ryctoic$core$state_machine__19153__auto__ = null;
+var ryctoic$core$state_machine__19153__auto____0 = (function (){
+var statearr_23868 = [null,null,null,null,null,null,null,null,null];
+(statearr_23868[(0)] = ryctoic$core$state_machine__19153__auto__);
 
-(statearr_20894[(1)] = (1));
+(statearr_23868[(1)] = (1));
 
-return statearr_20894;
+return statearr_23868;
 });
-var ryctoic$core$state_machine__19225__auto____1 = (function (state_20885){
+var ryctoic$core$state_machine__19153__auto____1 = (function (state_23859){
 while(true){
-var ret_value__19226__auto__ = (function (){try{while(true){
-var result__19227__auto__ = switch__19224__auto__.call(null,state_20885);
-if(cljs.core.keyword_identical_QMARK_.call(null,result__19227__auto__,new cljs.core.Keyword(null,"recur","recur",-437573268))){
+var ret_value__19154__auto__ = (function (){try{while(true){
+var result__19155__auto__ = switch__19152__auto__.call(null,state_23859);
+if(cljs.core.keyword_identical_QMARK_.call(null,result__19155__auto__,new cljs.core.Keyword(null,"recur","recur",-437573268))){
 continue;
 } else {
-return result__19227__auto__;
+return result__19155__auto__;
 }
 break;
 }
-}catch (e20895){if((e20895 instanceof Object)){
-var ex__19228__auto__ = e20895;
-var statearr_20896_20902 = state_20885;
-(statearr_20896_20902[(5)] = ex__19228__auto__);
+}catch (e23869){if((e23869 instanceof Object)){
+var ex__19156__auto__ = e23869;
+var statearr_23870_23876 = state_23859;
+(statearr_23870_23876[(5)] = ex__19156__auto__);
 
 
-cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_20885);
+cljs.core.async.impl.ioc_helpers.process_exception.call(null,state_23859);
 
 return new cljs.core.Keyword(null,"recur","recur",-437573268);
 } else {
-throw e20895;
+throw e23869;
 
 }
 }})();
-if(cljs.core.keyword_identical_QMARK_.call(null,ret_value__19226__auto__,new cljs.core.Keyword(null,"recur","recur",-437573268))){
-var G__20903 = state_20885;
-state_20885 = G__20903;
+if(cljs.core.keyword_identical_QMARK_.call(null,ret_value__19154__auto__,new cljs.core.Keyword(null,"recur","recur",-437573268))){
+var G__23877 = state_23859;
+state_23859 = G__23877;
 continue;
 } else {
-return ret_value__19226__auto__;
+return ret_value__19154__auto__;
 }
 break;
 }
 });
-ryctoic$core$state_machine__19225__auto__ = function(state_20885){
+ryctoic$core$state_machine__19153__auto__ = function(state_23859){
 switch(arguments.length){
 case 0:
-return ryctoic$core$state_machine__19225__auto____0.call(this);
+return ryctoic$core$state_machine__19153__auto____0.call(this);
 case 1:
-return ryctoic$core$state_machine__19225__auto____1.call(this,state_20885);
+return ryctoic$core$state_machine__19153__auto____1.call(this,state_23859);
 }
 throw(new Error('Invalid arity: ' + arguments.length));
 };
-ryctoic$core$state_machine__19225__auto__.cljs$core$IFn$_invoke$arity$0 = ryctoic$core$state_machine__19225__auto____0;
-ryctoic$core$state_machine__19225__auto__.cljs$core$IFn$_invoke$arity$1 = ryctoic$core$state_machine__19225__auto____1;
-return ryctoic$core$state_machine__19225__auto__;
+ryctoic$core$state_machine__19153__auto__.cljs$core$IFn$_invoke$arity$0 = ryctoic$core$state_machine__19153__auto____0;
+ryctoic$core$state_machine__19153__auto__.cljs$core$IFn$_invoke$arity$1 = ryctoic$core$state_machine__19153__auto____1;
+return ryctoic$core$state_machine__19153__auto__;
 })()
-;})(switch__19224__auto__,c__19245__auto___20898))
+;})(switch__19152__auto__,c__19173__auto___23872))
 })();
-var state__19247__auto__ = (function (){var statearr_20897 = f__19246__auto__.call(null);
-(statearr_20897[cljs.core.async.impl.ioc_helpers.USER_START_IDX] = c__19245__auto___20898);
+var state__19175__auto__ = (function (){var statearr_23871 = f__19174__auto__.call(null);
+(statearr_23871[cljs.core.async.impl.ioc_helpers.USER_START_IDX] = c__19173__auto___23872);
 
-return statearr_20897;
+return statearr_23871;
 })();
-return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null,state__19247__auto__);
-});})(c__19245__auto___20898))
+return cljs.core.async.impl.ioc_helpers.run_state_machine_wrapped.call(null,state__19175__auto__);
+});})(c__19173__auto___23872))
 );
 
 
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--get-request--handle","btn-click--get-request--handle",-1956662338),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20904){
-var vec__20905 = p__20904;
-var _ = cljs.core.nth.call(null,vec__20905,(0),null);
-var response = cljs.core.nth.call(null,vec__20905,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--get-request--handle","btn-click--get-request--handle",-1956662338),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23878){
+var vec__23879 = p__23878;
+var _ = cljs.core.nth.call(null,vec__23879,(0),null);
+var response = cljs.core.nth.call(null,vec__23879,(1),null);
 cljs.core.println.call(null,"--- the response ",response);
 
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--get-request--error","btn-click--get-request--error",464363886),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20906){
-var vec__20907 = p__20906;
-var _ = cljs.core.nth.call(null,vec__20907,(0),null);
-var response = cljs.core.nth.call(null,vec__20907,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--get-request--error","btn-click--get-request--error",464363886),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23880){
+var vec__23881 = p__23880;
+var _ = cljs.core.nth.call(null,vec__23881,(0),null);
+var response = cljs.core.nth.call(null,vec__23881,(1),null);
 return state;
 }));
 re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--post-request","btn-click--post-request",-1744629056),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,_){
-ajax.core.POST.call(null,"https://localhost.ryctoic.com:8443/mongo",new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"params","params",710516235),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"fuck","fuck",-1244062035),"you"], null),new cljs.core.Keyword(null,"format","format",-1306924766),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"handler","handler",-195596612),(function (p1__20908_SHARP_){
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"btn-click--post-request--handle","btn-click--post-request--handle",-790308330),p1__20908_SHARP_], null));
-}),new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (p1__20909_SHARP_){
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"btn-click--post-request--error","btn-click--post-request--error",1272473559),p1__20909_SHARP_], null));
+ajax.core.POST.call(null,"https://localhost.ryctoic.com:8443/mongo",new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"params","params",710516235),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"fuck","fuck",-1244062035),"you"], null),new cljs.core.Keyword(null,"format","format",-1306924766),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"handler","handler",-195596612),(function (p1__23882_SHARP_){
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"btn-click--post-request--handle","btn-click--post-request--handle",-790308330),p1__23882_SHARP_], null));
+}),new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (p1__23883_SHARP_){
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"btn-click--post-request--error","btn-click--post-request--error",1272473559),p1__23883_SHARP_], null));
 })], null));
 
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--post-request--handle","btn-click--post-request--handle",-790308330),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20910){
-var vec__20911 = p__20910;
-var _ = cljs.core.nth.call(null,vec__20911,(0),null);
-var response = cljs.core.nth.call(null,vec__20911,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--post-request--handle","btn-click--post-request--handle",-790308330),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23884){
+var vec__23885 = p__23884;
+var _ = cljs.core.nth.call(null,vec__23885,(0),null);
+var response = cljs.core.nth.call(null,vec__23885,(1),null);
 return state;
 }));
-re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--post-request--error","btn-click--post-request--error",1272473559),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__20912){
-var vec__20913 = p__20912;
-var _ = cljs.core.nth.call(null,vec__20913,(0),null);
-var response = cljs.core.nth.call(null,vec__20913,(1),null);
+re_frame.core.register_handler.call(null,new cljs.core.Keyword(null,"btn-click--post-request--error","btn-click--post-request--error",1272473559),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_frame.core.debug], null),(function (state,p__23886){
+var vec__23887 = p__23886;
+var _ = cljs.core.nth.call(null,vec__23887,(0),null);
+var response = cljs.core.nth.call(null,vec__23887,(1),null);
 return state;
 }));
-var action__19299__auto___20917 = (function (params__19300__auto__){
-if(cljs.core.map_QMARK_.call(null,params__19300__auto__)){
-var map__20914 = params__19300__auto__;
-var map__20914__$1 = ((((!((map__20914 == null)))?((((map__20914.cljs$lang$protocol_mask$partition0$ & (64))) || (map__20914.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__20914):map__20914);
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_root;},new cljs.core.Symbol("ryctoic.core","page-root","ryctoic.core/page-root",561601196,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-root","page-root",80541440,null),"src/ryctoic/core.cljs",16,1,51,51,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_root)?ryctoic.core.page_root.cljs$lang$test:null)]))], null));
+var action__19315__auto___23891 = (function (params__19316__auto__){
+if(cljs.core.map_QMARK_.call(null,params__19316__auto__)){
+var map__23888 = params__19316__auto__;
+var map__23888__$1 = ((((!((map__23888 == null)))?((((map__23888.cljs$lang$protocol_mask$partition0$ & (64))) || (map__23888.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__23888):map__23888);
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_root;},new cljs.core.Symbol("ryctoic.core","page-root","ryctoic.core/page-root",561601196,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-root","page-root",80541440,null),"src/ryctoic/core.cljs",16,1,53,53,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_root)?ryctoic.core.page_root.cljs$lang$test:null)]))], null));
 } else {
-if(cljs.core.vector_QMARK_.call(null,params__19300__auto__)){
-var vec__20916 = params__19300__auto__;
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_root;},new cljs.core.Symbol("ryctoic.core","page-root","ryctoic.core/page-root",561601196,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-root","page-root",80541440,null),"src/ryctoic/core.cljs",16,1,51,51,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_root)?ryctoic.core.page_root.cljs$lang$test:null)]))], null));
+if(cljs.core.vector_QMARK_.call(null,params__19316__auto__)){
+var vec__23890 = params__19316__auto__;
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_root;},new cljs.core.Symbol("ryctoic.core","page-root","ryctoic.core/page-root",561601196,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-root","page-root",80541440,null),"src/ryctoic/core.cljs",16,1,53,53,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_root)?ryctoic.core.page_root.cljs$lang$test:null)]))], null));
 } else {
 return null;
 }
 }
 });
-secretary.core.add_route_BANG_.call(null,"/",action__19299__auto___20917);
+secretary.core.add_route_BANG_.call(null,"/",action__19315__auto___23891);
 
-var action__19299__auto___20921 = (function (params__19300__auto__){
-if(cljs.core.map_QMARK_.call(null,params__19300__auto__)){
-var map__20918 = params__19300__auto__;
-var map__20918__$1 = ((((!((map__20918 == null)))?((((map__20918.cljs$lang$protocol_mask$partition0$ & (64))) || (map__20918.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__20918):map__20918);
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_about;},new cljs.core.Symbol("ryctoic.core","page-about","ryctoic.core/page-about",1885717164,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-about","page-about",1460551424,null),"src/ryctoic/core.cljs",17,1,59,59,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_about)?ryctoic.core.page_about.cljs$lang$test:null)]))], null));
+var action__19315__auto___23895 = (function (params__19316__auto__){
+if(cljs.core.map_QMARK_.call(null,params__19316__auto__)){
+var map__23892 = params__19316__auto__;
+var map__23892__$1 = ((((!((map__23892 == null)))?((((map__23892.cljs$lang$protocol_mask$partition0$ & (64))) || (map__23892.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__23892):map__23892);
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_about;},new cljs.core.Symbol("ryctoic.core","page-about","ryctoic.core/page-about",1885717164,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-about","page-about",1460551424,null),"src/ryctoic/core.cljs",17,1,61,61,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_about)?ryctoic.core.page_about.cljs$lang$test:null)]))], null));
 } else {
-if(cljs.core.vector_QMARK_.call(null,params__19300__auto__)){
-var vec__20920 = params__19300__auto__;
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_about;},new cljs.core.Symbol("ryctoic.core","page-about","ryctoic.core/page-about",1885717164,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-about","page-about",1460551424,null),"src/ryctoic/core.cljs",17,1,59,59,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_about)?ryctoic.core.page_about.cljs$lang$test:null)]))], null));
+if(cljs.core.vector_QMARK_.call(null,params__19316__auto__)){
+var vec__23894 = params__19316__auto__;
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_about;},new cljs.core.Symbol("ryctoic.core","page-about","ryctoic.core/page-about",1885717164,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-about","page-about",1460551424,null),"src/ryctoic/core.cljs",17,1,61,61,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_about)?ryctoic.core.page_about.cljs$lang$test:null)]))], null));
 } else {
 return null;
 }
 }
 });
-secretary.core.add_route_BANG_.call(null,"/about",action__19299__auto___20921);
+secretary.core.add_route_BANG_.call(null,"/about",action__19315__auto___23895);
 
-var action__19299__auto___20925 = (function (params__19300__auto__){
-if(cljs.core.map_QMARK_.call(null,params__19300__auto__)){
-var map__20922 = params__19300__auto__;
-var map__20922__$1 = ((((!((map__20922 == null)))?((((map__20922.cljs$lang$protocol_mask$partition0$ & (64))) || (map__20922.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__20922):map__20922);
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_not_found;},new cljs.core.Symbol("ryctoic.core","page-not-found","ryctoic.core/page-not-found",1467125178,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-not-found","page-not-found",1759453726,null),"src/ryctoic/core.cljs",21,1,65,65,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_not_found)?ryctoic.core.page_not_found.cljs$lang$test:null)]))], null));
+var action__19315__auto___23899 = (function (params__19316__auto__){
+if(cljs.core.map_QMARK_.call(null,params__19316__auto__)){
+var map__23896 = params__19316__auto__;
+var map__23896__$1 = ((((!((map__23896 == null)))?((((map__23896.cljs$lang$protocol_mask$partition0$ & (64))) || (map__23896.cljs$core$ISeq$))?true:false):false))?cljs.core.apply.call(null,cljs.core.hash_map,map__23896):map__23896);
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_not_found;},new cljs.core.Symbol("ryctoic.core","page-not-found","ryctoic.core/page-not-found",1467125178,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-not-found","page-not-found",1759453726,null),"src/ryctoic/core.cljs",21,1,67,67,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_not_found)?ryctoic.core.page_not_found.cljs$lang$test:null)]))], null));
 } else {
-if(cljs.core.vector_QMARK_.call(null,params__19300__auto__)){
-var vec__20924 = params__19300__auto__;
-return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_not_found;},new cljs.core.Symbol("ryctoic.core","page-not-found","ryctoic.core/page-not-found",1467125178,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-not-found","page-not-found",1759453726,null),"src/ryctoic/core.cljs",21,1,65,65,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_not_found)?ryctoic.core.page_not_found.cljs$lang$test:null)]))], null));
+if(cljs.core.vector_QMARK_.call(null,params__19316__auto__)){
+var vec__23898 = params__19316__auto__;
+return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"router-event","router-event",631645884),new cljs.core.Var(function(){return ryctoic.core.page_not_found;},new cljs.core.Symbol("ryctoic.core","page-not-found","ryctoic.core/page-not-found",1467125178,null),cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"ns","ns",441598760),new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"file","file",-1269645878),new cljs.core.Keyword(null,"end-column","end-column",1425389514),new cljs.core.Keyword(null,"column","column",2078222095),new cljs.core.Keyword(null,"line","line",212345235),new cljs.core.Keyword(null,"end-line","end-line",1837326455),new cljs.core.Keyword(null,"arglists","arglists",1661989754),new cljs.core.Keyword(null,"doc","doc",1913296891),new cljs.core.Keyword(null,"test","test",577538877)],[cljs.core.with_meta(new cljs.core.Symbol(null,"ryctoic.core","ryctoic.core",-437675327,null),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"figwheel-always","figwheel-always",799819691),true], null)),new cljs.core.Symbol(null,"page-not-found","page-not-found",1759453726,null),"src/ryctoic/core.cljs",21,1,67,67,cljs.core.list(cljs.core.PersistentVector.EMPTY),null,(cljs.core.truth_(ryctoic.core.page_not_found)?ryctoic.core.page_not_found.cljs$lang$test:null)]))], null));
 } else {
 return null;
 }
 }
 });
-secretary.core.add_route_BANG_.call(null,"*",action__19299__auto___20925);
+secretary.core.add_route_BANG_.call(null,"*",action__19315__auto___23899);
 
 ryctoic.core.run = (function ryctoic$core$run(){
 re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"initialize","initialize",609952913)], null));
@@ -377,4 +371,4 @@ return re_frame.core.dispatch.call(null,new cljs.core.PersistentVector(null, 1, 
 });
 goog.exportSymbol('ryctoic.core.run', ryctoic.core.run);
 
-//# sourceMappingURL=core.js.map?rel=1440856936840
+//# sourceMappingURL=core.js.map?rel=1441123918354

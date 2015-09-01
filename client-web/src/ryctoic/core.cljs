@@ -7,10 +7,12 @@
               [ajax.core :as ajax]
               [cljs.core.async :refer [chan <! >! put! close!]]
               [ryctoic.async-error-handling-helpers]
+              [ryctoic.rest-client]
               )
     (:require-macros
      [cljs.core.async.macros :as async]
      [ryctoic.async-error-handling-macros :refer [<?]]
+     [ryctoic.rest-client_macros]
      ))
 
 
@@ -121,40 +123,49 @@
                                  (assoc :username s))))
 
 
-(defn MYGET2 [url ch]
-  (ajax/GET url
-                 {
-                  :response-format (assoc (ajax/json-response-format) :content-type "application/hal+json")   ; https://github.com/JulianBirch/cljs-ajax/issues/69#issuecomment-135125295
-                  :handler #(put! ch %)
-                  :error-handler (fn [{:keys [status status-text failure]}]
-                                   (put! ch (js/Error. (str "Oops: " status ", " status-text ", " failure))))
-                  })
-  ch)
 
 (re-frame/register-handler :btn-click--get-request
                            [re-frame.core/debug]
                            (fn [state _]
 
-                             (async/go (try
-                                         (let [ch (chan)
-                                               d (->
-                                                  (MYGET2 "https://localhost.ryctoic.com:8443/api/v0" ch)
-                                                  <?
-                                                  (get-in ["_links" "ry:test" "href"])
-                                                  (MYGET2 ch)
-                                                  <?
-                                                  (get-in ["data"])
-                                                  )]
-                                           (re-frame/dispatch [:btn-click--get-request--handle d]))
-                                         (catch js/Error ex
-                                           (js/console.error "!!! --- WTF --- !!!: " ex))
-                                         ))
+
+                             ;; (async/go (try
+                             ;;             (let [ch (chan)]
+                             ;;               (re-frame/dispatch [:btn-click--get-request--handle
+                             ;;                                   (->
+                             ;;                                    (ryctoic.rest-client/MYGET2 "https://localhost.ryctoic.com:8443/api/v0" ch)
+                             ;;                                    <?
+                             ;;                                    (get-in ["_links" "ry:test" "href"])
+                             ;;                                    (ryctoic.rest-client/MYGET2 ch)
+                             ;;                                    <?
+                             ;;                                    (get-in ["data"])
+                             ;;                                    )]))
+                             ;;             (catch js/Error ex
+                             ;;               (js/console.error "!!! --- WTF --- !!!: " ex))
+                             ;;             ))
+
+                             
+                             ;; (ryctoic.rest-client_macros/api "https://localhost.ryctoic.com:8443/api/v0"
+                             ;;                                 (get-in ["_links" "ry:test" "href"])
+                             ;;                                 (ryctoic.rest-client/MYGET2 ch)
+                             ;;                                 <?
+                             ;;                                 (get-in ["data"])
+                             ;;                                 (#(re-frame/dispatch [:btn-click--get-request--handle %]))
+                             ;;                                 )
+
+                             (ryctoic.rest-client_macros/api "https://localhost.ryctoic.com:8443/api/v0"
+                                                             (get-in ["_links" "ry:test" "href"])
+                                                             (:to)
+                                                             (get-in ["data"])
+                                                             (#(re-frame/dispatch [:btn-click--get-request--handle %]))
+                                                             )
 
                              ;; (ajax/GET "https://localhost.ryctoic.com:8443/mongo"
                              ;;  {:handler       #(re-frame/dispatch [:btn-click--get-request--handle %1])
                              ;;   :error-handler #(re-frame/dispatch [:btn-click--get-request--error %1])})
 
                              state))
+
 
 (re-frame/register-handler :btn-click--get-request--handle
                            [re-frame.core/debug]

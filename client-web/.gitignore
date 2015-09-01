@@ -14,4 +14,4 @@ pom.xml
 
 /node_modules/
 
-/lein_deps/**
+/lein-deps/**

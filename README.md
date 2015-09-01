@@ -115,3 +115,11 @@ this is better that adding dns param to every container
 
 
 
+application/hal+json
+--------------------
+_embedded may be multiple levels nested
+standard doesn't assume _embedded data is consistent with information that can be gotten from the embedded resouce, we decide; client even can first try to read _embedded and then try the embedded resource itself when needed
+hypermedia for machine2machine interaction, no forms
+
+
+

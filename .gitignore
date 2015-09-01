@@ -1,4 +1,5 @@
 /deps/
+/deps.old/
 /ebin/
 /_rel/
 /relx
@@ -9,3 +10,7 @@
 erl_crash.dump
 
 /.erlang.mk/
+
+node_modules
+
+/trash/**
