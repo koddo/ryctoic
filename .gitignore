@@ -16,3 +16,8 @@ node_modules
 /trash/**
 
 /priv/static/js/compiled/
+
+
+### TODO: fix the mess in gitignore files
+### TODO: git filter-branch the repo --- I forgot to exclude deps and compiled files and now have a huge repo
+

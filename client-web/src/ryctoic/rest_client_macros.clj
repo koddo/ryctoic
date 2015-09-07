@@ -3,18 +3,19 @@
      [ryctoic.async-error-handling-macros :refer [<?]])
   )
 
+(defn asdf [body ch]
+  (mapcat
+   #(if (sequential? %) (cond
+                          (= (first %) :to) [`(ryctoic.rest-client/MYGET2 ~ch)
+                                             '<?]
+                          true [%])
+        [%])
+   body))
 
 (defmacro api [url & body]
   (let [ch (gensym 'ch)
         ex (gensym 'ex)
-        rrr (fn [body] (mapcat
-                         #(if (sequential? %) (cond
-                                                (= (first %) :to) [`(ryctoic.rest-client/MYGET2 ~ch)
-                                                                   '<?]
-                                                true [%])
-                              [%])
-                         body))
-        newbody (rrr body)
+        newbody (asdf body ch)
         ]
     `(async/go (try
                  (let [~ch (cljs.core.async/chan)]
