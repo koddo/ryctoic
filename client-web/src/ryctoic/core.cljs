@@ -230,3 +230,28 @@
 
 
 
+(let [input
+      "a,b -> c ; d-> e ; 
+   
+ b ->>f
+;
+q"
+      mysplit (fn [what regex] (filter not-empty (map clojure.string/trim (clojure.string/split what regex))))
+      parse (fn [d]
+              (let [ffdd (clojure.string/split d "->")
+                    mmvvdd (clojure.string/split d "->>")
+                    ]
+                (cond
+                  (== 2 (count mmvvdd)) {:type :mvd
+                                         :l (mysplit (nth mmvvdd 0) ","),
+                                         :r (mysplit (nth mmvvdd 1) ",")}
+                  (== 2 (count ffdd)) {:type :fd
+                                       :l (mysplit (nth ffdd 0) ","),
+                                       :r (mysplit (nth ffdd 1) ",")}
+                  true :fuck
+                  )))
+      ]
+  (map parse (mysplit input #";|\n"))  
+  )
+
+

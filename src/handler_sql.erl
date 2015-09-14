@@ -25,7 +25,7 @@ hello_to_text(Req, State) ->
     % TODO: write a connection pool using poolboy
     error_logger:info_msg("--- handler_sql~n", []),
     
-    R = epgsql:connect("postgres.dev.skydock", "root", "mysecretpassword3", [{database, "world"}]),   % TODO: CRITICAL move to secrets file
+    R = epgsql:connect("postgres.dev.dnsdock", "root", "mysecretpassword3", [{database, "world"}]),   % TODO: CRITICAL move to secrets file
     error_logger:info_msg("--- SQL connect: ~p~n", [R]),
     {ok, C} = R,
     {ok, _, Rows} = epgsql:equery(C, "select name from country limit 5"),

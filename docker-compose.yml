@@ -1,6 +1,6 @@
 dnsdock:
     image: tonistiigi/dnsdock
-    command: -domain skydock -environment dev
+    command: -domain dnsdock -environment dev
     ports:
         - 172.17.42.1:53:53/udp
     volumes:
@@ -48,7 +48,7 @@ backend:
     #  - "9105:9105"
 
     links:
-        - db
+        - postgres
 
         
 figwheel:
@@ -69,7 +69,7 @@ figwheel:
 
 
     
-db:
+postgres:
     image: postgres
     expose:
         - "5432"

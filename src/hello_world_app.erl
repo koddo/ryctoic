@@ -33,7 +33,7 @@ start(_Type, _Args) ->
                                        {attributes, record_info(fields, ryctoic_user)}
                                       ]),
 
-    RM = emongo:add_pool(emongo, "mongo.dev.skydock", 27017, "test", 1),
+    RM = emongo:add_pool(emongo, "mongo.dev.dnsdock", 27017, "test", 1),
     error_logger:info_msg("--- emongo: ~p~n", [RM]),
     
 
