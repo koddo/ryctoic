@@ -33,7 +33,7 @@ backend:
 
     volumes:
         - .:/home/theuser/ryctoic
-        - ../secrets:/home/theuser/secrets
+        - ../ryctoic.secrets:/home/theuser/secrets      # see vm's shared dirs
 
     # ports:
     #     - "8080:8080"
@@ -75,13 +75,15 @@ postgres:
         - "5432"
 
     environment:     # TODO: CRITICAL secure postgres docker
-        - POSTGRES_PASSWORD=mysecretpassword3
         - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=mysecretpassword3
         # - PGDATA:whatever
 
     volumes_from:
         - data
 
+    volumes:
+        - tmp:/home/theuser/tmp
 
         
 data:
