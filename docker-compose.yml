@@ -29,7 +29,7 @@ backend:
     dockerfile: Dockerfile_backend
 
     working_dir: /home/theuser/ryctoic
-    entrypoint: bin/entrypoint.sh     # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
+    entrypoint: bin/entrypoint-backend.sh     # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
 
     volumes:
         - .:/home/theuser/ryctoic
@@ -96,6 +96,20 @@ data:
 
 
 
-mongo:
-    image: mongo
+# mongo:
+#     image: mongo
     
+flyway:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_flyway
+
+    entrypoint: bin/entrypoint-flyway.sh
+    command: info
+
+    volumes:
+        - ../ryctoic.secrets:/home/theuser/secrets
+        - sql:/home/theuser/sql
+        - bin/entrypoint-flyway.sh:/home/theuser/bin/entrypoint-flyway.sh
+
+    links:
+        - postgres
