@@ -5,8 +5,8 @@ WORKDIR /home/theuser
 USER theuser
 
 
-
-RUN wget http://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/3.2.1/flyway-commandline-3.2.1.tar.gz && \
+# TODO: critical: check signature
+RUN wget https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/3.2.1/flyway-commandline-3.2.1.tar.gz && \
     tar xvfz flyway-commandline-3.2.1.tar.gz && \
     rm flyway-commandline-3.2.1.tar.gz
 

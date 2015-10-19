@@ -15,9 +15,24 @@ V20151006.174040.24034__some_migration.sql
 
 migration starts with a letter V and description goes after two underscores
 
-TODO: idempotent migrations
+
+idempotend migrations
+======================
+
+sounds like a good idea,
+but to me
+on migration fail
+the fail fast is a better strategy
+
+to me a cleaner way look like this:
+find out what failed,
+fix the script, restore a test db from backup, try the migration again
+
+http://thedailywtf.com/articles/Database-Changes-Done-Right
 
 
-http://www.jeremyjarrell.com/using-flyway-db-with-distributed-version-control/
+
+
+
 
 

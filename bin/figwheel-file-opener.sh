@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+## see figwheel's config in project.clj
+## my :open-file-command is set to run this script
+
+
 ## we are in a docker container now, can't run emacsclient directly
 ## let's send a post request to our host machine
 

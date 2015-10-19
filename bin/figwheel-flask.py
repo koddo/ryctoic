@@ -5,6 +5,8 @@ import os
 app = Flask(__name__)
 
 
+# see figwheel-file-opener.sh for comments
+
 
 ## this script is supposed to be run from the root of the project
 ## prefix var is the home of the figwheel

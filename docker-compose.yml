@@ -73,22 +73,32 @@ postgres:
     image: postgres
     expose:
         - "5432"
-
     environment:     # TODO: CRITICAL secure postgres docker
-        - POSTGRES_USER=root
-        - POSTGRES_PASSWORD=mysecretpassword3
-        # - PGDATA:whatever
-
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=secret
+        - PGDATA:/var/lib/postgresql/data   # this is default
     volumes_from:
         - data
+    # volumes:
+    #     - tmp:/home/theuser/tmp
 
-    volumes:
-        - tmp:/home/theuser/tmp
 
-        
+pgtest:
+    image: postgres
+    expose:
+        - "5432"
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=secret
+        - PGDATA:/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
+
+    entrypoint: true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest 
+    
+    
+    
 data:
     image: postgres
-    dockerfile: Dockerfile_postgres
+    # dockerfile: Dockerfile_postgres
     volumes:
         - /var/lib/postgresql
         - tmp:/mnt
@@ -113,3 +123,6 @@ flyway:
 
     links:
         - postgres
+
+
+
