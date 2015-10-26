@@ -48,7 +48,10 @@ backend:
     #  - "9105:9105"
 
     links:
+        - dnsdock
         - postgres
+        - figwheel
+        
 
         
 figwheel:
@@ -75,12 +78,14 @@ postgres:
         - "5432"
     environment:     # TODO: CRITICAL secure postgres docker
         - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=secret
+        - POSTGRES_PASSWORD=secret   # TODO: change this during deployment
+        # - POSTGRES_PASSWORD=md50faab7f0bfc96e5ca6956b920a171564   # TODO: comment this like: please save your time and don't try to crack this one, we change it during deployment
         - PGDATA:/var/lib/postgresql/data   # this is default
     volumes_from:
         - data
-    # volumes:
-    #     - tmp:/home/theuser/tmp
+    volumes:
+        # - tmp:/home/theuser/tmp
+        - sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
 
 pgtest:
@@ -106,9 +111,6 @@ data:
 
 
 
-# mongo:
-#     image: mongo
-    
 flyway:
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_flyway
@@ -126,3 +128,6 @@ flyway:
 
 
 
+
+
+        

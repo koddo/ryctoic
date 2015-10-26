@@ -1,0 +1,17 @@
+jenkins:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_jenkins
+    volumes:
+        - ../ryctoic.jenkins_home:/var/jenkins_home
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    ports:
+        - 8080:8080
+
+        
+############################
+
+# TODO: CRITICAL: anyone with direct access to the /var/run/docker.sock has root privileges on the host system
+
+
+

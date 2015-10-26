@@ -47,6 +47,7 @@ notes and todos
 
  TODO: review authentication code
 
+ TODO: understand permissions of docker volumes, something about uid 1000
 
 
  
@@ -110,8 +111,9 @@ docker dynamic links with dnsdock
 --------------------------------------
 I tried skydns+skydock, but had some problems. Can't now remember. Like it couldn't survive sleep mode of my laptop.
 
-in debian add "--dns 172.17.42.1 --bip=172.17.42.1/24" to DOCKER_OPTS in /etc/default/docker
-this is better that adding dns param to every container
+in /etc/default/docker:
+DOCKER_OPTS="--bip=172.17.42.1/24 --dns=172.17.42.1 --dns 8.8.8.8 --dns 8.8.4.4"
+this is better that adding a dns param to every container
 
 
 
