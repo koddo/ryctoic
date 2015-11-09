@@ -1,0 +1,73 @@
+
+a simple thought of the database is being compromised gives me strong anxiety
+
+flyway
+========
+
+http://flywaydb.org/getstarted/why.html
+
+tricks
+=========
+
+http://www.jeremyjarrell.com/using-flyway-db-with-distributed-version-control/
+
+to avoid filename collisions across different branches
+a migration starts with a utc timestamp
+V20151006.174040.24034__some_migration.sql
+
+migration starts with a letter V and description goes after two underscores
+
+
+idempotend migrations
+======================
+
+sounds like a good idea,
+but to me
+on migration fail
+the fail fast is a better strategy
+
+to me a cleaner way look like this:
+find out what failed,
+fix the script, restore a test db from backup, try the migration again
+
+http://thedailywtf.com/articles/Database-Changes-Done-Right
+
+
+pgtap
+=================
+
+http://pgtap.org/
+
+an easy way to install it
+
+```
+$ apt-get install postgresql-9.4-pgtap
+$ psql -c "CREATE EXTENSION pgtap;"
+```
+
+
+locale
+================
+
+-- locale is set to C
+-- we can use collations later, when needed
+------------------------------
+-- debian docker image doesn't have locales other that utf-8, here is how to add one
+-- this worked:
+-- # localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
+-- psql> CREATE COLLATION "fr_FR" (LOCALE = 'fr_FR.utf8');
+-- psql> select * from pg_collation;
+-- psql> select initcap('welcome to CHAMPS-ÉLYSÉES' collate "fr_FR");
+-- => Welcome To Champs-Élysées'
+-- by psql I mean pgagmin3, because my terminal couldn't paste those french chars
+-- probably it's a good idea to have a copy of this collation named "fr_FR.utf8", I don't know yet, but why anyway?
+------------------------------
+-- this is meant to be an equivalent to localedef, but didn't work for me:
+-- echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+-- echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen
+-- locale-gen --no-archive
+
+
+
+
+

@@ -89,7 +89,8 @@ postgres:
 
 
 pgtest:
-    image: postgres
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_postgres
     expose:
         - "5432"
     environment:
@@ -97,8 +98,9 @@ pgtest:
         - POSTGRES_PASSWORD=secret
         - PGDATA:/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
 
-    entrypoint: true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest 
-    
+    entrypoint: true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres please_dont_start
+    volumes:
+        - sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     
     
 data:
