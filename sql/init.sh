@@ -26,7 +26,7 @@ EOF
 ## a draft:
 # local all all   password
 # local superuser all reject --- too much?
-# hostssl someuser somedb somenet/30   password
+# hostssl someuser ryctoicdb somenet/30   password
 # --- reject everything else
 # hostssl   all all 0.0.0.0/0 reject
 # hostnossl all all 0.0.0.0/0 reject

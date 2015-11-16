@@ -109,10 +109,11 @@ TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl error
 
 docker dynamic links with dnsdock
 --------------------------------------
-I tried skydns+skydock, but had some problems. Can't now remember. Like it couldn't survive sleep mode of my laptop.
+I tried skydns+skydock, but had some problems. Can't now remember. I'm sorry.
 
-in /etc/default/docker:
-DOCKER_OPTS="--bip=172.17.42.1/24 --dns=172.17.42.1 --dns 8.8.8.8 --dns 8.8.4.4"
+And I had to run two containers instead of one.
+
+in /lib/systemd/system/docker.service add `--dns=172.17.0.1` to the `ExecStart=`        
 this is better that adding a dns param to every container
 
 

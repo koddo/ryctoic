@@ -45,6 +45,17 @@ $ apt-get install postgresql-9.4-pgtap
 $ psql -c "CREATE EXTENSION pgtap;"
 ```
 
+in fact, pg_prove just passes everything off to prove --- http://stackoverflow.com/questions/16737631/run-pgtap-with-perl-prove-instead-of-pg-prove
+
+
+so, we produce some tap test results
+the prove command only understands lines without whitespaces
+so we have to do this before tests
+```
+\pset format unaligned
+```
+
+
 
 locale
 ================
@@ -67,6 +78,21 @@ locale
 -- echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen
 -- locale-gen --no-archive
 
+
+
+
+
+create role noinherit vs inherit
+=======================================
+
+inherit is the default for backwards compatibility
+behavior specified by the SQL standard (most closely approximated): noinherit for users, inherit for groups
+http://www.postgresql.org/docs/current/static/sql-createrole.html
+
+we created our clients with inherit for simplicity
+to avoid setting role explicitly on login
+
+but administrator is still noinherit
 
 
 

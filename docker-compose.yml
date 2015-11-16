@@ -2,7 +2,7 @@ dnsdock:
     image: tonistiigi/dnsdock
     command: -domain dnsdock -environment dev
     ports:
-        - 172.17.42.1:53:53/udp
+        - "172.17.0.1:53:53/udp"
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
     
@@ -85,7 +85,8 @@ postgres:
         - data
     volumes:
         # - tmp:/home/theuser/tmp
-        - sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        - sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        - sql/init.sh:/docker-entrypoint-initdb.d/init.sh
 
 
 pgtest:
@@ -98,9 +99,11 @@ pgtest:
         - POSTGRES_PASSWORD=secret
         - PGDATA:/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
 
-    entrypoint: true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres please_dont_start
+    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres please_dont_start
     volumes:
-        - sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
+        - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /home/alex/mnt/ryctoic/sql:/sql
     
     
 data:
@@ -109,7 +112,7 @@ data:
     volumes:
         - /var/lib/postgresql
         - tmp:/mnt
-    entrypoint: true
+    entrypoint: /bin/true
 
 
 
@@ -117,13 +120,14 @@ flyway:
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_flyway
 
-    entrypoint: bin/entrypoint-flyway.sh
-    command: info
+    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --no-deps --entrypoint "/home/theuser/bin/entrypoint-flyway.sh" flyway secrets/flyway.pgtest.conf info
+    # entrypoint: bin/entrypoint-flyway.sh
+    command: secrets/flyway.conf info
 
     volumes:
-        - ../ryctoic.secrets:/home/theuser/secrets
-        - sql:/home/theuser/sql
-        - bin/entrypoint-flyway.sh:/home/theuser/bin/entrypoint-flyway.sh
+        - /home/alex/mnt/ryctoic.secrets:/home/theuser/secrets
+        - /home/alex/mnt/ryctoic/sql:/home/theuser/sql
+        - /home/alex/mnt/ryctoic/bin/entrypoint-flyway.sh:/home/theuser/bin/entrypoint-flyway.sh
 
     links:
         - postgres
