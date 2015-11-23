@@ -6,6 +6,13 @@ flyway
 
 http://flywaydb.org/getstarted/why.html
 
+schema migrations can always be reverted easily
+unless you have data
+
+I vote for forward-only migrations
+for rolling back we use our regular disaster recovery
+
+
 tricks
 =========
 

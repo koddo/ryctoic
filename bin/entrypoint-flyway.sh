@@ -6,7 +6,7 @@ HOST=$(echo "$HOSTPORT" | cut -d: -f1)
 PORT=$(echo "$HOSTPORT" | cut -d: -f2)
 
 
-
+trap "exit 1" SIGINT
 while ! timeout 1 bash -c cat < /dev/null > "/dev/tcp/$HOST/$PORT" &> /dev/null
 do
   echo "waiting for postgres..."
