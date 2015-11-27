@@ -21,3 +21,15 @@ node_modules
 ### TODO: fix the mess in gitignore files
 ### TODO: git filter-branch the repo --- I forgot to exclude deps and compiled files and now have a huge repo
 
+
+
+
+#############################################################################
+### from https://github.com/github/gitignore/blob/master/Python.gitignore ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.cache
+############################################################
+
