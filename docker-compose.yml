@@ -81,7 +81,7 @@ postgres:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=secret   # TODO: change this during deployment
         # - POSTGRES_PASSWORD=md50faab7f0bfc96e5ca6956b920a171564   # TODO: comment this like: please save your time and don't try to crack this one, we change it during deployment
-        - PGDATA:/var/lib/postgresql/data   # this is default
+        - PGDATA=/var/lib/postgresql/data   # this is default
     volumes_from:
         - data
     volumes:
@@ -98,13 +98,15 @@ pgtest:
     environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=secret
-        - PGDATA:/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
+        - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
 
-    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres please_dont_start
+    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
     volumes:
         - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
         - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         - /home/alex/mnt/ryctoic/sql:/sql
+        # we can't share postgresql.conf and pg_hba.conf here, because at the moment of writing docker doesn't allow to map uids in volumes
+        # so we simply copy these two files in init.sh
 
     # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
 

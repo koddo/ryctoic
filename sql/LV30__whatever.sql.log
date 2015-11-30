@@ -1,0 +1,7 @@
+-- empty
+\echo v30
+v30
+select * from nothing;
+psql:V30__whatever.sql:5: ERROR:  relation "nothing" does not exist
+LINE 1: select * from nothing;
+                      ^

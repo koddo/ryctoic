@@ -1,0 +1,4 @@
+openssl req ... -days $N
+N is before 03:14:07 UTC on 19 January 2038
+
+

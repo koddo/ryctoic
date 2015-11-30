@@ -1,11 +1,8 @@
-from pg_schema_version import two
+from pg_schema_version import version_looks_valid
 
-# content of test_sample.py
-def func(x):
-    return x + 1
+def test_version_looks_valid():
+    assert version_looks_valid('1.13_run15++beta2') == True
+    assert version_looks_valid('whatever123') == False
 
-def test_answer():
-    assert func(3) == 4
-
-def test_two():
-    assert two() == 2
+# https://pytest.org/latest/fixture.html
+# http://www.pydanny.com/pytest-no-boilerplate-testing-2.html
