@@ -1,0 +1,44 @@
+saved CA.pl and openss.cnf.original to see diff
+
+we don't want to have the CA.pl generated ca dir in the repo:
+$ ln -s ../../the_ca_dir symlink_to_ca_dir
+
+
+
+http://www.depesz.com/2015/05/11/how-to-setup-ssl-connections-and-authentication/
+https://www.debian-administration.org/article/618/Certificate_Authority_CA_with_OpenSSL
+
+https://www.openssl.org/docs/manmaster/apps/CA.pl.html
+https://www.openssl.org/docs/manmaster/apps/req.html
+https://www.openssl.org/docs/manmaster/apps/
+
+CA.pl is modified in accordance with recommendations
+
+in openssl.cnf:
+default_md	= sha256
+digests		= sha256, sha384, sha512
+# req_extensions = v3_req --- # do we need to uncomment this?
+
+
+   ~/.postgresql/postgresql.crt
+   ~/.postgresql/postgresql.key
+   ~/.postgresql/root.crt
+   ~/.postgresql/root.crl
+   
+   $PGDATA/server.crt 	
+   $PGDATA/server.key 	
+   $PGDATA/root.crt
+   $PGDATA/root.crl
+
+if we want it to wait for password to be entered on restart, there is a -w param
+$ pg_ctl start -w
+http://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION
+
+remove password:
+$ openssl rsa -in newkey.pem -out newkey.nopass.pem
+
+
+
+
+http://www.postgresql.org/docs/9.0/static/libpq-envars.html
+/Applications/Postgres.app//Contents/Versions/9.4/bin/psql "host=172.17.0.3 port=5432 dbname=ryctoicdb user=administrator sslrootcert=certs_dev/cacert.pem sslcert=certs_dev/pg-user-administrator.crt sslkey=certs_dev/pg-user-administrator.nopassword.key sslmode=verify-ca"

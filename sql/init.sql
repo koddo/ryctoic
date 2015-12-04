@@ -29,6 +29,14 @@ create user sp_only with
        inherit; -- see readme
 grant sp_only_role to sp_only;
 
+
+
+create role ssl_cert_group;
+grant ssl_cert_group to administrator,
+                        client,
+                        sp_only;
+
+
 ------------------------------------------------------------
 
 create database ryctoicdb with
