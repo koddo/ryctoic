@@ -22,7 +22,7 @@
                   erlydtl,
                   mnesia,
                   base64url,
-                  emongo,
+                  %% emongo,
                   jsx,
                   poolboy
                                                 % jiffy

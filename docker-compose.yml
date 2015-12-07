@@ -8,8 +8,7 @@ dnsdock:
     
 
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
-    # image: nginx
-    build: dockerfiles_empty_build_context
+    build: dockerfiles_empty_build_context       # image: nginx
     dockerfile: Dockerfile_nginx
 
     links:
@@ -19,9 +18,9 @@ nginx:   # TODO: this image runs nginx as root, is this a security issue?
     ports:
         - "8443:8443"
     volumes:
-        - nginx.conf:/etc/nginx/nginx.conf:ro
-        - priv/ssl/server.crt:/etc/nginx/server.crt:ro
-        - priv/ssl/server.key:/etc/nginx/server.key:ro
+        - /home/alex/mnt/ryctoic/nginx.conf:/etc/nginx/nginx.conf:ro
+        - /home/alex/mnt/ryctoic/priv/ssl/server.crt:/etc/nginx/server.crt:ro
+        - /home/alex/mnt/ryctoic/priv/ssl/server.key:/etc/nginx/server.key:ro
     
         
 backend:
@@ -35,9 +34,8 @@ backend:
         - .:/home/theuser/ryctoic
         - ../ryctoic.secrets:/home/theuser/secrets      # see vm's shared dirs
 
-    # ports:
-    #     - "8080:8080"
-
+    ports:
+        - "8080:8080"
     # expose:
     # we'll have to expose some ports if we need to interconnect erlang nodes 
     #  - "4369:4369"
@@ -59,12 +57,13 @@ figwheel:
     dockerfile: Dockerfile_figwheel
 
     volumes:
-        - .:/home/theuser/ryctoic
+        - /home/alex/mnt/ryctoic/:/home/theuser/ryctoic
         # cache dependencies of lein figwheel to avoid downloading them on every run, this is gitignored
-        - ./client-web/lein-deps:/home/theuser/.m2/
+        - /home/alex/mnt/ryctoic/client-web/lein-deps:/home/theuser/.m2/
 
     working_dir: /home/theuser/ryctoic/client-web
-    command: lein figwheel
+    command: /bin/true
+    # command: lein figwheel
     # command: while true ; do echo "doing nothing" && sleep 5 ; done
 
     # stdin_open: true
@@ -72,7 +71,7 @@ figwheel:
 
 
     
-postgres:
+pgold:
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_postgres
     expose:
@@ -86,11 +85,12 @@ postgres:
         - data
     volumes:
         # - tmp:/home/theuser/tmp
-        - sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-        - sql/init.sh:/docker-entrypoint-initdb.d/init.sh
+        - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
+    entrypoint: /bin/true
 
 
-pgtest:
+postgres:
     build: dockerfiles_empty_build_context
     dockerfile: Dockerfile_postgres
     expose:
@@ -100,7 +100,7 @@ pgtest:
         - POSTGRES_PASSWORD=secret
         - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
 
-    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
+    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
     volumes:
         - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
         - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -116,7 +116,7 @@ data:
     # dockerfile: Dockerfile_postgres
     volumes:
         - /var/lib/postgresql
-        - tmp:/mnt
+        - /home/alex/mnt/ryctoic/tmp:/mnt
     entrypoint: /bin/true
 
 

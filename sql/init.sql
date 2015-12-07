@@ -3,7 +3,6 @@
 -- TODO: restrict replication role to min possible privileges, it's going to have an automated passwordless login
 -- TODO: move all todos to a todos file or to a tracker, we don't want to have todos in migration files, we can't edit them
 
-
 -- we follow a general recommendation to create roles and then grant them to users
 create role admin_role;           -- owns the database
 create role client_role;          -- business logic here, can read and write, views with security_barrier, functions with security definer
@@ -98,6 +97,8 @@ alter default privileges     in schema pgtap revoke all on tables      from publ
 alter default privileges     in schema pgtap revoke all on sequences   from public cascade;
 alter default privileges     in schema pgtap revoke all on functions   from public cascade;
 alter default privileges     in schema pgtap revoke all on types       from public cascade;
+-- http://stackoverflow.com/questions/34107804/revoke-everything-from-the-public-role-in-postgres
+-- TODO: can also revoke on domain, foregn data, foreign server, language, large object, type
 -- TODO: information_schema, pg_catalog, etc, have some privileges and permissions via the public role --- should we revoke them?
 ------------------------------------------------------------
 
@@ -110,13 +111,12 @@ alter default privileges     in schema pgtap revoke all on types       from publ
 
 
 
-
-
-
-
 ------------------------------------------------------------
--- reset role;
--- reset session authorization;
+reset role;
+reset session authorization;
+create extension sslinfo with schema myschema;
+revoke all on tablespace pg_default from public;
+revoke all on tablespace pg_global  from public;
 ------------------------------------------------------------
 
 

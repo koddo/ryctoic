@@ -24,14 +24,38 @@ content_types_provided(Req, State) ->
 hello_to_text(Req, State) ->
     % TODO: write a connection pool using poolboy
     error_logger:info_msg("--- handler_sql~n", []),
+    error_logger:info_msg("fuck you~n", []),
     
-    R = epgsql:connect("postgres.dev.dnsdock", "root", "mysecretpassword3", [{database, "world"}]),   % TODO: CRITICAL move to secrets file
+                                                % TODO: CRITICAL move to secrets file
+    R = epgsql:connect("ryctoic_postgres.dev.dnsdock", 
+                       "administrator", 
+                       no_password, 
+                       [{database, "ryctoicdb"}, 
+                        {ssl, true}, 
+                        {cacertfile, "/home/theuser/ryctoic/sql/certs_dev/cacert.pem"},
+                        {certfile,   "/home/theuser/ryctoic/sql/certs_dev/pg-user-administrator.crt"},
+                        {keyfile,    "/home/theuser/ryctoic/sql/certs_dev/pg-user-administrator.nopassword.key"},
+                        {verify, verify_peer},
+                        {fail_if_no_peer_cert, true}   % this is for server-side, not sure if this works for client-side, but won't hurt
+                       ]),
     error_logger:info_msg("--- SQL connect: ~p~n", [R]),
     {ok, C} = R,
-    {ok, _, Rows} = epgsql:equery(C, "select name from country limit 5"),
+    {ok, _, Rows} = epgsql:equery(C, "select * from pg_user limit 5;"),
     ok = epgsql:close(C),
 
     error_logger:info_msg("--- SQL Rows: ~p~n", [Rows]),
 
 	{<<"REST Hello World as text!">>, Req, State}.
 
+
+%% epgsql:connect("example.com", 
+%%                "user", 
+%%                "secret", 
+%%                [{database, "whatever", 
+%%                  {ssl, true}, 
+%%                  {cacertfile, "cacert.crt"},
+%%                  {certfile,   "user.crt"},
+%%                  {keyfile,    "user.nopassword.key"},
+%%                  {verify, verify_peer},
+%%                  {fail_if_no_peer_cert, true}
+%%                 ])

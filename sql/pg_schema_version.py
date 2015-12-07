@@ -13,7 +13,9 @@ from collections import namedtuple
 # TODO: command line command help
 # TODO: configure myschema.pypg_schema_version in conf
 # TODO: stored function which returns latest applied migration
-# TODO: command that prints lates applied migration
+# TODO: command that prints latest applied migration
+# TODO: all columns not null
+# TODO: track sort_rank
 
 BASELINE_STR = "------------baseline------------"
 
@@ -305,7 +307,7 @@ def migrate_up_to_target(target):
 # tried this: http://click.pocoo.org/5/commands/#merging-multi-commands
 # but options got lost and didn't work for me after merging, I didn't find a reason, maybe I missed something
 # hence some copypaste here with --conf option
-# but anyway I like the way it can be passed at the very end, after any command and argument
+# but anyway I like the way this param can be passed at the very end, after any command and argument
 # with a group I would have to pass it before anything
 # example: $scriptname baseline 0 --conf dev.conf
 
