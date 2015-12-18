@@ -11,10 +11,6 @@ nginx:   # TODO: this image runs nginx as root, is this a security issue?
     build: dockerfiles_empty_build_context       # image: nginx
     dockerfile: Dockerfile_nginx
 
-    links:
-        - dnsdock
-        - backend
-        - figwheel
     ports:
         - "8443:8443"
     volumes:
@@ -45,12 +41,6 @@ backend:
     #  - "9104:9104"
     #  - "9105:9105"
 
-    links:
-        - dnsdock
-        - postgres
-        - figwheel
-        
-
         
 figwheel:
     build: dockerfiles_empty_build_context
@@ -62,32 +52,12 @@ figwheel:
         - /home/alex/mnt/ryctoic/client-web/lein-deps:/home/theuser/.m2/
 
     working_dir: /home/theuser/ryctoic/client-web
-    command: /bin/true
-    # command: lein figwheel
+    command: /usr/local/bin/lein figwheel
+    # command: /bin/true
     # command: while true ; do echo "doing nothing" && sleep 5 ; done
 
     # stdin_open: true
     # tty: true
-
-
-    
-pgold:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_postgres
-    expose:
-        - "5432"
-    environment:     # TODO: CRITICAL secure postgres docker
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=secret   # TODO: change this during deployment
-        # - POSTGRES_PASSWORD=md50faab7f0bfc96e5ca6956b920a171564   # TODO: comment this like: please save your time and don't try to crack this one, we change it during deployment
-        - PGDATA=/var/lib/postgresql/data   # this is default
-    volumes_from:
-        - data
-    volumes:
-        # - tmp:/home/theuser/tmp
-        - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-        - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
-    entrypoint: /bin/true
 
 
 postgres:
@@ -99,14 +69,18 @@ postgres:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=secret
         - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
+        # - PGDATA=/var/lib/postgresql/data   # this is default
 
-    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
+    # volumes_from:
+    #     - data
     volumes:
         - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
         - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         - /home/alex/mnt/ryctoic/sql:/sql
         # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes
         # so we simply copy these files using init.sh
+
+    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
 
     # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
 
@@ -121,24 +95,7 @@ data:
 
 
 
-flyway:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_flyway
 
-    entrypoint: /bin/true     # bin/docker-compose.sh run --rm --no-deps --entrypoint "/home/theuser/bin/entrypoint-flyway.sh" flyway secrets/flyway.pgtest.conf info
-    # entrypoint: bin/entrypoint-flyway.sh
-    # command: secrets/flyway.conf info
-
-    volumes:
-        - /home/alex/mnt/ryctoic.secrets:/home/theuser/secrets
-        - /home/alex/mnt/ryctoic/sql:/home/theuser/sql
-        - /home/alex/mnt/ryctoic/bin/entrypoint-flyway.sh:/home/theuser/bin/entrypoint-flyway.sh
-
-    links:
-        - postgres
-
-
-# docker ps -a | grep _run_ | awk '{print $1}' | xargs --no-run-if-empty docker rm
 
 
         

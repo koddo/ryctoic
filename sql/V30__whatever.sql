@@ -2,4 +2,4 @@
 
 \echo v30
 
-select * from nothing;
+-- select * from nothing;

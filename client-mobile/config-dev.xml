@@ -8,17 +8,18 @@
         Apache Cordova Team
     </author>
     <content src="redirect.html" />
+    <!-- <content src="index_test.html" /> -->
 
 
     <!-- TODO: disable this (in js) for ios < 7 -->
-    <plugin name="cordova-plugin-statusbar" version="1" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#000000" />
     <preference name="StatusBarStyle" value="blacktranslucent" />
     
 
+    <preference name="orientation" value="all" />
+    
     <!-- newer won't work until cordova ios platform 4.0 -->
-    <plugin name="cordova-plugin-whitelist" version="1.0.0" />
     <access origin="*" />
     <allow-intent href="*" />
     <allow-navigation href="*" />

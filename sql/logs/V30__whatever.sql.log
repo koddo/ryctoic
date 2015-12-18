@@ -1,0 +1,12 @@
+-- empty
+\echo v30
+v30
+-- select * from nothing;
+-- empty
+\echo v30
+v30
+-- select * from nothing;
+-- empty
+\echo v30
+v30
+-- select * from nothing;

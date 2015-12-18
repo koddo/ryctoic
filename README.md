@@ -9,10 +9,21 @@ there is a bug in virtualbox's shared filesystem
 you read garbage after writing to a file
 https://github.com/ninenines/cowboy/issues/812
 
+nat port forwarding from host to virtual machine
+--------------------------------------------------
+http://apple.stackexchange.com/questions/80266/nat-port-forwarding-from-host-to-client-in-vmware-fusion-5
 
 /etc/hosts
 ------------
-add localhost.ryctoic.com (vmware ip) to /etc/hosts, because redirect uri must end with a public top-level domain (such as .com or .org)
+add localhost.ryctoic.com (vmware ip) to /etc/hosts in mac, because redirect uri must end with a public top-level domain (such as .com or .org)
+
+install and run dnsmasq, it will resolve hosts from /etc/hosts without additional configuration
+```
+$ sudo port install dnsmasq
+$ sudo port load dnsmasq
+```
+http://stackoverflow.com/questions/7473939/iphone-add-entry-to-etc-hosts-without-jailbreaking
+https://gist.github.com/bradt/2018072
 
 remote shell
 ------------
@@ -63,6 +74,9 @@ make inappbrowser ignore ssl errors for dev env
 **=== HUGE SECURITY HOLE! ===**
 
 **=== HUGE SECURITY HOLE! ===**
+
+http://stackoverflow.com/questions/12627774/cordova-phonegap-ios-https-ssl-issues
+http://ivancevich.me/articles/ignoring-invalid-ssl-certificates-on-cordova-android-ios/
 
 Please use this for development and debugging only!
 
@@ -115,6 +129,9 @@ And I had to run two containers instead of one.
 
 in /lib/systemd/system/docker.service add `--dns=172.17.0.1` to the `ExecStart=`        
 this is better that adding a dns param to every container
+
+add to /etc/resolv.conf on the host to be able to ping containers:
+nameserver 172.17.0.1
 
 
 

@@ -1,26 +1,30 @@
+import os
 import sys
 import hashlib
 import click
 import psycopg2.extras
 import glob
 import subprocess
+import configparser
 from distutils.version import LooseVersion
 from prettytable import PrettyTable
 from collections import namedtuple
 
-
 # TODO: good messages
 # TODO: command line command help
-# TODO: configure myschema.pypg_schema_version in conf
 # TODO: stored function which returns latest applied migration
 # TODO: command that prints latest applied migration
 # TODO: all columns not null
 # TODO: track sort_rank
 
+DEFAULT_CONF_FILE = os.path.splitext( os.path.basename(__file__) )[0] + '.conf'   # script name - .py  + .conf
+DEFAULT_SCHEMA = 'public'
+DEFAULT_TABLE = 'pg_schema_version'
+
 BASELINE_STR = "------------baseline------------"
 
 CREATE_TABLE_STATEMENT = """
-create table myschema.pypg_schema_version (
+create table {}.{} (
   filename          text   primary key,
   checksum          text,
   sort_rank         integer,
@@ -56,7 +60,7 @@ def pretty_table():
     print(pt)
 
 INSERT_STATEMENT = """
-insert into myschema.pypg_schema_version (
+insert into {}.{} (
   filename,
   checksum,
   sort_rank,
@@ -67,12 +71,12 @@ insert into myschema.pypg_schema_version (
 values (%s, %s, %s, %s, %s, %s);"""
 
 UPDATE_STATEMENT = """
-update myschema.pypg_schema_version
+update {}.{}
 set success=%s
 where filename=%s
 """
 
-SELECT_STATEMENT = """select * from myschema.pypg_schema_version;"""
+SELECT_STATEMENT = """select * from {}.{};"""
 
 ############################################################
 
@@ -105,7 +109,8 @@ def version_from_filename(f):   # TODO: conf
     return f.split("__")[0][1:]
 
 def table_exists():
-    cur.execute( "select         to_regclass('myschema.pypg_schema_version');" )     # http://stackoverflow.com/questions/20582500/how-to-check-if-a-table-exists-in-a-given-schema
+    cur.execute( "select         to_regclass('{}.{}');".format( cfg('misc', 'schema', default=DEFAULT_SCHEMA),
+                                                                cfg('misc', 'table',  default=DEFAULT_TABLE)) )     # http://stackoverflow.com/questions/20582500/how-to-check-if-a-table-exists-in-a-given-schema
     return bool(  cur.fetchone().to_regclass  )
 
 def version_looks_valid(version):
@@ -119,34 +124,66 @@ def is_baseline(migration):
     return migration.filename.split("__")[1] == BASELINE_STR \
         and migration.checksum is None
 
-def read_conf_and_connect_to_db():
+def print_files_sorted_by_looseversion():
+    files = sorted(glob.glob("V*__*.sql"),
+                   key = lambda x: LooseVersion(version_from_filename(x)))
+    for f in files:
+        print(f)
+
+def cfg(section, option, default):
+    if config.has_option(section, option):
+        return config[section][option]
+    else:
+        return default
+
+        
+def read_conf_and_connect_to_db(conf):
+    global config
+    global conn_str
     global conn   # I know what you think, but no, this is perfectly fine, because this simplifyes the code here
     global cur    # instead of passing as an argument everywhere
+    
     try:
-        conn = psycopg2.connect("host='172.17.0.3' port='5432' dbname='ryctoicdb' user='administrator' password='secret'")
-        cur = conn.cursor(cursor_factory = psycopg2.extras.NamedTupleCursor)
-    except psycopg2.Error as e:
-        print('error: %s' % (str(e)))
+        config = configparser.ConfigParser()
+        config.read(conf)
+    except Exception as e:
+        error_print("%s" % (str(e)))
         sys.exit(1)
 
+    try:
+        conn_str = ""
+        c = config['connection']
+        for i in c:
+            conn_str +=  "%s=%s " % (i, c[i])
+        conn = psycopg2.connect(conn_str)
+        cur = conn.cursor(cursor_factory = psycopg2.extras.NamedTupleCursor)
+    except psycopg2.Error as e:
+        error_print('%s' % (str(e)))
+        sys.exit(1)
+
+    debug_print(config)
+    debug_print(conn_str)
+    
 def baseline_after_some_checks(version):
     if not version_looks_valid(version):
-        print("error: version doesn't look like a version; probably starts with a letter instead of a number?")
+        error_print("version doesn't look like a version; probably starts with a letter instead of a number?")
         sys.exit(1)
 
     if table_exists():
-        print("error: won't baseline, myschema.pypg_schema_version already exists")
+        error_print("won't baseline, table already exists")
         sys.exit(1)
 
     try:
-        cur.execute(CREATE_TABLE_STATEMENT)
-        cur.execute(INSERT_STATEMENT, ("V" + version + "__" + BASELINE_STR, None, 0, "Administrator", 0, True))   # TODO: conf filename, user
+        cur.execute(CREATE_TABLE_STATEMENT.format( cfg('misc', 'schema', default=DEFAULT_SCHEMA),
+                                                   cfg('misc', 'table', default=DEFAULT_TABLE)) )
+        cur.execute(INSERT_STATEMENT.format( cfg('misc', 'schema', default=DEFAULT_SCHEMA),
+                                             cfg('misc', 'table', default=DEFAULT_TABLE) ),
+                    ("V" + version + "__" + BASELINE_STR, None, 0, "Administrator", 0, True))   # TODO: conf filename, user
         conn.commit()
     except psycopg2.Error as e:
-        print('error: %s' % (str(e)))
+        error_print('%s' % (str(e)))
         sys.exit(1)
 
-        
 def check_everything():
     global files
     global baseline
@@ -156,7 +193,7 @@ def check_everything():
     global MyAppliedMigrationTuple
 
     if not table_exists():
-        error_print("error: the myschema.pypg_schema_version table doesn't exist, please baseline it")
+        error_print("the table doesn't exist, please baseline it")
         sys.exit(1)
 
     MyFileTuple = namedtuple('MyFileTuple', 'filename checksum version')
@@ -182,7 +219,8 @@ def check_everything():
     debug_print("duplicated_versions:", duplicated_versions)
 
     # ---------- fetch migrations and check there is exactly one baseline
-    cur.execute(SELECT_STATEMENT)
+    cur.execute(SELECT_STATEMENT.format( cfg('misc', 'schema', DEFAULT_SCHEMA),
+                                         cfg('misc', 'table', DEFAULT_TABLE)) )
     applied_migrations_raw = cur.fetchall()
     if applied_migrations_raw:
         MyAppliedMigrationTuple = namedtuple('MyAppliedMigrationTuple', applied_migrations_raw[0].__class__._fields + ('version',))   # add field to tuple
@@ -256,48 +294,51 @@ def migrate_up_to_target(target):
         error_print("target doesn't exist")
         sys.exit(1)
     if not any( target == f.filename   for f in pending_files ):
-        print("target is must be after the last applied migration")
+        error_print("target is must be after the last applied migration")
         sys.exit(1)
             
     # migrate
     files_to_apply = [ f   for f in pending_files
                        if LooseVersion(f.version) <= LooseVersion(version_from_filename(target))]
 
+    print('going to apply these files:')
     for f in files_to_apply:
-        print('going to apply these files:')
-        print(f)
+        print(f.filename)
+    print('-----')
 
+    logs_dir = cfg('misc', 'logs_dir', default='logs')
+    os.makedirs(logs_dir, exist_ok=True)
+    
     for f in files_to_apply:
-        cur.execute(INSERT_STATEMENT, (f.filename, f.checksum, 0, "Administrator", 0, False))
+        cur.execute(INSERT_STATEMENT.format( cfg('misc', 'schema', default=DEFAULT_SCHEMA),
+                                             cfg('misc', 'table',  default=DEFAULT_TABLE)),
+                    (f.filename, f.checksum, 0, "Administrator", 0, False))
         conn.commit()
-        with open('L' + f.filename + '.log', 'a') as log:        # TODO: conf this and below
+        with open( os.path.join(logs_dir, f.filename + '.log'), 'a' ) as log:        # TODO: conf this and below
             try:
                 # http://petereisentraut.blogspot.ru/2010/03/running-sql-scripts-with-psql.html
-                out = subprocess.check_call(['/Applications/Postgres.app//Contents/Versions/9.4/bin/psql',
-                                             ## '--quiet',
-                                             '--echo-all',
-                                             '--no-psqlrc',
-                                             '--pset', 'pager=off',
-                                             '--no-password',
-                                             '-v', 'ON_ERROR_STOP=1',
-                                             '--host=172.17.0.3',
-                                             '--port=5432',
-                                             '--dbname', 'ryctoicdb',
-                                             '--user', 'administrator',
-                                             '--file', f.filename,
-                                         ],
-                                              env={ 'PGPASSWORD' : 'secret',
-                                                    'PGOPTIONS'  : '--client-min-messages=warning' },
-                                            universal_newlines=True,
-                                            stdout=log, stderr=log)
+                error_code = subprocess.check_call([cfg('misc', 'psql_path', default='psql'),
+                                                    ## '--quiet',
+                                                    '--echo-all',
+                                                    '--no-psqlrc',
+                                                    '--pset', 'pager=off',
+                                                    '--no-password',
+                                                    '-v', 'ON_ERROR_STOP=1',
+                                                    '--file', f.filename,
+                                                    conn_str
+                                                ],
+                                                   env={ 'PGOPTIONS'  : '--client-min-messages=warning' },
+                                                   universal_newlines=True,
+                                                   stdout=log, stderr=log)
             except subprocess.CalledProcessError as e:
-                print('error while calling psql: %s' % (str(e)))
+                error_print('error while calling psql: %s' % (str(e)))
                 sys.exit(1)
-        print('out:')
-        print(out)
+        print('done %s, psql cmd error code: %s' % (f.filename, error_code))
         
-        if out == 0:
-            cur.execute(UPDATE_STATEMENT, (True, f.filename))
+        if error_code == 0:
+            cur.execute(UPDATE_STATEMENT.format( cfg('misc', 'schema', default=DEFAULT_SCHEMA),
+                                                 cfg('misc', 'table', default=DEFAULT_TABLE)),
+                        (True, f.filename))
         conn.commit()
 
 ############################################################
@@ -305,7 +346,7 @@ def migrate_up_to_target(target):
 ############################################################
 
 # tried this: http://click.pocoo.org/5/commands/#merging-multi-commands
-# but options got lost and didn't work for me after merging, I didn't find a reason, maybe I missed something
+# but options got lost and didn't work for me after merging, I didn't find a reason, maybe I'm missing something
 # hence some copypaste here with --conf option
 # but anyway I like the way this param can be passed at the very end, after any command and argument
 # with a group I would have to pass it before anything
@@ -317,34 +358,37 @@ def cli(debug):
     global DEBUG
     DEBUG = debug
     if DEBUG: click.echo('debug mode on')
-    pass
 
 @cli.command()
-def local():   # TODO: local
-    """Command on cli1"""
-    pass
-
+def local():
+    """list files in LooseVersion order"""
+    print_files_sorted_by_looseversion()
+    
 @cli.command()
 @click.argument('version')
-def baseline(version):   # TODO: pass version _or_ file here
-    read_conf_and_connect_to_db()
+@click.option('--conf', default=DEFAULT_CONF_FILE)
+def baseline(version, conf):   # TODO: pass version _or_ file here
+    read_conf_and_connect_to_db(conf)
     baseline_after_some_checks(version)
     
 @cli.command()
-def info():
-    read_conf_and_connect_to_db()
+@click.option('--conf', default=DEFAULT_CONF_FILE)
+def info(conf):
+    read_conf_and_connect_to_db(conf)
     check_everything()
     pretty_table()
     
 @cli.command()
-def validate():
-    read_conf_and_connect_to_db()
+@click.option('--conf', default=DEFAULT_CONF_FILE)
+def validate(conf):
+    read_conf_and_connect_to_db(conf)
     check_everything()
     
 @cli.command()
 @click.argument('target')
-def migrate(target):
-    read_conf_and_connect_to_db()
+@click.option('--conf', default=DEFAULT_CONF_FILE)
+def migrate(target, conf):
+    read_conf_and_connect_to_db(conf)
     check_everything()
     migrate_up_to_target(target)
 

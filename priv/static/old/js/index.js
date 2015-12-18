@@ -34,6 +34,9 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        FastClick.attach(document.body);
+
+        console.log('Javascript OK');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -48,28 +51,6 @@ var app = {
     }
 };
 
-
 app.initialize();
 
-
-
-
-
-document.getElementById("redirectForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-    
-    var url = document.getElementById('redirectTo').value;
-    // console.log("-------------- " + url);
-
-    window.location.replace(url);
-    // or
-    // window.location.href = url;
-    // window.location = url;
-});
-
-// https://github.com/Adlotto/cordova-plugin-recheck-screen-orientation
-// window.shouldRotateToOrientation = function(degrees) {
-//   return true;
-// }
-
-
+alert("fuck");
