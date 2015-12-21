@@ -94,8 +94,11 @@ data:
     entrypoint: /bin/true
 
 
-
-
-
+cordova_browser_console_logger:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_cordova_browser_console_logger
+    volumes:
+        - /home/alex/mnt/ryctoic/bin/cordova_browser_console_logger.py:/home/theuser/cordova_browser_console_logger.py
+    command: /home/theuser/cordova_browser_console_logger.py
 
         

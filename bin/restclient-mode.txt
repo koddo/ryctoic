@@ -1,18 +1,18 @@
 # -*- mode: restclient; -*-
 
 #
-GET https://localhost.ryctoic.com:8443/mongo
+GET https://local.ryctoic.com:8443/mongo
 Accept: application/json
 
 #
-GET https://localhost.ryctoic.com:8443/form
+GET https://local.ryctoic.com:8443/form
 Accept: application/json
 
 
 
 
 #
-POST https://localhost.ryctoic.com:8443/mongo
+POST https://local.ryctoic.com:8443/mongo
 Accept: application/json
 Content-Type: application/json; charset=UTF-8
 

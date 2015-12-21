@@ -93,7 +93,7 @@ create_anonymous_user_and_session(Req) ->
 update_cookie(Req, SessionID) ->
     {ok, MaxAge} = application:get_env(?MYAPP, maxage),
     R = cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, [
-                                                                     {domain, "localhost.ryctoic.com"},
+                                                                     {domain, "local.ryctoic.com"},
                                                                      {path, "/"},    % TODO: maybe restrict this
                                                                      {max_age, MaxAge},   % TODO: maybe add an expires cookie preference
                                                                      {secure, true},

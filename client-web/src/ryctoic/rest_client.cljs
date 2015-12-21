@@ -26,7 +26,7 @@
 ;;     (clojure.core/let [ch 
 ;;                        (cljs.core.async/chan)] 
 ;;       (clojure.core/-> 
-;;        (ryctoic.rest-client/MYGET2 "https://localhost.ryctoic.com:8443/api/v0" ch) ryctoic.async-error-handling-macros/<? 
+;;        (ryctoic.rest-client/MYGET2 "https://local.ryctoic.com:8443/api/v0" ch) ryctoic.async-error-handling-macros/<? 
 ;;        (get-in ["_links" "ry:test" "href"]) 
 ;;        (ryctoic.rest-client/MYGET2 ch) <? 
 ;;        (get-in ["data"]) 
@@ -52,7 +52,7 @@
 ;;     (clojure.core/let [ch22790 
 ;;                        (cljs.core.async/chan)] 
 ;;       (clojure.core/-> 
-;;        (ryctoic.rest-client/MYGET2 "https://localhost.ryctoic.com:8443/api/v0" ch22790)
+;;        (ryctoic.rest-client/MYGET2 "https://local.ryctoic.com:8443/api/v0" ch22790)
 ;;        ryctoic.async-error-handling-macros/<? 
 ;;        (get-in ["_links" "ry:test" "href"]) 
 ;;        (ryctoic.rest-client/MYGET2 ch22790)

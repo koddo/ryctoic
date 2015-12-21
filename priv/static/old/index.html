@@ -51,7 +51,7 @@
          
          // TODO: test this with windows tablet
          function openLoginPopup() {
-             var link = 'https://localhost.ryctoic.com:8443/oauth2/google/callback';
+             var link = 'https://local.ryctoic.com:8443/oauth2/google/callback';
              var popup = window.open(link, '_blank', 'location=yes');
              popup.addEventListener('loadstop', function(event) {
                  if (event.url.lastIndexOf(link, 0) === 0) {

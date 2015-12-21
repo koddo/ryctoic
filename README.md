@@ -15,7 +15,7 @@ http://apple.stackexchange.com/questions/80266/nat-port-forwarding-from-host-to-
 
 /etc/hosts
 ------------
-add localhost.ryctoic.com (vmware ip) to /etc/hosts in mac, because redirect uri must end with a public top-level domain (such as .com or .org)
+add local.ryctoic.com (vmware ip) to /etc/hosts in mac, because redirect uri must end with a public top-level domain (such as .com or .org)
 
 install and run dnsmasq, it will resolve hosts from /etc/hosts without additional configuration
 ```

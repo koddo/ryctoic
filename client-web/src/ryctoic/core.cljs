@@ -133,7 +133,7 @@
                              ;;             (let [ch (chan)]
                              ;;               (re-frame/dispatch [:btn-click--get-request--handle
                              ;;                                   (->
-                             ;;                                    (ryctoic.rest-client/MYGET2 "https://localhost.ryctoic.com:8443/api/v0" ch)
+                             ;;                                    (ryctoic.rest-client/MYGET2 "https://local.ryctoic.com:8443/api/v0" ch)
                              ;;                                    <?
                              ;;                                    (get-in ["_links" "ry:test" "href"])
                              ;;                                    (ryctoic.rest-client/MYGET2 ch)
@@ -145,7 +145,7 @@
                              ;;             ))
 
                              
-                             ;; (ryctoic.rest-client_macros/api "https://localhost.ryctoic.com:8443/api/v0"
+                             ;; (ryctoic.rest-client_macros/api "https://local.ryctoic.com:8443/api/v0"
                              ;;                                 (get-in ["_links" "ry:test" "href"])
                              ;;                                 (ryctoic.rest-client/MYGET2 ch)
                              ;;                                 <?
@@ -153,14 +153,14 @@
                              ;;                                 (#(re-frame/dispatch [:btn-click--get-request--handle %]))
                              ;;                                 )
 
-                             (ryctoic.rest-client_macros/api "https://localhost.ryctoic.com:8443/api/v0"
+                             (ryctoic.rest-client_macros/api "https://local.ryctoic.com:8443/api/v0"
                                                              (get-in ["_links" "ry:test" "href"])
                                                              (:to)
                                                              (get-in ["data"])
                                                              (#(re-frame/dispatch [:btn-click--get-request--handle %]))
                                                              )
 
-                             ;; (ajax/GET "https://localhost.ryctoic.com:8443/mongo"
+                             ;; (ajax/GET "https://local.ryctoic.com:8443/mongo"
                              ;;  {:handler       #(re-frame/dispatch [:btn-click--get-request--handle %1])
                              ;;   :error-handler #(re-frame/dispatch [:btn-click--get-request--error %1])})
 
@@ -170,6 +170,7 @@
 (re-frame/register-handler :btn-click--get-request--handle
                            [re-frame.core/debug]
                            (fn [state [_ response]]
+                             (js/console.log "!!! --- WTF --- !!!: ")
                              (println "--- the response "
                                       response
                                       ;; (get response "_links")
@@ -185,7 +186,7 @@
 (re-frame/register-handler :btn-click--post-request
                            [re-frame.core/debug]
                            (fn [state _]
-                             (ajax/POST "https://localhost.ryctoic.com:8443/mongo"
+                             (ajax/POST "https://local.ryctoic.com:8443/mongo"
                               {:params {:fuck "you"}
                                :format :json
                                :handler       #(re-frame/dispatch [:btn-click--post-request--handle %1])   ;; further dispatch !!

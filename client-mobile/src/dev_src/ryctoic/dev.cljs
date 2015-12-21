@@ -7,7 +7,7 @@
 (enable-console-print!)
 
 (fw/start {
-  :websocket-url "wss://localhost.ryctoic.com:8443/figwheel-ws"
+  :websocket-url "wss://local.ryctoic.com:8443/figwheel-ws"
   :on-jsload (fn []
                (println "----------------------------------------")
                (println "jsload")

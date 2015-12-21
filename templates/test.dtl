@@ -1,7 +1,7 @@
 {
     "_links": {
         "curies": [{ "name": "ry", "href": "https://github.com/koddo/ryctoic" }],
-        "self": { "href": "https://localhost.ryctoic.com:8443/api/v0/test" }
+        "self": { "href": "https://local.ryctoic.com:8443/api/v0/test" }
     },
 
     "data" : "test"

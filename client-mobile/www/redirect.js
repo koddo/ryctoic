@@ -16,6 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -34,6 +37,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        console.log("console ok");
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -66,6 +70,12 @@ document.getElementById("redirectForm").addEventListener("submit", function (eve
     // window.location.href = url;
     // window.location = url;
 });
+
+document.getElementById("buttonRedirectToLocalRyctoic").addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.replace("https://local.ryctoic.com:8443");
+});
+
 
 // https://github.com/Adlotto/cordova-plugin-recheck-screen-orientation
 // window.shouldRotateToOrientation = function(degrees) {

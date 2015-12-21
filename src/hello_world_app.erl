@@ -90,13 +90,13 @@ palworkflow() ->
 
 dispatch() ->
     cowboy_router:compile([{'_', [{"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
-                                  ,{"/", handler_index, []}   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}}
-                                  ,{"/sql", handler_sql, []}
-                                  ,{"/form", handler_form, []}
-                                  ,{"/oauth2/google/callback", handler_oauth2_google_callback, [palworkflow()]}
-                                  ,{"/websocket", handler_ws, []}
+                                 ,{"/", handler_index, []}   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}}
+                                 ,{"/sql", handler_sql, []}
+                                 ,{"/form", handler_form, []}
+                                 ,{"/oauth2/google/callback", handler_oauth2_google_callback, [palworkflow()]}
+                                 ,{"/websocket", handler_ws, []}
 
-                                  ,{"/api/v0/[:asdf]", handler_api_entrypoint, []}
+                                 ,{"/api/v0/[:asdf]", handler_api_entrypoint, []}
                                  ]}]).
 
 

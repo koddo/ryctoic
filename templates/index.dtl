@@ -16,6 +16,20 @@
          somecode.userinfo = '{{ userinfo }}';
      }( window.somecode = window.somecode || {} ));
      ryctoic.core.run();
+
+
+     (function(proxied) {
+         console.log = function() {
+             var xhr = new XMLHttpRequest();   // yes, I've checked, we don't have or need to reuse this
+             xhr.open("POST", "https://local.ryctoic.com:8443/cordova_browser_console_logger", true);
+             xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+             arguments_object_converted_to_array = Array.prototype.slice.call(arguments);      // http://stackoverflow.com/questions/960866/how-can-i-convert-the-arguments-object-to-an-array-in-javascript
+             xhr.send("".concat.apply(arguments_object_converted_to_array));
+             return proxied.apply(this, arguments);
+         };
+     })(console.log);
+     
+     console.log("browser_console_log ok");
     </script>
   </body>
 </html>

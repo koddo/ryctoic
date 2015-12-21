@@ -1,14 +1,14 @@
 {
     "_links": {
         "curies": [{ "name": "ry", "href": "https://github.com/koddo/ryctoic" }],
-        "self": { "href": "https://localhost.ryctoic.com:8443/api/v0" },     {# TODO: get urls from somewhere #}
-        "ry:test" : { "href": "https://localhost.ryctoic.com:8443/api/v0/test"},
+        "self": { "href": "https://local.ryctoic.com:8443/api/v0" },     {# TODO: get urls from somewhere #}
+        "ry:test" : { "href": "https://local.ryctoic.com:8443/api/v0/test"},
     },
     "_embedded": {
         "ry:test" : {
             "_links": {
                 "curies": [{ "name": "ry", "href": "https://github.com/koddo/ryctoic" }],
-                "self": { "href": "https://localhost.ryctoic.com:8443/api/v0/test" }
+                "self": { "href": "https://local.ryctoic.com:8443/api/v0/test" }
             },
             "test data" : "test"
         }
