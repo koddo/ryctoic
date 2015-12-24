@@ -190,7 +190,7 @@
                              (ajax/POST "https://local.ryctoic.com:8443/mongo"
                               {:params {:fuck "you"}
                                :format :json
-                               :handler       #(re-frame/dispatch [:btn-click--post-request--handle %1])   ;; further dispatch !!
+                               :handler       #(re-frame/dispatch [:btn-click--post-request--handle %1])
                                :error-handler #(re-frame/dispatch [:btn-click--post-request--error %1])})
                              state))
 (re-frame/register-handler :btn-click--post-request--handle
