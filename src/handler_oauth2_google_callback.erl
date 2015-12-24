@@ -3,7 +3,7 @@
 %% @doc Hello world handler.
 -module(handler_oauth2_google_callback).
 
--include("my-mnesia-records.hlr").
+-include("my_mnesia_records.hlr").
 
 -export([
          init/2,
@@ -107,7 +107,7 @@ to_html(Req, #state{ authm = M } = State) ->
                                   ]),
 
     %% TODO: should we allow relogin after we are logged in already? or maybe just do nothing when this happens?
-    Req2 = handler_index:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),
+    Req2 = authentication_code:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),
 
 	{Body, Req2, State}.
 

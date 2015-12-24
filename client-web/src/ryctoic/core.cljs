@@ -35,7 +35,7 @@
        [:input {
                 :type "button"
                 :value "log in"
-                :on-click #(js/somecode.popupCenter "/oauth2/google/callback" "" "500", "500")   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
+                :on-click #(js/somecode.openLoginPopup)   ; can't open a popup later in a handler, browsers blocks window.open() outside the onclick handler
                 }]
        [:input {
                 :type "button"
@@ -114,6 +114,7 @@
                              state))
 
 (defn ^:export dispatch-login [s]   ; called from popup
+  (js/console.log (str "--- dispatch-login: " s))
   (re-frame/dispatch [:log-in s]))
 
 (re-frame/register-handler :log-in
@@ -204,7 +205,12 @@
 
 ;; -----------------------------------------------
 
+
 (secretary/defroute "/" []
+  (re-frame/dispatch [:router-event #'page-root]))
+(secretary/defroute "/cordova/ios/" []
+  (re-frame/dispatch [:router-event #'page-root]))
+(secretary/defroute "/cordova/android/" []
   (re-frame/dispatch [:router-event #'page-root]))
 
 (secretary/defroute "/about" []
@@ -222,6 +228,12 @@
       (pushy/pushy secretary/dispatch!
                    (fn [x] (when (secretary/locate-route x) x))))
     (pushy/start! history))
+
+  ;; (when (= "/ios/" (pushy/get-token history))
+  ;;   (pushy/replace-token! history "/")
+  ;;   (js/console.log "0000000000000000000000000000000000000000"))
+
+  
   (re-frame/dispatch [:render])
   )
 
@@ -229,30 +241,28 @@
 
 
 
-
-
-(let [input
-      "a,b -> c ; d-> e ; 
+;; (let [input
+;;       "a,b -> c ; d-> e ; 
    
- b ->>f
-;
-q"
-      mysplit (fn [what regex] (filter not-empty (map clojure.string/trim (clojure.string/split what regex))))
-      parse (fn [d]
-              (let [ffdd (clojure.string/split d "->")
-                    mmvvdd (clojure.string/split d "->>")
-                    ]
-                (cond
-                  (== 2 (count mmvvdd)) {:type :mvd
-                                         :l (mysplit (nth mmvvdd 0) ","),
-                                         :r (mysplit (nth mmvvdd 1) ",")}
-                  (== 2 (count ffdd)) {:type :fd
-                                       :l (mysplit (nth ffdd 0) ","),
-                                       :r (mysplit (nth ffdd 1) ",")}
-                  true :fuck
-                  )))
-      ]
-  (map parse (mysplit input #";|\n"))  
-  )
+;;  b ->>f
+;; ;
+;; q"
+;;       mysplit (fn [what regex] (filter not-empty (map clojure.string/trim (clojure.string/split what regex))))
+;;       parse (fn [d]
+;;               (let [ffdd (clojure.string/split d "->")
+;;                     mmvvdd (clojure.string/split d "->>")
+;;                     ]
+;;                 (cond
+;;                   (== 2 (count mmvvdd)) {:type :mvd
+;;                                          :l (mysplit (nth mmvvdd 0) ","),
+;;                                          :r (mysplit (nth mmvvdd 1) ",")}
+;;                   (== 2 (count ffdd)) {:type :fd
+;;                                        :l (mysplit (nth ffdd 0) ","),
+;;                                        :r (mysplit (nth ffdd 1) ",")}
+;;                   true :fuck
+;;                   )))
+;;       ]
+;;   (map parse (mysplit input #";|\n"))  
+;;   )
 
 

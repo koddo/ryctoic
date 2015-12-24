@@ -1,0 +1,18 @@
+     var xhr = new XMLHttpRequest();
+     xhr.open("GET", "https://local.ryctoic.com:8443/session", true);
+     // TODO: what if status is not 200?
+     xhr.onreadystatechange = function () {   
+         if (xhr.readyState == 4 /* done */  &&  xhr.status == 200) {
+             console.log(xhr.responseText);
+             console.log(JSON.parse(xhr.responseText));
+             somecode.sessioncsrf = JSON.parse(xhr.responseText)['sessioncsrf'];   // TODO: add this to every form as hidden field
+             somecode.userinfo = JSON.parse(xhr.responseText)['userinfo'];
+             ryctoic.core.run();
+         } else {
+             console.log(xhr.readyState);
+             console.log(xhr.status);
+         }
+     }
+     xhr.send();
+
+     

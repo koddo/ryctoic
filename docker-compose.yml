@@ -5,7 +5,10 @@ dnsdock:
         - "172.17.0.1:53:53/udp"
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-    
+    log_driver: "json-file"
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
     build: dockerfiles_empty_build_context       # image: nginx
@@ -17,6 +20,9 @@ nginx:   # TODO: this image runs nginx as root, is this a security issue?
         - /home/alex/mnt/ryctoic/nginx.conf:/etc/nginx/nginx.conf:ro
         - /home/alex/mnt/ryctoic/priv/ssl/server.crt:/etc/nginx/server.crt:ro
         - /home/alex/mnt/ryctoic/priv/ssl/server.key:/etc/nginx/server.key:ro
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
     
         
 backend:
@@ -40,6 +46,9 @@ backend:
     #  - "9103:9103"
     #  - "9104:9104"
     #  - "9105:9105"
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
         
 figwheel:
@@ -58,6 +67,9 @@ figwheel:
 
     # stdin_open: true
     # tty: true
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
 
 postgres:
@@ -83,6 +95,9 @@ postgres:
     # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
 
     # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
     
 data:
@@ -92,6 +107,9 @@ data:
         - /var/lib/postgresql
         - /home/alex/mnt/ryctoic/tmp:/mnt
     entrypoint: /bin/true
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
 
 cordova_browser_console_logger:
@@ -100,5 +118,14 @@ cordova_browser_console_logger:
     volumes:
         - /home/alex/mnt/ryctoic/bin/cordova_browser_console_logger.py:/home/theuser/cordova_browser_console_logger.py
     command: /home/theuser/cordova_browser_console_logger.py
+    log_opt:
+        max-size: "100k"
+        max-file: "20"
 
         
+
+
+
+
+
+

@@ -39,6 +39,32 @@
             newWindow.focus();
         }
     };
+
+    somecode.popupCordova = function() {
+        var link = 'https://local.ryctoic.com:8443/oauth2/google/callback';
+        var popup = window.open(link, '_blank', 'location=yes');
+        popup.addEventListener('loadstop', function(event) {
+            if (event.url.lastIndexOf(link, 0) === 0) {
+                popup.executeScript({ code: 'if (typeof loginData === "undefined") { "---=== login error ===---" } else { loginData }' },
+                                    function( values ) {
+                                        if(values[0] !== "---=== login error ===---")   // e.g., user clicks deny in google
+                                            ryctoic.core.dispatch_login(values[0]);
+                                        popup.close();
+                                    }
+                                   );
+            }
+        });
+    }
+
+    somecode.openLoginPopup = function() {
+        if( somecode.we_are_inside_cordova )
+            somecode.popupCordova();
+        else
+            somecode.popupCenter("/oauth2/google/callback", "", "500", "500");
+    }
+    
 }( window.somecode = window.somecode || {} ));
+
+
 
 

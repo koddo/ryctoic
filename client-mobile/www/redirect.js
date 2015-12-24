@@ -73,7 +73,17 @@ document.getElementById("redirectForm").addEventListener("submit", function (eve
 
 document.getElementById("buttonRedirectToLocalRyctoic").addEventListener("click", function (event) {
     event.preventDefault();
-    window.location.replace("https://local.ryctoic.com:8443");
+    window.location.replace("https://local.ryctoic.com:8443/");
+});
+
+document.getElementById("buttonRedirectToLocalRyctoicCordovaIos").addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.replace("https://local.ryctoic.com:8443/cordova/ios/");
+});
+
+document.getElementById("buttonRedirectToLocalRyctoicCordovaAndroid").addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.replace("https://local.ryctoic.com:8443/cordova/android/");
 });
 
 

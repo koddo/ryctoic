@@ -17,6 +17,8 @@ content_types_provided(Req, State) ->
 
 
 to_json(Req, State) ->
+    Cookies = cowboy_req:parse_cookies(Req),
+    error_logger:info_msg("--- Cookies: ~p~n", [Cookies]),
     error_logger:info_msg("--- ~p~n", [?MODULE]),
     case cowboy_req:binding(asdf, Req) of
         undefined ->

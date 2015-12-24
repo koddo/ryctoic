@@ -16,6 +16,8 @@
 
 
         <script>
+         var loginData = '{{ id }}';
+
          if (window.opener && "" != window.opener.location) {
              window.opener.ryctoic.core.dispatch_login('{{ id }}');
              window.close();
@@ -31,3 +33,7 @@
         </script>
     </body>
 </html>
+
+
+
+

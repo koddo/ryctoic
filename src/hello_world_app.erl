@@ -2,7 +2,7 @@
 -module(hello_world_app).
 -behaviour(application).
 
--include("my-mnesia-records.hlr").
+-include("my_mnesia_records.hlr").
 
 %% API.
 -export([start/2]).
@@ -89,18 +89,31 @@ palworkflow() ->
     PalWorkflow.
 
 dispatch() ->
-    cowboy_router:compile([{'_', [{"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
-                                 ,{"/", handler_index, []}   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}}
-                                 ,{"/sql", handler_sql, []}
-                                 ,{"/form", handler_form, []}
-                                 ,{"/oauth2/google/callback", handler_oauth2_google_callback, [palworkflow()]}
-                                 ,{"/websocket", handler_ws, []}
+    cowboy_router:compile([{'_', [{"/", handler_index, []}   %% was {"/", cowboy_static, {priv_file, hello_world, "static/index.html", [{mimetypes, cow_mimetypes, all}]}}
+                                 ,{"/static/[...]", cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
 
+                                  %% TODO: when we split web and cordova --- remove /ios/ and /android/ routes in both routers: in cowboy and in secretary
+                                 ,{"/cordova/ios/",       handler_index, []}
+                                 ,{"/cordova/android/",   handler_index, []}
+                                 ,{"/cordova/ios/static/[...]",       cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
+                                 ,{"/cordova/android/static/[...]",   cowboy_static, {priv_dir, hello_world, "static", [{mimetypes, cow_mimetypes, all}]}}
+                                 ,{"/cordova/ios/somecode_cordova_only.js",       cowboy_static, {priv_file, hello_world, "static/js/somecode_cordova_only.js"}}
+                                 ,{"/cordova/android/somecode_cordova_only.js",   cowboy_static, {priv_file, hello_world, "static/js/somecode_cordova_only.js"}}
+                                 ,{"/cordova/ios/[...]",       cowboy_static, {priv_dir, hello_world, "../client-mobile/platforms/ios/platform_www/", [{mimetypes, cow_mimetypes, all}]}}
+                                 ,{"/cordova/android/[...]",   cowboy_static, {priv_dir, hello_world, "../client-mobile/platforms/android/platform_www/", [{mimetypes, cow_mimetypes, all}]}}
+                                  
+                                 
+
+                                 ,{"/oauth2/google/callback", handler_oauth2_google_callback, [palworkflow()]}
+
+                                 ,{"/sql", handler_sql, []}
+                                 ,{"/websocket", handler_ws, []}
                                  ,{"/api/v0/[:asdf]", handler_api_entrypoint, []}
                                  ]}]).
 
 
 
 %% http://ninenines.eu/docs/en/cowboy/HEAD/guide/routing/#live_update
+%% when you modify routes
 router_live_update() ->
     cowboy:set_env(my_http_listener, dispatch, dispatch()).

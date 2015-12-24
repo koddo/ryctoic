@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="/static/css/style.css" rel="stylesheet" type="text/css">
+    <link href="static/css/style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <div id="app">
       <h1>index.html</h1>
       <p>loading clojurescript...</p>
     </div>
-    <script src="/static/js/somecode.js" type="text/javascript"></script>
-    <script src="/static/js/compiled/ryctoic.js" type="text/javascript"></script>
+
+    <script>
+     (function(proxied) {    // make console.log send a POST request containing the message
+                             console.log = function() {
+                                 var xhr = new XMLHttpRequest();   // yes, I've checked, we don't have or need to reuse this
+                                 xhr.open("POST", "https://local.ryctoic.com:8443/cordova_browser_console_logger", true);
+                                 xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                                 arguments_object_converted_to_array = Array.prototype.slice.call(arguments);      // http://stackoverflow.com/questions/960866/how-can-i-convert-the-arguments-object-to-an-array-in-javascript
+                                 xhr.send("".concat.apply(arguments_object_converted_to_array));
+                                 return proxied.apply(this, arguments);
+                             };
+     })(console.log);
+     console.log("cordova_browser_console_logger ok");
+    </script>
+
+
+    
+    <script src="static/js/compiled/ryctoic.js" type="text/javascript"></script>
     <script>
      (function( somecode, undefined ) {
          somecode.sessioncsrf = '{{ sessioncsrf }}';   // TODO: add this to every form as hidden field
          somecode.userinfo = '{{ userinfo }}';
+         somecode.we_are_inside_cordova = false;
      }( window.somecode = window.somecode || {} ));
      ryctoic.core.run();
-
-
-     (function(proxied) {
-         console.log = function() {
-             var xhr = new XMLHttpRequest();   // yes, I've checked, we don't have or need to reuse this
-             xhr.open("POST", "https://local.ryctoic.com:8443/cordova_browser_console_logger", true);
-             xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-             arguments_object_converted_to_array = Array.prototype.slice.call(arguments);      // http://stackoverflow.com/questions/960866/how-can-i-convert-the-arguments-object-to-an-array-in-javascript
-             xhr.send("".concat.apply(arguments_object_converted_to_array));
-             return proxied.apply(this, arguments);
-         };
-     })(console.log);
-     
-     console.log("browser_console_log ok");
     </script>
+    <script src="somecode_cordova_only.js" type="text/javascript"></script>
+    <script src="static/js/somecode.js" type="text/javascript"></script>
+
+
+
+    <script src="cordova.js" type="text/javascript"></script>
+    <script>
+     document.addEventListener('deviceready', function() {
+         console.log("cordova event deviceready");
+     }, false);
+    </script>
+    
   </body>
 </html>
