@@ -35,5 +35,7 @@
 
     <!-- <preference name="SplashScreenDelay" value="100" /> -->
     <preference name="SplashScreen" value="none"/>
-    
+
+
+    <preference name="BackupWebStorage" value="none"/>
 </widget>

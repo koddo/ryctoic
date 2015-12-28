@@ -13,6 +13,7 @@
      [cljs.core.async.macros :as async]
      [ryctoic.async-error-handling-macros :refer [<?]]
      [ryctoic.rest-client_macros]
+     [cljs.core :refer [exists?]]
      ))
 
 
@@ -24,14 +25,21 @@
                        (fn [state _]
                          (reagent.ratom/reaction (:username @state))))
 
+(re-frame/register-sub :network-information
+                       (fn [state _]
+                         (reagent.ratom/reaction (:network-information @state))))
+
 (defn current-page []
-  (let [current-page  (re-frame/subscribe [:current-page])
-        username      (re-frame/subscribe [:username])]
+  (let [current-page    (re-frame/subscribe [:current-page])
+        username        (re-frame/subscribe [:username])
+        network-information  (re-frame/subscribe [:network-information])
+        ]
     (println "current page " @current-page)
     (if-not @current-page
       [:div "initializing"]   ; never shown, because we render after :initialize and :router-event
       [:div
        [:p @username]
+       [:p "network-information: " @network-information]
        [:input {
                 :type "button"
                 :value "log in"
@@ -73,6 +81,14 @@
 
 ;; -----------------------------------------------
 
+
+(defn get-network-information []   ; TODO: check if 
+  ;; (if (and (exists? js/navigator.connection)
+  ;;          (exists? js/navigator.connection.type))
+    js/navigator.connection.type
+    ;; )
+)
+
 (re-frame/register-handler :initialize
                            [re-frame.core/debug]
                            (fn [_ v]
@@ -80,6 +96,8 @@
                                           :current-page nil   ; the router handles this, fail fast if not
                                           :username js/somecode.userinfo
                                           :websocket-obj (new js/WebSocket "wss://echo.websocket.org")
+                                          :network-information "unknown"   ; TODO: 1. network-information in browser, now works in cordova only; 2. a good init value instead of unknown
+                                          :sqlite nil
                                           }]
                                (set! (.-onopen    (:websocket-obj state)) #(re-frame/dispatch [:ws-onopen]))
                                (set! (.-onmessage (:websocket-obj state)) #(re-frame/dispatch [:ws-onmessage %]))
@@ -240,6 +258,8 @@
 
 
 
+;; (js/console.log (str "0000000000000000000000000000000000000000  " js/navigator.connection.type))
+
 
 ;; (let [input
 ;;       "a,b -> c ; d-> e ; 
@@ -264,5 +284,41 @@
 ;;       ]
 ;;   (map parse (mysplit input #";|\n"))  
 ;;   )
+
+
+
+  ;; (println js/navigator.connection.type)
+  ;; (println "no type"))
+
+
+
+(defn ^:export dispatch-network-information []
+  (println "dispatch-network-information")
+  (re-frame/dispatch [:network-information])
+  )
+
+
+(re-frame/register-handler :network-information
+                           [re-frame.core/debug]
+                           (fn [state _]
+                             (-> state
+                                 (assoc :network-information (get-network-information)))))
+
+(defn ^:export dispatch-deviceready []
+  (println "dispatch-deviceready")
+  (re-frame/dispatch [:deviceready])
+  )
+
+(re-frame/register-handler :deviceready
+                           [re-frame.core/debug]
+                           (fn [state _]
+                             (let [sqlite (js/window.sqlitePlugin.openDatabase (clj->js {:name "sqlite.db"})
+                                                                               (fn [_db] (println "sqlite success"))
+                                                                               (fn [err] (println "sqlite error: " err))   ; TODO: handle sqlite.openDatabase errors
+                                                                               )]
+                               (-> state
+                                   (assoc :sqlite sqlite)))))
+
+
 
 

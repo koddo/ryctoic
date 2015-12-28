@@ -11,6 +11,8 @@ cordova plugin add cordova-plugin-screen-orientation
 cordova plugin add cordova-plugin-inappbrowser
 cordova plugin add cordova-plugin-splashscreen
 cordova plugin add cordova-plugin-console
+cordova plugin add cordova-plugin-network-information
+cordova plugin add cordova-sqlite-storage
 
 
 # figwheel quirk

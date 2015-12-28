@@ -1,10 +1,13 @@
 # for testing react-router
 
+
+
 # tldr; serve static files
 # for other urls just send index.html
 
 
-# let's say we are at http://localhost/
+
+# let's say we are at http://localhost/ and react-router is running
 # we get the /static/index.html
 # and then .js, .css, etc
 #

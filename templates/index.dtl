@@ -34,17 +34,8 @@
      }( window.somecode = window.somecode || {} ));
      ryctoic.core.run();
     </script>
+    <script src="cordova.js" type="text/javascript"></script>
     <script src="somecode_cordova_only.js" type="text/javascript"></script>
     <script src="static/js/somecode.js" type="text/javascript"></script>
-
-
-
-    <script src="cordova.js" type="text/javascript"></script>
-    <script>
-     document.addEventListener('deviceready', function() {
-         console.log("cordova event deviceready");
-     }, false);
-    </script>
-    
   </body>
 </html>
