@@ -14,3 +14,16 @@
                (re-frame/dispatch [:render])
                )})
 
+
+(defn sqlite-query
+  ([query] (sqlite-query query []))
+  ([query params]
+   (. (:sqlite @re-frame.db/app-db) executeSql query (clj->js params)
+      (fn [res]
+        (let [rows (-> res .-rows)
+              len (-> rows .-length)
+              ]
+          (dotimes [i len]
+            (println (. rows item i))))))))
+
+
