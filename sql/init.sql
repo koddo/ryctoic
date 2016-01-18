@@ -70,7 +70,7 @@ create schema myschema authorization admin_role;
 alter database ryctoicdb set search_path to myschema;
 set search_path to myschema;
 create schema pgtap authorization admin_role;
-create extension pgtap with schema pgtap;
+create extension if not exists pgtap with schema pgtap;
 ------------------------------------------------------------
 grant connect on database ryctoicdb to administrator;
 grant connect on database ryctoicdb to client_role;
@@ -114,9 +114,11 @@ alter default privileges     in schema pgtap revoke all on types       from publ
 ------------------------------------------------------------
 reset role;
 reset session authorization;
-create extension sslinfo with schema myschema;
+create extension if not exists sslinfo with schema myschema;
 revoke all on tablespace pg_default from public;
 revoke all on tablespace pg_global  from public;
+-- create extension if not exists "uuid-ossp";  -- SELECT uuid_generate_v4()::text;
+create extension if not exists pgcrypto;  -- for gen_random_uuid()
 ------------------------------------------------------------
 
 

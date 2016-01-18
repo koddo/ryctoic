@@ -39,7 +39,7 @@
       [:div "initializing"]   ; never shown, because we render after :initialize and :router-event
       [:div
        [:p @username]
-       [:p "network-information: " @network-information]
+       [:p "network-information: " @network-information]   ; TODO: ping our backend using ajax or websockets to know if we can use network --- instead of this plugin, because it doesn't show anything useful for _us_
        [:input {
                 :type "button"
                 :value "log in"
