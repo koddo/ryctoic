@@ -100,6 +100,9 @@ to_html(Req, #state{ authm = M } = State) ->
     %% EmailVerified =  maps:get(<<"email_verified">>, PayloadMap, <<"">>),   % TODO: if email is not verified, do not use it
     %% Iat =            maps:get(<<"iat">>, PayloadMap),
     %% Exp =            maps:get(<<"exp">>, PayloadMap),
+
+    %% ---------- sql get id by {Id, google}
+
     {ok, Body} = popup_dtl:render([
                                    {id, {Id, google}} 
                                    %% {email, Email}, 
@@ -107,7 +110,7 @@ to_html(Req, #state{ authm = M } = State) ->
                                   ]),
 
     %% TODO: should we allow relogin after we are logged in already? or maybe just do nothing when this happens?
-    Req2 = authentication_code:create_session(Req, #ryctoic_user{ id = { Id, google }, from = 0 }),
+    Req2 = authentication_code:create_session(Req, #ryctoic_user{ id = { Id, google }, whatever = 0 }),
 
 	{Body, Req2, State}.
 

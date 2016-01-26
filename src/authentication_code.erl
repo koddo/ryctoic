@@ -30,7 +30,7 @@ manage_session(Req) ->
                                   {R, UserID} = create_anonymous_user_and_session(Req),
                                   R;
                               [Session] ->
-                                  {ryctoic_session, SessionID, SessionCSRF, UserID, Expires, Fuck} = Session,
+                                  {ryctoic_session, SessionID, SessionCSRF, UserID, Expires} = Session,
                                   T = unixtime(),
                                   if T > Expires 
                                      -> error_logger:info_msg("--- sessionid cookie is expired in the db, the whole Session: ~p --- creating anonymous user and cookies~n", [Session]),
@@ -43,8 +43,7 @@ manage_session(Req) ->
                                                                                            sessionid = SessionID,
                                                                                            sessioncsrf = SessionCSRF,
                                                                                            userid = UserID,
-                                                                                           expires = T + MaxAge,
-                                                                                           fuck = Fuck
+                                                                                           expires = T + MaxAge
                                                                                           })
                                                                    end),
                                           error_logger:info_msg("--- valid sessionid cookie, the whole Session: ~p --- updating expire datetime in db and updating cookie, transaction: ~p~n", [Session, TR]),
@@ -58,25 +57,24 @@ manage_session(Req) ->
 
 
 %% TODO: mark old session as used
-create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
+create_session(Req, #ryctoic_user{ id = UserID, whatever = Whatever }) ->
     SessionID = base64url:encode(rnd()),
     SessionCSRF = base64url:encode(rnd()),
     {ok, MaxAge} = application:get_env(?MYAPP, maxage),
     Expires = unixtime() + MaxAge,
-    Fuck = 0,
     TR =  mnesia:transaction(fun() ->
                                      mnesia:write(#ryctoic_user{
                                                      id = UserID,
-                                                     from = From
+                                                     whatever = Whatever
                                                     }),
                                      mnesia:write(#ryctoic_session{
                                                      sessionid = SessionID,
                                                      sessioncsrf = SessionCSRF,
                                                      userid = UserID,
-                                                     expires = Expires,
-                                                     fuck = Fuck
+                                                     expires = Expires
                                                     })
                              end),
+    {atomic, ok} = TR,
     error_logger:info_msg("--- creating session in db, setting cookie, SessionId: ~p, transaction: ~p~n", [SessionID, TR]),
     Req2 = update_cookie(Req, SessionID),
     Req2.
@@ -84,7 +82,7 @@ create_session(Req, #ryctoic_user{ id = UserID, from = From }) ->
 create_anonymous_user_and_session(Req) ->
     NewID = base64url:encode(rnd()),    % TODO: generate again if exists
     UserID = { NewID, anonymous },
-    R = create_session(Req, #ryctoic_user{ id = UserID, from = 0 }),
+    R = create_session(Req, #ryctoic_user{ id = UserID, whatever = 0 }),
     {R, UserID}.
 
 update_cookie(Req, SessionID) ->

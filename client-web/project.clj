@@ -81,7 +81,7 @@
              ;; :server-port 3449 ;; default
 
              ;; :css-dirs ["resources/public/css"]
-             :css-dirs ["../priv/static/js/css"]
+             :css-dirs ["../priv/static/css"]
 
              
              :repl false

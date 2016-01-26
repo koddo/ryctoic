@@ -10,6 +10,7 @@
     </div>
 
     <script>
+     // TODO: same for info, warn, error, assert, etc --- http://tobyho.com/2012/07/27/taking-over-console-log/, https://developer.mozilla.org/en-US/docs/Web/API/Console
      (function(proxied) {    // make console.log send a POST request containing the message
                              console.log = function() {
                                  var xhr = new XMLHttpRequest();   // yes, I've checked, we don't have or need to reuse this
@@ -21,6 +22,18 @@
                              };
      })(console.log);
      console.log("cordova_browser_console_logger ok");
+
+     // the following snippet didn't work in ios8, so we don't use it, maybe try it again later:
+     // window.addEventListener("error", function (e) { ... } );
+     window.onerror = function(msg, url, line, col, err) {
+         var stacktrace = "";                                                    
+         if (typeof err !== 'undefined' && err !== null) {   // ios8 has this undefined
+             stacktrace = ", stacktrace: " + err.stack;                                                    
+         }
+         console.log("error: " + msg + ", " + url + ", " + line + ", " + col + stacktrace);
+     };
+
+     console.warn("cordova_browser_console_logger_error_warn ok");
     </script>
 
 

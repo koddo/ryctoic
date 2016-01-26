@@ -22,7 +22,10 @@ start(_Type, _Args) ->
     lager:info("port: ~p", [env(http_port)]),
     lager:info("cookie: ~p", [erlang:get_cookie()]),
     
-    %% mnesia:create_schema([node()]),  % for ram-only tables I don't have to create schema, right? http://www.erlang.org/doc/man/mnesia.html#create_schema-1
+    %% for ram-only tables I don't have to create schema, right? http://www.erlang.org/doc/man/mnesia.html#create_schema-1
+    %% mnesia:delete_schema([node()]),
+    %% mnesia:create_schema([node()]), 
+ 
     mnesia:start(),
     mnesia:create_table(ryctoic_session, [
                                           {attributes, record_info(fields, ryctoic_session)}

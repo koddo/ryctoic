@@ -55,6 +55,28 @@
                 :value "post request"
                 :on-click #(re-frame/dispatch [:btn-click--post-request])
                 }]
+       [:div
+        [:input {
+                :type "button"
+                :value "login_user1"
+                :on-click #(re-frame/dispatch [:btn-click--login_user1])
+                }]
+        [:input {
+                :type "button"
+                :value "login_user2"
+                :on-click #(re-frame/dispatch [:btn-click--login_user2])
+                }]
+        ]
+       [:div
+        [:textarea {
+                 :id "whatever"
+                 }]
+        [:input {
+                 :type "button"
+                 :value "add card"
+                 :on-click #(re-frame/dispatch [:btn-click--add-card])
+                 }]
+        ]
        (@current-page)])
     ))
 
@@ -81,13 +103,9 @@
 
 ;; -----------------------------------------------
 
-
-(defn get-network-information []   ; TODO: check if 
-  ;; (if (and (exists? js/navigator.connection)
-  ;;          (exists? js/navigator.connection.type))
+(defn get-network-information []
     js/navigator.connection.type
-    ;; )
-)
+    )
 
 (re-frame/register-handler :initialize
                            [re-frame.core/debug]
@@ -205,6 +223,7 @@
 (re-frame/register-handler :btn-click--post-request
                            [re-frame.core/debug]
                            (fn [state _]
+                             (js/throw "error2")
                              (ajax/POST "https://local.ryctoic.com:8443/mongo"
                               {:params {:fuck "you"}
                                :format :json
@@ -220,6 +239,11 @@
                            (fn [state [_ response]]
                              state))
 
+(re-frame/register-handler :btn-click--add-card
+                           [re-frame.core/debug]
+                           (fn [state _]
+                             (println (-> (. js/document getElementById "whatever") .-value))
+                             state))
 
 ;; -----------------------------------------------
 
@@ -246,50 +270,8 @@
       (pushy/pushy secretary/dispatch!
                    (fn [x] (when (secretary/locate-route x) x))))
     (pushy/start! history))
-
-  ;; (when (= "/ios/" (pushy/get-token history))
-  ;;   (pushy/replace-token! history "/")
-  ;;   (js/console.log "0000000000000000000000000000000000000000"))
-
-  
   (re-frame/dispatch [:render])
   )
-
-
-
-
-;; (js/console.log (str "0000000000000000000000000000000000000000  " js/navigator.connection.type))
-
-
-;; (let [input
-;;       "a,b -> c ; d-> e ; 
-   
-;;  b ->>f
-;; ;
-;; q"
-;;       mysplit (fn [what regex] (filter not-empty (map clojure.string/trim (clojure.string/split what regex))))
-;;       parse (fn [d]
-;;               (let [ffdd (clojure.string/split d "->")
-;;                     mmvvdd (clojure.string/split d "->>")
-;;                     ]
-;;                 (cond
-;;                   (== 2 (count mmvvdd)) {:type :mvd
-;;                                          :l (mysplit (nth mmvvdd 0) ","),
-;;                                          :r (mysplit (nth mmvvdd 1) ",")}
-;;                   (== 2 (count ffdd)) {:type :fd
-;;                                        :l (mysplit (nth ffdd 0) ","),
-;;                                        :r (mysplit (nth ffdd 1) ",")}
-;;                   true :fuck
-;;                   )))
-;;       ]
-;;   (map parse (mysplit input #";|\n"))  
-;;   )
-
-
-
-  ;; (println js/navigator.connection.type)
-  ;; (println "no type"))
-
 
 
 (defn ^:export dispatch-network-information []
