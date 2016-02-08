@@ -1,3 +1,0 @@
--- empty
-
-\echo v5
