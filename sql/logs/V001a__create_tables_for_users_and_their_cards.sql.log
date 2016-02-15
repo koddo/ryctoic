@@ -1,0 +1,36 @@
+
+----- 2016-02-12 22:51:37.368701+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null  default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create table all_cards (
+        id                 uuid primary key,
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid not null  default uuid_nil(),
+        created_by         bigint not null  references users(id),
+        created_at         timestamptz not null  default now(),
+        etc                jsonb not null  default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create table cards_orset (
+        user_id             bigint not null references users(id),
+        card_id             uuid not null references all_cards(id),
+        unique_identifier   uuid not null default gen_random_uuid(),
+        added_at            timestamptz not null default now(),
+        removed_at          timestamptz,   -- non-null means tombstone
+        etc                 jsonb not null  default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier)
+        );
+CREATE TABLE
+commit;
+COMMIT

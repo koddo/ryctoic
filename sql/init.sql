@@ -117,8 +117,8 @@ reset session authorization;
 create extension if not exists sslinfo with schema myschema;
 revoke all on tablespace pg_default from public;
 revoke all on tablespace pg_global  from public;
--- create extension if not exists "uuid-ossp";  -- SELECT uuid_generate_v4()::text;
-create extension if not exists pgcrypto;  -- for gen_random_uuid()
+create extension if not exists "uuid-ossp";   -- select uuid_nil(), uuid_generate_v4()::text;
+create extension if not exists pgcrypto;      -- select gen_random_uuid();
 ------------------------------------------------------------
 
 

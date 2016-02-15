@@ -7,7 +7,7 @@ dnsdock:
         - /var/run/docker.sock:/var/run/docker.sock
     log_driver: "json-file"
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
@@ -21,7 +21,7 @@ nginx:   # TODO: this image runs nginx as root, is this a security issue?
         - /home/alex/mnt/ryctoic/priv/ssl/server.crt:/etc/nginx/server.crt:ro
         - /home/alex/mnt/ryctoic/priv/ssl/server.key:/etc/nginx/server.key:ro
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
     
         
@@ -47,7 +47,7 @@ backend:
     #  - "9104:9104"
     #  - "9105:9105"
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
         
@@ -68,7 +68,7 @@ figwheel:
     # stdin_open: true
     # tty: true
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
 
@@ -96,7 +96,7 @@ postgres:
 
     # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
     
@@ -108,7 +108,7 @@ data:
         - /home/alex/mnt/ryctoic/tmp:/mnt
     entrypoint: /bin/true
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
 
@@ -119,11 +119,28 @@ cordova_browser_console_logger:
         - /home/alex/mnt/ryctoic/bin/cordova_browser_console_logger.py:/home/theuser/cordova_browser_console_logger.py
     command: /home/theuser/cordova_browser_console_logger.py
     log_opt:
-        max-size: "500k"
+        max-size: "200k"
         max-file: "20"
 
-        
 
+gulp:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_gulp
+    volumes:
+        - /home/alex/mnt/ryctoic/:/home/theuser/ryctoic
+    working_dir: /home/theuser/ryctoic/client-web
+    command: gulp
+
+
+pg-schema-version:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_pg-schema-version
+    volumes:
+        - /home/alex/mnt/ryctoic/sql:/home/theuser/ryctoic/sql
+    working_dir: /home/theuser/ryctoic/sql
+    entrypoint: /home/theuser/pg-schema-version.py
+    
+    
 
 
 
