@@ -1,6 +1,7 @@
 begin;
 set local role admin_role;
 
+-- SET plpgsql.extra_warnings TO 'all';
 
 -- get_all
 select card_id from cards_orset as s
