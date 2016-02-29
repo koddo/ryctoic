@@ -14,7 +14,7 @@ ENV HOME /home/theuser
 USER theuser
 
 
-RUN wget  https://raw.githubusercontent.com/koddo/pg-schema-version/master/pg-schema-version.py && \
+RUN wget   https://raw.githubusercontent.com/koddo/pg-schema-version/master/pg-schema-version.py && \
     wget  https://raw.githubusercontent.com/koddo/pg-schema-version/master/requirements.txt && \
     chmod +x pg-schema-version.py && \
     pip3 install --user -r requirements.txt
