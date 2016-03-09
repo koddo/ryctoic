@@ -68,13 +68,13 @@
         <dia:point val="43.2563,-24.1125"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="43.2063,-24.1625;70.7063,-6.9625"/>
+        <dia:rectangle val="43.2063,-24.1625;91.4043,-6.9625"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="43.2563,-24.1125"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="27.400000000000006"/>
+        <dia:real val="48.098028855675061"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="17.100000000000001"/>
@@ -1078,10 +1078,10 @@
     </dia:object>
     <dia:object type="Standard - Text" version="1" id="O11">
       <dia:attribute name="obj_pos">
-        <dia:point val="86.1625,-4.525"/>
+        <dia:point val="46.2125,-9.825"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="86.1625,-5.1675;102.29,0.41"/>
+        <dia:rectangle val="46.1931,-10.4869;62.34,-0.851125"/>
       </dia:attribute>
       <dia:attribute name="text">
         <dia:composite type="text">
@@ -1092,7 +1092,12 @@ get_all
 add and remove should also modify progress map
 
 compare
-merge#</dia:string>
+merge
+
+get history for user
+? get the whole history for card
+
+#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>
@@ -1101,7 +1106,7 @@ merge#</dia:string>
             <dia:real val="0.80000000000000004"/>
           </dia:attribute>
           <dia:attribute name="pos">
-            <dia:point val="86.1625,-4.525"/>
+            <dia:point val="46.2125,-9.825"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>

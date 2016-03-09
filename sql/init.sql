@@ -66,9 +66,10 @@ set role admin_role;
 
 
 ------------------------------------------------------------
-create schema myschema authorization admin_role;
-alter database ryctoicdb set search_path to myschema;
-set search_path to myschema;
+create schema myschema  authorization admin_role;
+create schema mymisc    authorization admin_role;
+alter database ryctoicdb set search_path to myschema, mymisc;
+set search_path to myschema, mymisc;
 create schema pgtap authorization admin_role;
 create extension if not exists pgtap with schema pgtap;
 ------------------------------------------------------------
@@ -89,14 +90,22 @@ alter default privileges     in schema myschema revoke all on tables      from p
 alter default privileges     in schema myschema revoke all on sequences   from public cascade;
 alter default privileges     in schema myschema revoke all on functions   from public cascade;
 alter default privileges     in schema myschema revoke all on types       from public cascade;
-revoke all                   on schema pgtap from public cascade;
-revoke all on all tables     in schema pgtap from public cascade;
-revoke all on all sequences  in schema pgtap from public cascade;
-revoke all on all functions  in schema pgtap from public cascade;
-alter default privileges     in schema pgtap revoke all on tables      from public cascade;
-alter default privileges     in schema pgtap revoke all on sequences   from public cascade;
-alter default privileges     in schema pgtap revoke all on functions   from public cascade;
-alter default privileges     in schema pgtap revoke all on types       from public cascade;
+revoke all                   on schema pgtap    from public cascade;
+revoke all on all tables     in schema pgtap    from public cascade;
+revoke all on all sequences  in schema pgtap    from public cascade;
+revoke all on all functions  in schema pgtap    from public cascade;
+alter default privileges     in schema pgtap    revoke all on tables      from public cascade;
+alter default privileges     in schema pgtap    revoke all on sequences   from public cascade;
+alter default privileges     in schema pgtap    revoke all on functions   from public cascade;
+alter default privileges     in schema pgtap    revoke all on types       from public cascade;
+revoke all                   on schema mymisc   from public cascade;
+revoke all on all tables     in schema mymisc   from public cascade;
+revoke all on all sequences  in schema mymisc   from public cascade;
+revoke all on all functions  in schema mymisc   from public cascade;
+alter default privileges     in schema mymisc   revoke all on tables      from public cascade;
+alter default privileges     in schema mymisc   revoke all on sequences   from public cascade;
+alter default privileges     in schema mymisc   revoke all on functions   from public cascade;
+alter default privileges     in schema mymisc   revoke all on types       from public cascade;
 -- http://stackoverflow.com/questions/34107804/revoke-everything-from-the-public-role-in-postgres
 -- TODO: can also revoke on domain, foregn data, foreign server, language, large object, type
 -- TODO: information_schema, pg_catalog, etc, have some privileges and permissions via the public role --- should we revoke them?
@@ -114,12 +123,19 @@ alter default privileges     in schema pgtap revoke all on types       from publ
 ------------------------------------------------------------
 reset role;
 reset session authorization;
-create extension if not exists sslinfo with schema myschema;
+
 revoke all on tablespace pg_default from public;
 revoke all on tablespace pg_global  from public;
-create extension if not exists "uuid-ossp";   -- select uuid_nil(), uuid_generate_v4()::text;
-create extension if not exists pgcrypto;      -- select gen_random_uuid();
+create extension if not exists sslinfo       with schema mymisc;
+create extension if not exists "uuid-ossp"   with schema mymisc;   -- select uuid_nil(), uuid_generate_v4()::text;
+create extension if not exists pgcrypto      with schema mymisc;   -- select gen_random_uuid();
+set plpgsql.extra_warnings to 'all';   -- http://www.postgresql.org/docs/current/static/plpgsql-development-tips.html
+set plpgsql.extra_errors to 'all';
 ------------------------------------------------------------
+
+
+
+
 
 
 

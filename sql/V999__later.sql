@@ -1,4 +1,5 @@
 -- leave these cards when removing a user or prev revision
+
 -- prev_revision_id references all_cards(id) on delete set null,
 -- created_by       references users(id)     on delete set null,
 

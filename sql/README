@@ -1,4 +1,8 @@
 
+!!! never write to-do inside schema migration files, they are meant to be final and unchangeable !!!
+!!! write them here !!!  
+
+
 pg-schema-version.py
 =====================
 
@@ -43,4 +47,46 @@ but administrator is still noinherit
 
 
 
+
+misc
+======================================
+
+had this in function definitions, but then changed my naming style: `#variable_conflict use_variable`
+
+
+TODO: length constraints for front and back texts
+TODO: check if a user has a card when she tries to create one 
+
+-- insert into users(identity_provider, provided_id) values('anonymous', '1');
+-- select create_card('fuck', 'you', null, 1);
+-- select create_card('sick', 'fuck', null, 1);
+-- select add_card(1, ''::uuid);
+-- select remove_card(1, ''::uuid);
+-- select * from users;     select * from all_cards;     select * from cards_orset;     select * from get_all_cards(1) as record(card_id uuid);
+
+
+-- get_all_cards
+-- add
+-- remove
+-- contains
+-- merge
+-- compare
+
+
+
+delete all stored functions
+================================
+
+this generates a script to drop them all
+
+```
+SELECT 'DROP FUNCTION ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');'
+FROM pg_proc INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid)
+WHERE ns.nspname = 'myschema'  order by proname;
+```
+
+http://stackoverflow.com/questions/10591113/drop-all-functions-from-postgres-database
+http://www.postgresonline.com/journal/archives/74-How-to-delete-many-functions.html
+
+maybe try this stored function to drop all functions from a schema: http://dba.stackexchange.com/questions/122742/how-to-drop-all-of-my-functions-in-postgres-in-single-step
 

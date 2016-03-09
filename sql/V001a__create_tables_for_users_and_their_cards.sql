@@ -27,7 +27,7 @@ create table cards_orset (
         unique_identifier   uuid not null default gen_random_uuid(),
         tombstone           boolean not null default false,
         added_at            timestamptz not null default now(),
-        removed_at          timestamptz, -- default null,
+        removed_at          timestamptz default null,
         etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
         primary key (user_id, card_id, unique_identifier)
         );
