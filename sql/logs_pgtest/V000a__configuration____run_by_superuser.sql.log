@@ -1,0 +1,312 @@
+********* QUERY **********
+create database ryctoicdb with
+    encoding   = 'UTF8'
+    lc_collate = 'C'
+    lc_ctype   = 'C'
+    connection limit = 10
+    template = template0;
+**************************
+
+CREATE DATABASE
+********* QUERY **********
+create role admin_role;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+create role client_role;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+create role sp_only_role;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+alter database ryctoicdb owner to admin_role;
+**************************
+
+ALTER DATABASE
+********* QUERY **********
+create user administrator with
+    login
+    password null
+    inherit;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+grant admin_role to administrator;
+**************************
+
+GRANT ROLE
+********* QUERY **********
+create user client with
+    login
+    password null
+    inherit;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+grant client_role to client;
+**************************
+
+GRANT ROLE
+********* QUERY **********
+create user sp_only with
+    login
+    password null
+    inherit;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+grant sp_only_role to sp_only;
+**************************
+
+GRANT ROLE
+********* QUERY **********
+create role ssl_cert_group;
+**************************
+
+CREATE ROLE
+********* QUERY **********
+grant ssl_cert_group to
+    administrator,
+    client,
+    sp_only;
+**************************
+
+GRANT ROLE
+********* QUERY **********
+drop schema public;
+**************************
+
+DROP SCHEMA
+********* QUERY **********
+set session authorization administrator;
+**************************
+
+SET
+********* QUERY **********
+set role admin_role;
+**************************
+
+SET
+********* QUERY **********
+create schema app    authorization admin_role;
+**************************
+
+CREATE SCHEMA
+********* QUERY **********
+create schema misc   authorization admin_role;
+**************************
+
+CREATE SCHEMA
+********* QUERY **********
+alter database ryctoicdb set search_path to app, misc;
+**************************
+
+ALTER DATABASE
+********* QUERY **********
+set search_path to app, misc;
+**************************
+
+SET
+********* QUERY **********
+create schema pgtap authorization admin_role;
+**************************
+
+CREATE SCHEMA
+********* QUERY **********
+create extension if not exists pgtap with schema pgtap;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+set plpgsql.extra_warnings  to 'all';
+**************************
+
+SET
+********* QUERY **********
+set plpgsql.extra_errors    to 'all';
+**************************
+
+SET
+********* QUERY **********
+grant connect on database ryctoicdb to administrator;
+**************************
+
+GRANT
+********* QUERY **********
+grant connect on database ryctoicdb to client_role;
+**************************
+
+GRANT
+********* QUERY **********
+grant usage on schema app to client_role;
+**************************
+
+GRANT
+********* QUERY **********
+revoke all on database ryctoicdb from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all                     on schema app      from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all tables       in schema app      from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all sequences    in schema app      from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all functions    in schema app      from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+alter default privileges       in schema app      revoke all on tables      from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema app      revoke all on sequences   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema app      revoke all on functions   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema app      revoke all on types       from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+revoke all                     on schema misc     from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all tables       in schema misc     from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all sequences    in schema misc     from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all functions    in schema misc     from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+alter default privileges       in schema misc     revoke all on tables      from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema misc     revoke all on sequences   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema misc     revoke all on functions   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema misc     revoke all on types       from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+revoke all                     on schema pgtap    from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all tables       in schema pgtap    from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all sequences    in schema pgtap    from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on all functions    in schema pgtap    from public cascade;
+**************************
+
+REVOKE
+********* QUERY **********
+alter default privileges       in schema pgtap    revoke all on tables      from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema pgtap    revoke all on sequences   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema pgtap    revoke all on functions   from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+alter default privileges       in schema pgtap    revoke all on types       from public cascade;
+**************************
+
+ALTER DEFAULT PRIVILEGES
+********* QUERY **********
+reset role;
+**************************
+
+RESET
+********* QUERY **********
+reset session authorization;
+**************************
+
+RESET
+********* QUERY **********
+revoke all on tablespace pg_default from public;
+**************************
+
+REVOKE
+********* QUERY **********
+revoke all on tablespace pg_global  from public;
+**************************
+
+REVOKE
+********* QUERY **********
+create extension if not exists sslinfo       with schema misc;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+create extension if not exists "uuid-ossp"   with schema misc;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+create extension if not exists pgcrypto      with schema misc;
+**************************
+
+CREATE EXTENSION

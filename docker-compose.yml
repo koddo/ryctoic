@@ -80,37 +80,51 @@ postgres:
     environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=secret
-        - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time
-        # - PGDATA=/var/lib/postgresql/data   # this is default
-
-    # volumes_from:
-    #     - data
+        - PGDATA=/var/lib/postgresql/data   # default
+    volumes_from:
+        - pgdata   # TODO: later use volumes instead of data-only container
     volumes:
         - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
         - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         - /home/alex/mnt/ryctoic/sql:/sql
-        # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes
-        # so we simply copy these files using init.sh
-
-    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
-
-    # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
+        # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using init.sh
     log_opt:
         max-size: "200k"
         max-file: "20"
+    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
+    # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
 
-    
-data:
-    image: postgres
-    # dockerfile: Dockerfile_postgres
+
+# TODO: replace this data-only container with a named volume, at the moment of writing docker-compose doesn't support this
+pgdata:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_postgres
     volumes:
-        - /var/lib/postgresql
-        - /home/alex/mnt/ryctoic/tmp:/mnt
+        - /var/lib/postgresql/data
     entrypoint: /bin/true
     log_opt:
         max-size: "200k"
         max-file: "20"
 
+# cd /sql && mkdir logs_pgtest && psql --username postgres --echo-all -v ON_ERROR_STOP=1 -f V000a__configuration____run_by_superuser.sql --log-file=logs_pgtest/V000a__configuration____run_by_superuser.sql.log
+pgtest:
+    build: dockerfiles_empty_build_context
+    dockerfile: Dockerfile_postgres
+    expose:
+        - "5432"
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=secret
+        - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time_we_recreate_the_container
+        # $ bin/docker-compose.sh stop pgtest && bin/docker-compose.sh rm -f pgtest && bin/docker-compose.sh up -d --no-deps pgtest
+    volumes:
+        - /home/alex/mnt/ryctoic/sql/copy_files.sh:/docker-entrypoint-initdb.d/copy_files.sh
+        - /home/alex/mnt/ryctoic/sql/V000a__configuration____run_by_superuser.sql:/docker-entrypoint-initdb.d/baseline.sql
+        - /home/alex/mnt/ryctoic/sql:/sql
+        # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using copy_files.sh
+    log_opt:
+        max-size: "200k"
+        max-file: "20"
 
 cordova_browser_console_logger:
     build: dockerfiles_empty_build_context
