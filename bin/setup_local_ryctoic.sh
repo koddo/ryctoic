@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
 
+if [[ "$@" == "resetdns" ]]; then                # reset dns list to one observed via dhcp:
+    su admin -c "sudo sh -c \"networksetup -setdnsservers Wi-Fi empty ; networksetup -setdnsservers Ethernet empty\""
+    exit 0
+fi
+
+
+
+
+
 WIFI_IP=$(ipconfig getifaddr en1)
 
 if [[ "$@" == "localhost" ]]; then
@@ -44,7 +53,6 @@ networksetup -setdnsservers Ethernet $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4
 
 
 
-# to reset dns list to one observed via dhcp:
 # $ su admin -c "sudo sh -c \"networksetup -setdnsservers Wi-Fi empty ; networksetup -setdnsservers Ethernet empty\""
 
 

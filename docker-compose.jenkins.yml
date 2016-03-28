@@ -12,7 +12,7 @@ jenkins:
         
 ############################
 
-# TODO: CRITICAL: anyone with direct access to the /var/run/docker.sock has root privileges on the host system
+# TODO: SECURITY, CRITICAL: anyone with direct access to the /var/run/docker.sock has root privileges on the host system
 
 
 

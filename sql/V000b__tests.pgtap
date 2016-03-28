@@ -1,6 +1,6 @@
 begin;
-
 set local role admin_role;
+
 select set_config(
        'search_path',
        'pgtap,' || current_setting('search_path'),   -- path=whatever:$path
@@ -8,12 +8,23 @@ select set_config(
 );
 
 select * from no_plan();
-select pass( 'my test passed, w00t!');
+
+select isnt_superuser( 'admin_role' );
+select isnt_superuser( 'client_role' );
+select isnt_superuser( 'sp_only_role' );
+
 select db_owner_is ( 'ryctoicdb', 'admin_role');
+
+select users_are( array[ 'postgres', 'administrator', 'client', 'sp_only' ]);
+select isnt_superuser( 'administrator' );
+select isnt_superuser( 'client' );
+select isnt_superuser( 'sp_only' );
+
+select groups_are( array[ 'admin_role', 'client_role', 'sp_only_role', 'ssl_cert_group' ]);
+
+
 select schema_owner_is ( 'myschema', 'admin_role');
 select table_owner_is ( 'myschema', 'test_table', 'admin_role', 'table_owner_is' );
-select users_are( array[ 'postgres', 'administrator', 'client', 'sp_only' ]);
-select groups_are( array[ 'admin_role', 'client_role', 'sp_only_role' ]);
 select has_user( 'administrator' );
 select * from finish();
 
