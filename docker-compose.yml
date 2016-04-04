@@ -118,13 +118,14 @@ pgtest:
         - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time_we_recreate_the_container
         # $ bin/docker-compose.sh stop pgtest && bin/docker-compose.sh rm -f pgtest && bin/docker-compose.sh up -d --no-deps pgtest
     volumes:
-        - /home/alex/mnt/ryctoic/sql/copy_files.sh:/docker-entrypoint-initdb.d/copy_files.sh
-        - /home/alex/mnt/ryctoic/sql/V000a__configuration____run_by_superuser.sql:/docker-entrypoint-initdb.d/baseline.sql
         - /home/alex/mnt/ryctoic/sql:/sql
+        - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
         # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using copy_files.sh
     log_opt:
         max-size: "200k"
         max-file: "20"
+# - /home/alex/mnt/ryctoic/sql/copy_files.sh:/docker-entrypoint-initdb.d/copy_files.sh
+# - /home/alex/mnt/ryctoic/sql/V000a__configuration____run_by_superuser.sql:/docker-entrypoint-initdb.d/baseline.sql
 
 cordova_browser_console_logger:
     build: dockerfiles_empty_build_context

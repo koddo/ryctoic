@@ -8,12 +8,11 @@ create database ryctoicdb with
 \connect ryctoicdb;
 
 
--- begin;
-
 
 create role admin_role;           -- owns the database
 create role client_role;          -- business logic here, can read and write, views with security_barrier, functions with security definer
 create role sp_only_role;              -- most restricted, stored functions only
+create role ssl_cert_group;
 
 alter database ryctoicdb owner to admin_role;
 
@@ -36,19 +35,14 @@ create user sp_only with
     inherit;
 grant sp_only_role to sp_only;
 
-
-
-create role ssl_cert_group;
 grant ssl_cert_group to
     administrator,
     client,
     sp_only;
 
 
-------------------------------------------------------------
 
-
-drop schema public;     -- let's start from scratch
+drop schema public;
 
 
 ------------------------------------------------------------
@@ -59,23 +53,17 @@ set session authorization administrator;
 set role admin_role;
 
 ------------------------------------------------------------
-
-
+------------------------------------------------------------
 ------------------------------------------------------------
 
-
-------------------------------------------------------------
 create schema app    authorization admin_role;
 create schema misc   authorization admin_role;
 alter database ryctoicdb set search_path to app, misc;
 set search_path to app, misc;
-create schema pgtap authorization admin_role;
+create schema pgtap  authorization admin_role;
 create extension if not exists pgtap with schema pgtap;
 ------------------------------------------------------------
-set plpgsql.extra_warnings  to 'all';
-set plpgsql.extra_errors    to 'all';
-------------------------------------------------------------
-grant connect on database ryctoicdb to administrator;
+grant all on database ryctoicdb to admin_role;
 grant connect on database ryctoicdb to client_role;
 grant usage on schema app to client_role;
 ------------------------------------------------------------
@@ -117,9 +105,10 @@ revoke all on tablespace pg_global  from public;
 create extension if not exists sslinfo       with schema misc;
 create extension if not exists "uuid-ossp"   with schema misc;   -- select uuid_nil(), uuid_generate_v4()::text;
 create extension if not exists pgcrypto      with schema misc;   -- select gen_random_uuid();
-------------------------------------------------------------
 
--- commit;
+revoke all on all functions   in schema misc     from public cascade;   -- admin_role can't do this, only the superuser
+grant  all on all functions   in schema misc     to admin_role    with grant option;
+------------------------------------------------------------
 
 
 

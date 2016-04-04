@@ -42,11 +42,8 @@ inherit is the default for backwards compatibility
 behavior specified by the SQL standard (most closely approximated): noinherit for users, inherit for groups
 http://www.postgresql.org/docs/current/static/sql-createrole.html
 
-we created our clients with inherit for simplicity
+buy we created our clients with inherit for simplicity
 to avoid setting role explicitly on login
-
-but administrator is still noinherit
-
 
 
 
@@ -116,7 +113,17 @@ TODO: post my question to mailing list: http://stackoverflow.com/questions/34107
 -- grant select, insert, update, delete on table example_table to client_role;
 
 
-delete all stored functions — when you are in dev mode
+
+tests
+===========================
+
+TODO: a test schemas_are( array['app', 'misc'] ) doesn't fail, why? there is also the pgtap schema
+TODO: revoke everything from everybody on the default postgres database and test it
+
+maybe later check if users have no passwords, but unsure how, pg_user always shows stars, pg_shadow is inaccessible for admin_role
+maybe later check if admin_role has grant option for functions
+
+how to delete all stored functions — when you are in dev mode
 ================================
 
 this generates a script to drop them all
@@ -124,7 +131,7 @@ this generates a script to drop them all
 ```
 SELECT 'DROP FUNCTION ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');'
 FROM pg_proc INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid)
-WHERE ns.nspname = 'myschema'  order by proname;
+WHERE ns.nspname = 'public'  order by proname;
 ```
 
 if output is truncated, set output format to \a
