@@ -16,12 +16,12 @@ if [[ "$@" == "localhost" ]]; then
     echo "local.ryctoic.com is 127.0.0.1 now" 
     THE_IP="127.0.0.1"
 else
+    THE_IP="$WIFI_IP"
     echo "local.ryctoic.com is $THE_IP now"
     echo "configure your smartphone or tablet to user this dns server: $WIFI_IP"
     echo "and you will be able to use the local.ryctoic.com address"
     echo "btw, now you can ping ryctoic_backend.dev.dnsdock or ryctoic_postgres.dev.dnsdock or anything"
     echo "---"
-    THE_IP="$WIFI_IP"
 fi
 
 

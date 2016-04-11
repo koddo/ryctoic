@@ -1,0 +1,129 @@
+begin;
+set local role admin_role;
+
+select set_config(
+       'search_path',
+       'pgtap,' || current_setting('search_path'),   -- path=whatever:$path
+       true   -- local to transaction
+);
+
+select * from no_plan();
+
+------------------------------------------------------------
+
+select tables_are( 'app', array['users', 'all_cards', 'cards_orset'], 'should have these tables' );
+
+------------------------------------------------------------
+
+select columns_are( 'app', 'users', array['id', 'identity_provider', 'provided_id', 'created_at', 'etc'] );
+
+select col_is_pk(         'app', 'users', 'id', 'app.users.id should be pk' );
+
+select col_not_null(      'app', 'users', 'id', 'column app.users.id should be not null' );
+select col_type_is(       'app', 'users', 'id', 'bigint', 'app.users.id should be bigint' );
+select col_default_is(    'app', 'users', 'id', 'nextval(''users_id_seq''::regclass)', 'app.users.id should have this default' );
+
+select col_not_null(      'app', 'users', 'identity_provider', 'column app.users.identity_provider should be not null' );
+select col_hasnt_default( 'app', 'users', 'identity_provider', 'column app.users.identity_provider should not have default' );
+select col_type_is(       'app', 'users', 'identity_provider', 'text', 'app.users.identity_provider should be text' );
+
+select col_not_null(      'app', 'users', 'provided_id', 'column app.users.provided_id should be not null' );
+select col_hasnt_default( 'app', 'users', 'provided_id', 'column app.users.provided_id should not have default' );
+select col_type_is(       'app', 'users', 'provided_id', 'text', 'app.users.provided_id should be text' );
+
+select col_not_null(      'app', 'users', 'created_at', 'column app.users.created_at should be not null' );
+select col_type_is(       'app', 'users', 'created_at', 'timestamp with time zone', 'app.users.created_at should be timestamptz' );
+select col_default_is(    'app', 'users', 'created_at', 'now()', 'app.users.created_at should have default now()' );
+
+select col_not_null(      'app', 'users', 'etc', 'column app.users.etc should be not null' );
+select col_has_check(     'app', 'users', 'etc', 'column app.users.etc should have a check');
+select col_type_is(       'app', 'users', 'etc', 'jsonb', 'app.users.etc should be jsonb' );
+select col_default_is(    'app', 'users', 'etc', '{}'::jsonb, 'app.users.etc should have default {}::jsonb' );
+
+select col_is_unique( 'app', 'users', array['identity_provider', 'provided_id'] );
+
+------------------------------------------------------------
+
+select columns_are( 'app', 'all_cards', array['id', 'front', 'back', 'prev_revision_id', 'created_by', 'created_at', 'etc'] );
+
+select col_is_pk(         'app', 'all_cards', 'id', 'app.all_cards.id should be pk' );
+
+select col_not_null(      'app', 'all_cards', 'id', 'column app.all_cards.id should be not null' );
+select col_type_is(       'app', 'all_cards', 'id', 'uuid', 'app.all_cards.id should be uuid' );
+select col_default_is(    'app', 'all_cards', 'id', 'gen_random_uuid()', 'app.all_cards.id should have this default' );
+
+select col_not_null(      'app', 'all_cards', 'front', 'column app.all_cards.front should be not null' );
+select col_hasnt_default( 'app', 'all_cards', 'front', 'column app.all_cards.front should not have default' );
+select col_type_is(       'app', 'all_cards', 'front', 'text', 'app.all_cards.front should be text' );
+
+select col_not_null(      'app', 'all_cards', 'back', 'column app.all_cards.back should be not null' );
+select col_hasnt_default( 'app', 'all_cards', 'back', 'column app.all_cards.back should not have default' );
+select col_type_is(       'app', 'all_cards', 'back', 'text', 'app.all_cards.back should be text' );
+
+select col_is_null(       'app', 'all_cards', 'prev_revision_id', 'column app.all_cards.prev_revision_id should be nullable' );
+select col_hasnt_default( 'app', 'all_cards', 'prev_revision_id', 'column app.all_cards.prev_revision_id should not have default' );
+select col_type_is(       'app', 'all_cards', 'prev_revision_id', 'uuid', 'app.all_cards.prev_revision_id should be text' );
+select fk_ok(             'app', 'all_cards', 'prev_revision_id', 'app', 'all_cards', 'id' );
+
+select col_is_null(       'app', 'all_cards', 'created_by', 'column app.all_cards.created_by should be nullable' );
+select col_hasnt_default( 'app', 'all_cards', 'created_by', 'column app.all_cards.created_by should not have default' );
+select col_type_is(       'app', 'all_cards', 'created_by', 'bigint', 'app.all_cards.created_by should be text' );
+select fk_ok(             'app', 'all_cards', 'created_by', 'app', 'users', 'id' );
+
+select col_not_null(      'app', 'all_cards', 'created_at', 'column app.all_cards.created_at should be not null' );
+select col_default_is(    'app', 'all_cards', 'created_at', 'now()', 'app.all_cards.created_at should have default now()' );
+select col_type_is(       'app', 'all_cards', 'created_at', 'timestamp with time zone', 'app.all_cards.created_at should be text' );
+
+select col_not_null(      'app', 'all_cards', 'etc', 'column app.all_cards.etc should be not null' );
+select col_has_check(     'app', 'all_cards', 'etc', 'column app.all_cards.etc should have a check');
+select col_type_is(       'app', 'all_cards', 'etc', 'jsonb', 'app.all_cards.etc should be jsonb' );
+select col_default_is(    'app', 'all_cards', 'etc', '{}'::jsonb, 'app.all_cards.etc should have default {}::jsonb' );
+
+------------------------------------------------------------
+
+select columns_are( 'app', 'cards_orset', array['user_id', 'card_id', 'unique_identifier', 'tombstone', 'added_at', 'removed_at', 'etc'] );
+
+select col_is_pk(         'app', 'cards_orset', array['user_id', 'card_id', 'unique_identifier'], 'app.cards_orset.user_id should be pk' );
+
+select col_not_null(      'app', 'cards_orset', 'user_id', 'column app.cards_orset.user_id should be not null' );
+select col_type_is(       'app', 'cards_orset', 'user_id', 'bigint', 'app.cards_orset.user_id should be bigint' );
+select col_hasnt_default( 'app', 'cards_orset', 'user_id', 'column app.cards_orset should not have default' );
+select fk_ok(             'app', 'cards_orset', 'user_id', 'app', 'users', 'id' );
+
+select col_not_null(      'app', 'cards_orset', 'card_id', 'column app.cards_orset.card_id should be not null' );
+select col_type_is(       'app', 'cards_orset', 'card_id', 'uuid', 'app.cards_orset.card_id should be bigint' );
+select col_hasnt_default( 'app', 'cards_orset', 'card_id', 'column app.cards_orset should not have default' );
+select fk_ok(             'app', 'cards_orset', 'card_id', 'app', 'all_cards', 'id' );
+
+select col_not_null(      'app', 'cards_orset', 'unique_identifier', 'column app.cards_orset.unique_identifier should be not null' );
+select col_type_is(       'app', 'cards_orset', 'unique_identifier', 'uuid', 'app.cards_orset.unique_identifier should be uuid' );
+select col_default_is(    'app', 'cards_orset', 'unique_identifier', 'gen_random_uuid()', 'app.cards_orset.unique_identifier should have default gen_random_uuid()' );
+
+select col_not_null(      'app', 'cards_orset', 'tombstone', 'column app.cards_orset.tombstone should be not null' );
+select col_type_is(       'app', 'cards_orset', 'tombstone', 'boolean', 'app.cards_orset.tombstone should be boolean' );
+select col_default_is(    'app', 'cards_orset', 'tombstone', 'false', 'app.cards_orset.tombstone should have default false' );
+
+select col_not_null(      'app', 'cards_orset', 'added_at', 'column app.cards_orset.added_at should be not null' );
+select col_type_is(       'app', 'cards_orset', 'added_at', 'timestamp with time zone', 'app.cards_orset.added_at should be timestamptz' );
+select col_default_is(    'app', 'cards_orset', 'added_at', 'now()', 'app.cards_orset.added_at should have default now()' );
+
+select col_is_null(       'app', 'cards_orset', 'removed_at', 'column app.cards_orset.removed_at should be nullable' );
+select col_type_is(       'app', 'cards_orset', 'removed_at', 'timestamp with time zone', 'app.cards_orset.removed_at should be timestamptz' );
+select col_hasnt_default( 'app', 'cards_orset', 'removed_at', 'app.cards_orset.removed_at should not have default' );
+
+select col_not_null(      'app', 'cards_orset', 'etc', 'column app.cards_orset.etc should be not null' );
+select col_has_check(     'app', 'cards_orset', 'etc', 'column app.cards_orset.etc should have a check');
+select col_type_is(       'app', 'cards_orset', 'etc', 'jsonb', 'app.cards_orset.etc should be jsonb' );
+select col_default_is(    'app', 'cards_orset', 'etc', '{}'::jsonb, 'app.cards_orset.etc should have default {}::jsonb' );
+
+------------------------------------------------------------
+
+select * from finish();
+
+rollback;
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+begin;
+set local role admin_role;
+
+select set_config(
+       'search_path',
+       'pgtap,' || current_setting('search_path'),   -- path=whatever:$path
+       true   -- local to transaction
+);
+
+select * from no_plan();
+
+------------------------------------------------------------
+
+select functions_are( 'app', array['get_all_cards', 'create_card', 'add_card', 'remove_card'] );
+
+
+
+
+------------------------------------------------------------
+
+select * from finish();
+
+rollback;
+
+
+
+
+
+

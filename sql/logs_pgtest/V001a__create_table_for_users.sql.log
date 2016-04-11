@@ -1,0 +1,187 @@
+
+----- 2016-04-04 13:30:18.407026+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 11:31:13.244405+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 13:18:36.597851+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 13:20:13.205538+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 13:27:50.530625+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 13:29:01.826405+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 13:33:24.823823+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 17:43:15.969645+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-05 18:05:09.826564+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-06 13:38:06.866285+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-07 10:53:46.102148+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT

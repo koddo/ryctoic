@@ -1,0 +1,51 @@
+begin;
+set local role admin_role;
+
+select set_config(
+       'search_path',
+       'pgtap,' || current_setting('search_path'),   -- path=whatever:$path
+       true   -- local to transaction
+);
+
+select * from no_plan();
+
+------------------------------------------------------------
+
+select tables_are( 'app', array['users'], 'should have these tables' );
+
+------------------------------------------------------------
+
+select columns_are( 'app', 'users', array['id', 'identity_provider', 'provided_id', 'created_at', 'etc'] );
+
+select col_is_pk(         'app', 'users', 'id', 'app.users.id should be pk' );
+select col_not_null(      'app', 'users', 'id', 'column app.users.id should be not null' );
+select col_type_is(       'app', 'users', 'id', 'bigint', 'app.users.id is bigint' );
+select col_has_default(   'app', 'users', 'id', 'column app.users.id has default' );
+select col_default_is(    'app', 'users', 'id', 'nextval(''users_id_seq''::regclass)', 'app.users.id has this default' );
+
+select col_not_null(      'app', 'users', 'identity_provider', 'column app.users.identity_provider should be not null' );
+select col_hasnt_default( 'app', 'users', 'identity_provider', 'column app.users.identity_provider hasnt default' );
+select col_type_is(       'app', 'users', 'identity_provider', 'text', 'app.users.identity_provider is text' );
+
+select col_not_null(      'app', 'users', 'provided_id', 'column app.users.provided_id should be not null' );
+select col_hasnt_default( 'app', 'users', 'provided_id', 'column app.users.provided_id hasnt default' );
+select col_type_is(       'app', 'users', 'provided_id', 'text', 'app.users.provided_id is text' );
+
+select col_not_null(      'app', 'users', 'created_at', 'column app.users.created_at should be not null' );
+select col_type_is(       'app', 'users', 'created_at', 'timestamp with time zone', 'app.users.created_at is timestamptz' );
+select col_has_default(   'app', 'users', 'created_at', 'column app.users.created_at has default' );
+select col_default_is(    'app', 'users', 'created_at', 'now()', 'app.users.created_at has default now()' );
+
+select col_not_null(      'app', 'users', 'etc', 'column app.users.etc should be not null' );
+select col_has_default(   'app', 'users', 'etc', 'column app.users.etc has default'  );
+select col_has_check(     'app', 'users', 'etc', 'column app.users.etc has a check');
+select col_type_is(       'app', 'users', 'etc', 'jsonb', 'app.users.etc is text' );
+select col_default_is(    'app', 'users', 'etc', '{}'::jsonb, 'app.users.etc has default {}::jsonb' );
+
+select col_is_unique( 'app', 'users', array['identity_provider', 'provided_id'] );
+
+------------------------------------------------------------
+
+select * from finish();
+
+rollback;

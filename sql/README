@@ -2,7 +2,7 @@
 !!! never write to-do inside schema migration files, they are meant to be final and unchangeable !!!
 !!! write them here !!!  
 
-TODO: create a git hook which notifies if init.sql or migrations have changes 
+TODO: create a git hook which notifies if migrations have changes 
 
 
 pg-schema-version.py
@@ -10,27 +10,27 @@ pg-schema-version.py
 
 see its dockerfile
 
+
 locale
 ================
 
--- locale is set to C
--- we can use collations later, when needed
+locale is set to C
+we can use collations later, when needed
 ------------------------------
--- debian docker image doesn't have locales other that utf-8, here is how to add one
--- this worked:
--- # localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
--- psql> CREATE COLLATION "fr_FR" (LOCALE = 'fr_FR.utf8');
--- psql> select * from pg_collation;
--- psql> select initcap('welcome to CHAMPS-ÉLYSÉES' collate "fr_FR");
--- => Welcome To Champs-Élysées'
--- by psql I mean pgagmin3, because my terminal couldn't paste those french chars
--- probably it's a good idea to have a copy of this collation named "fr_FR.utf8", I don't know yet, but why anyway?
+debian docker image doesn't have locales other that utf-8, here is how to add one
+this worked:
+# localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
+psql> CREATE COLLATION "fr_FR" (LOCALE = 'fr_FR.utf8');
+psql> select * from pg_collation;
+psql> select initcap('welcome to CHAMPS-ÉLYSÉES' collate "fr_FR");
+=> Welcome To Champs-Élysées'
+by psql I mean pgagmin3, because my terminal couldn't paste those french chars
+probably it's a good idea to have a copy of this collation named "fr_FR.utf8", I don't know yet, but why anyway?
 ------------------------------
--- this is meant to be an equivalent to localedef, but didn't work for me:
--- echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
--- echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen
--- locale-gen --no-archive
-
+this is meant to be an equivalent to localedef, but didn't work for me:
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen --no-archive
 
 
 
@@ -124,6 +124,9 @@ maybe later check if users have no passwords, but unsure how, pg_user always sho
 maybe later check if admin_role has grant option for functions
 
 how to delete all stored functions — when you are in dev mode
+
+TODO: how to test row 'on delete set null'?
+
 ================================
 
 this generates a script to drop them all

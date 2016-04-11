@@ -82,3 +82,465 @@ $$ language plpgsql;
 CREATE FUNCTION
 commit;
 COMMIT
+
+----- 2016-04-05 12:50:23.703544+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 13:18:36.890411+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 13:20:13.489136+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 13:27:50.824106+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 13:29:02.126969+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 13:33:25.121816+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 17:43:16.285047+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-05 18:05:10.137220+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-06 13:40:18.444421+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-06 14:27:17.415558+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
+
+----- 2016-04-07 10:54:55.738355+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+begin
+return query
+select card_id from cards_orset as s
+where s.user_id = for_user_id
+    and s.tombstone = false
+group by card_id;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function create_card(new_front text, new_back text, the_prev_revision_id uuid, created_by_user_id bigint) returns void as $$
+begin
+insert into all_cards(front, back, prev_revision_id, created_by)
+    values(new_front, new_back, the_prev_revision_id, created_by_user_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
+begin
+insert into cards_orset(user_id, card_id)
+    values(for_user_id, the_card_id);
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+create or replace function remove_card(for_user_id bigint, the_card_id uuid) returns void as $$
+declare
+    now timestamptz;
+begin
+    now := now();
+update cards_orset as s set tombstone = true, removed_at = now
+where s.user_id = for_user_id and s.card_id = the_card_id and tombstone = false;
+end;
+$$ language plpgsql;
+CREATE FUNCTION
+commit;
+COMMIT
