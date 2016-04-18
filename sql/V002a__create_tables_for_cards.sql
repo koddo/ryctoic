@@ -12,20 +12,32 @@ create table all_cards (
         etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
         );
 
+
+
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+
 create table cards_orset (
         user_id             bigint   not null references users(id)       on delete cascade,
         card_id             uuid     not null references all_cards(id)   on delete cascade,
         unique_identifier   uuid not null default gen_random_uuid(),
         tombstone           boolean not null default false,
         added_at            timestamptz not null default now(),
-        removed_at          timestamptz null,
+        removed_at          timestamp_device_pair[] null,
         etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
-        primary key (user_id, card_id, unique_identifier)
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
         );
+
+
+
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
 
 
 commit;
 
 
--- fuck auto-save
 

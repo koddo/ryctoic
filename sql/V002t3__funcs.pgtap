@@ -7,18 +7,114 @@ select set_config(
        true   -- local to transaction
 );
 
-select * from no_plan();
+------------------------------------------------------------
+
+create schema tmp_schema;
 
 ------------------------------------------------------------
 
-select functions_are( 'app', array['get_all_cards', 'create_card', 'add_card', 'remove_card'] );
+
+create or replace function tmp_schema.startup() returns setof text as $$
+begin
+return next pass('starting up');
+end;
+$$ language plpgsql;
 
 
+create or replace function tmp_schema.setup() returns setof text as $$
+declare
+    test_user_id bigint;
+begin
+select id into test_user_id
+from app.users where identity_provider = 'test_identity_provider' and provided_id = '1';
+return next lives_ok('select app.create_card(''front0'', ''back0'', null::uuid, ' || test_user_id || ')', 'setting up, creating test cards');
+end;
+$$ language plpgsql;
+
+
+create or replace function tmp_schema.test_args_of_functions() returns setof text as $$
+begin
+return next functions_are( 'app', array['get_all_cards', 'create_card', 'add_card', 'remove_card'] );
+return next function_returns( 'app', 'create_card', array['text', 'text', 'uuid', 'bigint'], 'uuid' );
+return next function_returns( 'app', 'get_all_cards', array['bigint'], 'setof record' );
+return next function_returns( 'app', 'add_card', array['bigint', 'uuid'], 'void' );
+return next function_returns( 'app', 'remove_card', array['bigint', 'uuid'], 'void' );
+end;
+$$ language plpgsql;
+
+
+
+create or replace function tmp_schema.test_create_card() returns setof text as $$
+declare
+    test_user_id bigint;
+    test_card_id    uuid;
+    test_card_id_2  uuid;
+begin
+select id into test_user_id
+    from app.users where identity_provider = 'test_identity_provider' and provided_id = '1';
+return next lives_ok('select app.create_card(''front1'', ''back1'', null::uuid, ' || test_user_id || ')', 'app.create_card() should not throw exception');
+return next lives_ok('select app.create_card(''front2'', ''back2'', null::uuid, ' || test_user_id || ')', 'app.create_card() should not throw exception');
+
+return next lives_ok('select app.create_card(''front2'', ''back2'', null::uuid, ' || test_user_id || ')', 'adding a duplicate card by the same user should not throw exception');
+    prepare asdf1(bigint) as select front, back, prev_revision_id, created_by from app.all_cards where created_by = $1;
+    prepare asdf2(bigint) as values
+    ('front0', 'back0', null::uuid, $1),
+    ('front1', 'back1', null::uuid, $1),
+    ('front2', 'back2', null::uuid, $1),
+    ('front2', 'back2', null::uuid, $1);
+return next bag_eq('asdf1(' || test_user_id || ')', 'asdf2(' || test_user_id || ')', 'app.all_cards should have cards we added before' );
+
+select into test_card_id
+    app.create_card('front100', 'back100', null::uuid, test_user_id);
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id || '''::uuid);', 'adding a card should not throw exception');
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id || '''::uuid);', 'adding a card should not throw exception');
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id || '''::uuid);', 'adding a card should not throw exception');
+return next bag_eq(
+        'select * from get_all_cards(' || test_user_id || ') as record(card_id uuid)',
+        'values (''' || test_card_id || '''::uuid)',
+        'after adding a card several times we should have it once from get_all_cards()'
+        );
+
+select into test_card_id_2
+    app.create_card('front200', 'back200', null::uuid, test_user_id);
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id_2 || '''::uuid);', 'adding a card should not throw exception');
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id_2 || '''::uuid);', 'adding a card should not throw exception');
+return next lives_ok('select app.add_card(''' || test_user_id || '''::bigint, ''' || test_card_id_2 || '''::uuid);', 'adding a card should not throw exception');
+return next bag_eq(
+        'select * from get_all_cards(' || test_user_id || ') as record(card_id uuid)',
+        'values (''' || test_card_id || '''::uuid), (''' || test_card_id_2 || '''::uuid)',
+        'after removing a card several times we should not have in get_all_cards()'
+        );
+
+return next lives_ok('select app.remove_card(''' || test_user_id || '''::bigint, ''' || test_card_id_2 || '''::uuid, ''untracked_device'');', 'removing a card should not throw exception');
+return next lives_ok('select app.remove_card(''' || test_user_id || '''::bigint, ''' || test_card_id_2 || '''::uuid);', 'removing a card should not throw exception');
+return next bag_eq(
+        'select * from get_all_cards(' || test_user_id || ') as record(card_id uuid)',
+        'values (''' || test_card_id || '''::uuid)',
+        'after removing a card several times we should not have in get_all_cards()'
+        );
+
+end;
+$$ language plpgsql;
+
+
+
+create or replace function tmp_schema.shutdown() returns setof text as $$
+declare
+    test_user_id bigint;
+begin
+select id
+    into test_user_id
+    from app.users where identity_provider = 'test_identity_provider' and provided_id = '1';
+return next pass('shutting down');
+return next is_empty('select * from app.all_cards where created_by = ' || test_user_id || ';', 'make sure app.all_cards created by test user is empty after tests');
+end;
+$$ language plpgsql;
 
 
 ------------------------------------------------------------
 
-select * from finish();
+select * from runtests('tmp_schema'::name, '^test');
 
 rollback;
 

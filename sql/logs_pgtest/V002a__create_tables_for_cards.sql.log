@@ -318,3 +318,1042 @@ CREATE TABLE
 commit;
 COMMIT
 -- fuck auto-save
+
+----- 2016-04-11 12:08:35.018077+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type removed_at as (
+        removed_at timestamptz,
+        removed_from_device text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamptz null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier)
+        );
+CREATE TABLE
+commit;
+COMMIT
+-- fuck auto-save
+
+----- 2016-04-11 12:09:08.249239+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type mytype as (
+        removed_at                timestamptz,
+        removed_from_device       text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        -- removed_at          timestamptz null,
+        removed_at          mytype[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier)
+        );
+CREATE TABLE
+commit;
+COMMIT
+-- fuck auto-save
+
+----- 2016-04-11 12:15:48.137439+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier)
+        );
+CREATE TABLE
+commit;
+COMMIT
+-- fuck auto-save
+
+----- 2016-04-11 13:44:24.547130+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 14:16:38.417235+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),E
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+psql:V002a__create_tables_for_cards.sql:32: ERROR:  syntax error at or near "check"
+LINE 10:         check ((tombstone is false and removed_at is null) o...
+                 ^
+
+----- 2016-04-12 14:18:33.761411+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 14:49:09.982440+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:46:00.246752+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:46:22.262353+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:47:46.037064+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:48:06.236873+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:49:12.067564+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 15:49:39.062617+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+commit;
+COMMIT
+
+----- 2016-04-12 16:02:58.613714+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-12 16:46:09.729485+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 14:22:25.539693+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:16:11.399844+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:19:12.669048+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:22:11.860772+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:24:05.675683+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:25:54.027293+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 16:26:51.073313+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:16:23.579835+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:17:16.703813+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:18:39.283595+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:19:37.887826+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:21:13.704021+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT
+
+----- 2016-04-14 17:22:30.290908+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+CREATE TABLE
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
+INSERT 0 1
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+INSERT 0 1
+commit;
+COMMIT

@@ -12,6 +12,7 @@ select * from no_plan();
 ------------------------------------------------------------
 
 select tables_are( 'app', array['users', 'all_cards', 'cards_orset'], 'should have these tables' );
+select types_are(  'app', array['timestamp_device_pair'] );
 
 ------------------------------------------------------------
 
@@ -108,13 +109,19 @@ select col_type_is(       'app', 'cards_orset', 'added_at', 'timestamp with time
 select col_default_is(    'app', 'cards_orset', 'added_at', 'now()', 'app.cards_orset.added_at should have default now()' );
 
 select col_is_null(       'app', 'cards_orset', 'removed_at', 'column app.cards_orset.removed_at should be nullable' );
-select col_type_is(       'app', 'cards_orset', 'removed_at', 'timestamp with time zone', 'app.cards_orset.removed_at should be timestamptz' );
+select col_type_is(       'app', 'cards_orset', 'removed_at', 'timestamp_device_pair[]', 'app.cards_orset.removed_at should be timestamp_device_pair[]' );
 select col_hasnt_default( 'app', 'cards_orset', 'removed_at', 'app.cards_orset.removed_at should not have default' );
 
 select col_not_null(      'app', 'cards_orset', 'etc', 'column app.cards_orset.etc should be not null' );
 select col_has_check(     'app', 'cards_orset', 'etc', 'column app.cards_orset.etc should have a check');
 select col_type_is(       'app', 'cards_orset', 'etc', 'jsonb', 'app.cards_orset.etc should be jsonb' );
 select col_default_is(    'app', 'cards_orset', 'etc', '{}'::jsonb, 'app.cards_orset.etc should have default {}::jsonb' );
+
+select has_check( 'app', 'cards_orset', 'app.cards_orset should have a check' );
+
+------------------------------------------------------------
+
+select results_eq( 'select provided_id from users where identity_provider=''test_identity_provider''', array['1', '2'], 'app.users should have test users' );
 
 ------------------------------------------------------------
 

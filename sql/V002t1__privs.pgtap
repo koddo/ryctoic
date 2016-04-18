@@ -145,7 +145,7 @@ where cl.relkind='S' and ns.nspname in ('app', 'misc', 'pgtap');
 
 select function_privs_are( ns.nspname, pr.proname, string_to_array(oidvectortypes(pr.proargtypes), ', '), 'public', '{}', 'the public role should not have any privileges for function ' || ns.nspname || '.' || pr.proname )
 from pg_proc as pr join pg_namespace as ns   on pr.pronamespace = ns.oid
-where ns.nspname in ('app', 'misc', 'pgtap') ; 
+where ns.nspname in ('app', 'misc', 'pgtap'); 
 
 select tablespace_privs_are( 'pg_default',  'public', '{}' );
 select tablespace_privs_are( 'pg_global',   'public', '{}' );
