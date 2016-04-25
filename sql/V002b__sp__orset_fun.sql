@@ -18,8 +18,8 @@ $$ language plpgsql;
 
 create or replace function add_card(for_user_id bigint, the_card_id uuid) returns void as $$
 begin
-insert into cards_orset(user_id, card_id)
-    values(for_user_id, the_card_id);
+insert into cards_orset(user_id, card_id, added_at)
+    values(for_user_id, the_card_id, array[now()]);
 end;
 $$ language plpgsql;
 
@@ -43,7 +43,7 @@ $$ language plpgsql;
 
 
 
-create or replace function get_all_cards(for_user_id bigint) returns setof record as $$
+create or replace function get_cards(for_user_id bigint) returns setof record as $$
 begin
 return query
 select card_id from cards_orset as s

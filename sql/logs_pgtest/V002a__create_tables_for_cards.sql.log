@@ -1357,3 +1357,41 @@ insert into app.users(identity_provider, provided_id) values('test_identity_prov
 INSERT 0 1
 commit;
 COMMIT
+
+----- 2016-04-22 16:17:51.547490+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table all_cards (
+        id                 uuid primary key default gen_random_uuid(),
+        front              text not null,
+        back               text not null,
+        prev_revision_id   uuid     references all_cards(id)   on delete set null,
+        created_by         bigint   references users(id)       on delete set null,
+        created_at         timestamptz not null default now(),
+        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        );
+CREATE TABLE
+create type timestamp_device_pair as (
+        tstz              timestamptz,
+        device            text
+        );
+CREATE TYPE
+create table cards_orset (
+        user_id             bigint   not null references users(id)       on delete cascade,
+        card_id             uuid     not null references all_cards(id)   on delete cascade,
+        unique_identifier   uuid not null default gen_random_uuid(),
+        tombstone           boolean not null default false,
+        added_at            timestamp_device_pair[] not null,            -- added_at            timestamptz not null default now(),
+        removed_at          timestamp_device_pair[] null,
+        due_date            ,
+        easiness_factor     ,
+        prev_interval       ,
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        primary key (user_id, card_id, unique_identifier),
+        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        );
+psql:V002a__create_tables_for_cards.sql:35: ERROR:  syntax error at or near ","
+LINE 8:         due_date            ,
+                                    ^

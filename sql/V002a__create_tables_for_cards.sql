@@ -24,8 +24,11 @@ create table cards_orset (
         card_id             uuid     not null references all_cards(id)   on delete cascade,
         unique_identifier   uuid not null default gen_random_uuid(),
         tombstone           boolean not null default false,
-        added_at            timestamptz not null default now(),
+        added_at            timestamp_device_pair[] not null,            -- added_at            timestamptz not null default now(),
         removed_at          timestamp_device_pair[] null,
+        due_date            timestamptz,
+        easiness_factor     ,
+        prev_interval       interval,
         etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
         primary key (user_id, card_id, unique_identifier),
         check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
