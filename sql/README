@@ -65,11 +65,12 @@ TODO: check if a user has a card when she tries to create one
 TODO: check for uuid collisions when creating and adding cards 
 
 -- insert into users(identity_provider, provided_id) values('anonymous', '1');
--- select create_card('fuck', 'you', null, 1);
--- select create_card('sick', 'fuck', null, 1);
--- select add_card(1, ''::uuid);
--- select remove_card(1, ''::uuid);
--- select * from users;     select * from all_cards;     select * from cards_orset;     select * from get_all_cards(1) as record(card_id uuid);
+select create_card('fuck', 'you', null, 1);
+select create_card('sick', 'fuck', null, 1);
+select add_card(1, ''::uuid,    'device');
+select remove_card(1, ''::uuid, 'device');
+select has_card(1, ''::uuid);
+select * from users;     select * from all_cards;     select * from cards_orset;     select * from get_cards(1) as record(card_id uuid);
 
 
 -- get_all_cards
@@ -82,6 +83,8 @@ TODO: check for uuid collisions when creating and adding cards
 
 
 TODO: post my question to mailing list: http://stackoverflow.com/questions/34107804/revoke-everything-from-the-public-role-in-postgres 
+
+TODO: add_card() has a tiny race condition between has_card() and insert, get rid of it --- now we can insert duplicates when trying to concurrently add cards
 
 
 on delete set null/cascade for cards
@@ -126,6 +129,10 @@ TODO: we have a check for the app.cards_orset.removed_at column, but we need to 
 
 for unknown reason we can't just pgtap.runtests() without regex pattern, have to pass '^test_' to make them run
 
+
+
+
+drop functions
 ================================
 
 this generates a script to drop them all
@@ -133,7 +140,7 @@ this generates a script to drop them all
 ```
 SELECT 'DROP FUNCTION ' || ns.nspname || '.' || proname || '(' || oidvectortypes(proargtypes) || ');'
 FROM pg_proc INNER JOIN pg_namespace ns ON (pg_proc.pronamespace = ns.oid)
-WHERE ns.nspname = 'public'  order by proname;
+WHERE ns.nspname = 'app'  order by proname;
 ```
 
 if output is truncated, set output format to \a
