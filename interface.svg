@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="841mm"
+   height="594mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="interface.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="849.9606"
+     inkscape:cy="1735.185"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="852"
+     inkscape:window-x="0"
+     inkscape:window-y="265"
+     inkscape:window-maximized="0"
+     units="mm"
+     inkscape:snap-global="false" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,1052.3622)">
+    <rect
+       style="fill:none;stroke:#000000"
+       id="rect2991"
+       width="243"
+       height="88"
+       x="1947"
+       y="-563.63782" />
+    <rect
+       y="-463.63782"
+       x="1947"
+       height="88"
+       width="243"
+       id="rect2993"
+       style="fill:none;stroke:#000000" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1975"
+       y="-538.63782"
+       id="text2995"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan2997"
+         x="1975"
+         y="-538.63782">front</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1975"
+       y="-440.63782"
+       id="text2999"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3001"
+         x="1975"
+         y="-440.63782">back</tspan></text>
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:2.33686328"
+       id="rect3007"
+       width="802.82227"
+       height="500.68036"
+       x="1663.5889"
+       y="-637.45691" />
+    <rect
+       style="fill:none;stroke:#cccccc"
+       id="rect3029"
+       width="73"
+       height="22"
+       x="2105"
+       y="-293.63782" />
+    <rect
+       y="-292.63782"
+       x="1960"
+       height="22"
+       width="73"
+       id="rect3033"
+       style="fill:none;stroke:#cccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="2122"
+       y="-277.63782"
+       id="text3035"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3037"
+         x="2122"
+         y="-277.63782">hard</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1973"
+       y="-277.63782"
+       id="text3039"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3041"
+         x="1973"
+         y="-277.63782">normal</tspan></text>
+    <rect
+       style="fill:none;stroke:#cccccc"
+       id="rect3078"
+       width="243"
+       height="48"
+       x="2010"
+       y="-981.63782" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="2044"
+       y="-951.63782"
+       id="text3080"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3082"
+         x="2044"
+         y="-951.63782">authentication</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1045"
+       y="-874.63782"
+       id="text3045"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3047"
+         x="1045"
+         y="-874.63782">find number of permutations</tspan><tspan
+         sodipodi:role="line"
+         x="1045"
+         y="-856.43781"
+         id="tspan3051">in [$]S_{10}[/$]</tspan><tspan
+         sodipodi:role="line"
+         x="1045"
+         y="-838.23779"
+         id="tspan3049">that commute with (1 3 5 7 9)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1046"
+       y="-769.63782"
+       id="text3053"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3055"
+         x="1046"
+         y="-769.63782">prove that permutations conjugate </tspan><tspan
+         sodipodi:role="line"
+         x="1046"
+         y="-751.43781"
+         id="tspan3057">[$]\iff[/$] </tspan><tspan
+         sodipodi:role="line"
+         x="1046"
+         y="-733.23779"
+         id="tspan3059">they have the same cycle structure</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="1047"
+       y="-669.63782"
+       id="text3085"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3087"
+         x="1047"
+         y="-669.63782">how many bases in n-dimensional </tspan><tspan
+         sodipodi:role="line"
+         x="1047"
+         y="-651.43781"
+         id="tspan3089">vector space over [$]F_q[/$]?</tspan></text>
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:0.88047111"
+       id="rect3091"
+       width="319"
+       height="84.5"
+       x="1024"
+       y="-902.63782" />
+    <rect
+       y="-802.63782"
+       x="1024"
+       height="89.475204"
+       width="319"
+       id="rect3093"
+       style="fill:none;stroke:#cccccc;stroke-width:0.9060207" />
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:0.76893562"
+       id="rect3095"
+       width="319"
+       height="64.447556"
+       x="1024"
+       y="-698.63782" />
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:1.8614527"
+       id="rect3097"
+       width="856.13855"
+       height="34.138546"
+       x="502.43073"
+       y="-962.20709" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#999999;fill-opacity:1;stroke:none"
+       x="521"
+       y="-940.63782"
+       id="text3099"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3101"
+         x="521"
+         y="-940.63782">search</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="509"
+       y="-855.63782"
+       id="text3376"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3378"
+         x="509"
+         y="-855.63782">all cards</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="511"
+       y="-645.63782"
+       id="text3380"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3382"
+         x="511"
+         y="-645.63782">decks</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="540"
+       y="-620.63782"
+       id="text3384"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3386"
+         x="540"
+         y="-620.63782">algebra -- permutations</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="541"
+       y="-596.63782"
+       id="text3388"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3390"
+         x="541"
+         y="-596.63782">algebra -- matrices</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="542"
+       y="-573.63782"
+       id="text3392"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3394"
+         x="542"
+         y="-573.63782">algebra -- eigenvalues</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="509"
+       y="-682.63782"
+       id="text3396"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3398"
+         x="509"
+         y="-682.63782">undecked cards</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="513"
+       y="-515.63782"
+       id="text3400"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3402"
+         x="513"
+         y="-515.63782">tags</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="543"
+       y="-489.63782"
+       id="text3404"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3406"
+         x="543"
+         y="-489.63782">permutations (algebra)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="543"
+       y="-464.63782"
+       id="text3408"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3410"
+         x="543"
+         y="-464.63782">matrices</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="545"
+       y="-440.63782"
+       id="text3412"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3414"
+         x="545"
+         y="-440.63782">eigenvalues</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="531"
+       y="-816.63782"
+       id="text3416"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3418"
+         x="531"
+         y="-816.63782">sorted by added</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="533"
+       y="-790.63782"
+       id="text3420"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3422"
+         x="533"
+         y="-790.63782">sorted by studied</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="532"
+       y="-761.63782"
+       id="text3424"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3426"
+         x="532"
+         y="-761.63782">sorted by scheduled</tspan></text>
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:1.30796552"
+       id="rect3430"
+       width="523.69202"
+       height="825.69202"
+       x="468.15399"
+       y="-907.48383" />
+    <rect
+       style="fill:none;stroke:#cccccc;stroke-width:0.7743609"
+       id="rect3432"
+       width="122.22564"
+       height="60.225639"
+       x="1111.8872"
+       y="-577.75061" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1152"
+       y="-541.63782"
+       id="text3434"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3436"
+         x="1152"
+         y="-541.63782">more</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1746"
+       y="-611.63782"
+       id="text3442"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         id="tspan3444"
+         x="1746"
+         y="-611.63782">12 due   15 new   permutations</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 2338,-157.63783 0,-56 8.8038,32.8564 -16.8038,0 8.616,-32.15544"
+       id="path3446"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3448"
+       d="m 2418.8038,-213.76733 0,56 -8.8038,-32.8564 16.8038,0 -8.616,32.15544"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;line-height:129.99999523%;font-family:Sans;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="458"
+       y="-902.63782"
+       id="text3413"
+       sodipodi:linespacing="130%"><tspan
+         sodipodi:role="line"
+         x="458"
+         y="-902.63782"
+         id="tspan3417">MainBox</tspan></text>
+  </g>
+</svg>
