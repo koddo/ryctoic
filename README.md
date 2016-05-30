@@ -1,6 +1,8 @@
 Ryctoic
 ===================
 
+Human learning
+
  TODO: readme, svg diagram of components
 
 vmware instead of boot2docker(virtualbox)
@@ -31,7 +33,7 @@ remote shell
 I'm using boot2docker, it's ip is 192.168.59.103.
 To access docker container directly via it's ip, which looks like 172.17.0.98, add this route:
 
-     mac$ sudo route -n add 172.17.0.0/16 192.168.59.103
+     mac$ sudo route -n add 172.17.0.0/16 192.168.59.103   # or 192.168.15.134
 
 Test it:
 

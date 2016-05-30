@@ -84,7 +84,7 @@ select * from users;     select * from all_cards;     select * from cards_orset;
 
 TODO: post my question to mailing list: http://stackoverflow.com/questions/34107804/revoke-everything-from-the-public-role-in-postgres 
 
-TODO: add_card() has a tiny race condition between has_card() and insert, get rid of it --- now we can insert duplicates when trying to concurrently add cards
+TODO: add_card() has a tiny race condition between has_card() and insert, get rid of it --- now we can insert duplicates when trying to concurrently add cards --- maybe use upsert or classic loop http://www.postgresql.org/docs/current/static/plpgsql-control-structures.html#PLPGSQL-UPSERT-EXAMPLE 
 
 
 on delete set null/cascade for cards
