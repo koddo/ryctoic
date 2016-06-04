@@ -1,163 +1,66 @@
-dnsdock:
+version: '2'
+
+services:
+
+  dnsdock:
     image: tonistiigi/dnsdock
     command: -domain dnsdock -environment dev
     ports:
-        - "172.17.0.1:53:53/udp"
+      - "172.17.0.1:53:53/udp"
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-    log_driver: "json-file"
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      options:
+        max-size: "100k"
+        max-file: "10"
+  
 
-nginx:   # TODO: this image runs nginx as root, is this a security issue?
-    build: dockerfiles_empty_build_context       # image: nginx
-    dockerfile: Dockerfile_nginx
-
-    ports:
-        - "8443:8443"
-    volumes:
-        - /home/alex/mnt/ryctoic/nginx-dev.conf:/etc/nginx/nginx.conf:ro
-        - /home/alex/mnt/ryctoic/priv/ssl/server.crt:/etc/nginx/server.crt:ro
-        - /home/alex/mnt/ryctoic/priv/ssl/server.key:/etc/nginx/server.key:ro
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-    
-        
-backend:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_backend
-
-    working_dir: /home/theuser/ryctoic
-    entrypoint: bin/entrypoint-backend.sh     # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
-
-    volumes:
-        - .:/home/theuser/ryctoic
-        - ../ryctoic.secrets:/home/theuser/secrets      # see vm's shared dirs
-
-    ports:
-        - "8080:8080"
-    # expose:
-    # we'll have to expose some ports if we need to interconnect erlang nodes 
-    #  - "4369:4369"
-    #  - "9101:9101"
-    #  - "9102:9102"
-    #  - "9103:9103"
-    #  - "9104:9104"
-    #  - "9105:9105"
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-
-        
-figwheel:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_figwheel
-
-    volumes:
-        - /home/alex/mnt/ryctoic/:/home/theuser/ryctoic
-        # cache dependencies of lein figwheel to avoid downloading them on every run, this is gitignored
-        - /home/alex/mnt/ryctoic/client-web/lein-deps:/home/theuser/.m2/
-
-    working_dir: /home/theuser/ryctoic/client-web
-    command: /usr/local/bin/lein figwheel
-    # command: /bin/true
-    # command: while true ; do echo "doing nothing" && sleep 5 ; done
-
-    # stdin_open: true
-    # tty: true
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-
-
-postgres:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_postgres
+  postgres:
+    build:
+      context: dockerfiles_empty_build_context
+      dockerfile: Dockerfile_postgres
     expose:
-        - "5432"
+      - "5432"
     environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=secret
-        - PGDATA=/var/lib/postgresql/data   # default
-    volumes_from:
-        - pgdata   # TODO: later use volumes instead of data-only container
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - PGDATA=/var/lib/postgresql/data   # this is the default value
     volumes:
-        - /home/alex/mnt/ryctoic/sql/init.sh:/docker-entrypoint-initdb.d/init.sh
-        - /home/alex/mnt/ryctoic/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-        - /home/alex/mnt/ryctoic/sql:/sql
-        # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using init.sh
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-    # entrypoint: /bin/true     # bin/docker-compose.sh run --rm --entrypoint "/docker-entrypoint.sh" pgtest postgres ___please_dont_start___
-    # docker exec -it ryctoic_pgtest_run_1 psql --dbname ryctoicdb --user administrator --no-password --file /sql/init.test
+      - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ryctoic_pgdata:/var/lib/postgresql/data
+      # we can't share files here directly, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using a copy.sh script
+    logging:
+      options:
+        max-size: "100k"
+        max-file: "10"
+    network_mode: "bridge"
 
-
-# TODO: replace this data-only container with a named volume, at the moment of writing docker-compose doesn't support this
-pgdata:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_postgres
+  pgtest:   # for testing migrations
+    build:
+      context: dockerfiles_empty_build_context
+      dockerfile: Dockerfile_postgres
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - PGDATA=/var/lib/postgresql/data_outside_the_volume   # this makes pgdata disposable when doing $ docker run --rm
     volumes:
-        - /var/lib/postgresql/data
+      - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    logging:
+      options:
+        max-size: "100k"
+        max-file: "10"
     entrypoint: /bin/true
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-
-# cd /sql && mkdir logs_pgtest && psql --username postgres --echo-all -v ON_ERROR_STOP=1 -f V000a__configuration____run_by_superuser.sql --log-file=logs_pgtest/V000a__configuration____run_by_superuser.sql.log
-pgtest:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_postgres
-    expose:
-        - "5432"
-    environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=secret
-        - PGDATA=/var/lib/postgresql/data_outside_the_volume_to_start_from_scratch_every_time_we_recreate_the_container
-        # $ bin/docker-compose.sh stop pgtest && bin/docker-compose.sh rm -f pgtest && bin/docker-compose.sh up -d --no-deps pgtest
-    volumes:
-        - /home/alex/mnt/ryctoic/sql:/sql
-        - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-        # we can't share some files here, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using copy_files.sh
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
-# - /home/alex/mnt/ryctoic/sql/copy_files.sh:/docker-entrypoint-initdb.d/copy_files.sh
-# - /home/alex/mnt/ryctoic/sql/V000a__configuration____run_by_superuser.sql:/docker-entrypoint-initdb.d/baseline.sql
-
-cordova_browser_console_logger:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_cordova_browser_console_logger
-    volumes:
-        - /home/alex/mnt/ryctoic/bin/cordova_browser_console_logger.py:/home/theuser/cordova_browser_console_logger.py
-    command: /home/theuser/cordova_browser_console_logger.py
-    log_opt:
-        max-size: "200k"
-        max-file: "20"
+    network_mode: "bridge"
 
 
-gulp:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_gulp
-    volumes:
-        - /home/alex/mnt/ryctoic/:/home/theuser/ryctoic
-    working_dir: /home/theuser/ryctoic/client-web
-    command: gulp
 
-
-pg-schema-version:
-    build: dockerfiles_empty_build_context
-    dockerfile: Dockerfile_pg-schema-version
-    volumes:
-        - /home/alex/mnt/ryctoic/sql:/home/theuser/ryctoic/sql
-    working_dir: /home/theuser/ryctoic/sql
-    entrypoint: /home/theuser/pg-schema-version.py
     
-    
+volumes:
+  ryctoic_pgdata:
+    external: true
 
 
-
-
-
+  
+  

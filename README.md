@@ -123,8 +123,8 @@ TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl error
 
 
 
-docker dynamic links with dnsdock
---------------------------------------
+# docker dynamic links with dnsdock
+
 I tried skydns+skydock, but had some problems. Can't now remember. I'm sorry.
 
 And I had to run two containers instead of one.
@@ -132,16 +132,23 @@ And I had to run two containers instead of one.
 in /lib/systemd/system/docker.service add `--dns=172.17.0.1` to the `ExecStart=`        
 this is better that adding a dns param to every container
 
-add to /etc/resolv.conf on the host to be able to ping containers:
-nameserver 172.17.0.1
+add to the top of /etc/resolv.conf on the host to be able to ping containers:
+$ apt-get install -y resolvconf && echo 'nameserver 172.17.0.1' >> /etc/resolvconf/resolv.conf.d/head && resolvconf -u
 
 
+and for mac I have a bin/setup_local_ryctoic.sh
 
-application/hal+json
---------------------
+
+# application/hal+json
+
 _embedded may be multiple levels nested
 standard doesn't assume _embedded data is consistent with information that can be gotten from the embedded resouce, we decide; client even can first try to read _embedded and then try the embedded resource itself when needed
 hypermedia for machine2machine interaction, no forms
 
 
 
+# shutdown
+
+shutdown with: $ docker kill -s SIGTERM postgres   
+
+or $ docker-compose kill -s SIGTERM postgres

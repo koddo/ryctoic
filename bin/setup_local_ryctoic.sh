@@ -40,8 +40,6 @@ DOCKER_BRIDGE_IP=$(ssh alex@debian.local "ip -4 addr show docker0 | grep -Po 'in
 TAB=$'\t'   # sed doesn't understan
 
 
-
-
 # please don't laugh, I'm on mac using unprivileged account
 su admin -c "sudo sh -c \"sed -i '' 's/^.*local.ryctoic.com/$THE_IP${TAB}local.ryctoic.com/g' /etc/hosts ; \
 port unload dnsmasq ; \

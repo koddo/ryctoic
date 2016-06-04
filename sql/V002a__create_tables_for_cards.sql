@@ -8,36 +8,33 @@ create table all_cards (
         back               text not null,
         prev_revision_id   uuid     references all_cards(id)   on delete set null,
         created_by         bigint   references users(id)       on delete set null,
-        created_at         timestamptz not null default now(),
-        etc                jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' )
+        created_at         timestamptz not null default now()
         );
 
 
-
-create type timestamp_device_pair as (
-        tstz              timestamptz,
-        device            text
-        );
 
 create table cards_orset (
         user_id             bigint   not null references users(id)       on delete cascade,
         card_id             uuid     not null references all_cards(id)   on delete cascade,
         unique_identifier   uuid not null default gen_random_uuid(),
-        tombstone           boolean not null default false,
-        added_at            timestamp_device_pair not null,
-        removed_at          timestamp_device_pair[] default null,
+        -- alive               boolean not null default true,
+        added_at            timestamptz not null,
+        removed_at          timestamptz[] default null,
         due_date            timestamptz not null default now(),
-        easiness_factor     real not null default 2.5,
+        easiness_factor     smallint not null default 250,
         prev_interval       interval not null default '0 days',
-        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+
         primary key (user_id, card_id, unique_identifier),
-        check ((tombstone is false and removed_at is null) or (tombstone is true and removed_at is not null))
+        check ((alive is true and removed_at is null) or (alive is false and removed_at is not null))
         );
 
 
 
 insert into app.users(identity_provider, provided_id) values('test_identity_provider', '1');
 insert into app.users(identity_provider, provided_id) values('test_identity_provider', '2');
+
+
+insert into app.users(identity_provider, provided_id) values('test_identity_provider', 'koddo');
 
 
 commit;

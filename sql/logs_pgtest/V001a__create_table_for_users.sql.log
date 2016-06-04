@@ -185,3 +185,20 @@ create table users (
 CREATE TABLE
 commit;
 COMMIT
+
+----- 2016-06-03 16:45:47.569721+00:00 -----
+begin;
+BEGIN
+set local role admin_role;
+SET
+create table users (
+        id                  bigserial primary key,
+        identity_provider   text not null,   -- anonymous, google, facebook, twitter, etc
+        provided_id         text not null,   -- sub field in openid connect token
+        created_at          timestamptz not null default now(),
+        etc                 jsonb not null   default '{}'::jsonb   check( jsonb_typeof(etc) = 'object' ),
+        unique (identity_provider, provided_id)
+        );
+CREATE TABLE
+commit;
+COMMIT
