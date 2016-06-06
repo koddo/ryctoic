@@ -19,7 +19,7 @@ $$ language plpgsql;
 create or replace function add_card(the_user_id bigint, the_card_id uuid) returns void as $$
 begin
 if not has_card(the_user_id, the_card_id) then
-insert into cards_orset(user_id, card_id, added_at, alive)
+insert into cards_orset(user_id, card_id, added_at)
     values(the_user_id, the_card_id, now(), true);
 end if;
 end;
@@ -39,8 +39,8 @@ $$ language plpgsql;
 
 create or replace function remove_card(the_user_id bigint, the_card_id uuid) returns void as $$
 begin
-update cards_orset set alive = false, removed_at = array_append(removed_at, now())
-    where user_id = the_user_id and card_id = the_card_id and alive = true;
+update cards_orset set removed_at = array_append(removed_at, now())
+    where user_id = the_user_id and card_id = the_card_id and removed_at is null;
 end;
 $$ language plpgsql;
 
@@ -51,7 +51,7 @@ begin
 return query
 select card_id from cards_orset as s
 where s.user_id = the_user_id
-    and s.alive = true
+    and s.removed_at is null
 group by card_id;
 end;
 $$ language plpgsql;
@@ -61,7 +61,7 @@ begin
 return query
 select * from cards_orset as s
 where s.user_id = the_user_id
-    and s.alive = true;
+    and s.removed_at is null;
 end;
 $$ language plpgsql;
 
@@ -73,7 +73,7 @@ return exists(
     select 1 from cards_orset as s
     where s.user_id = the_user_id
         and s.card_id = the_card_id
-        and s.alive = true
+        and s.removed_at is null
         );
 end;
 $$ language plpgsql;

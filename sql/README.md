@@ -92,6 +92,7 @@ TODO: partition the cards_orset table: live cards on one server, dead ones on an
 TODO: partition the all_cards table: cards no one uses go to history server
 
 at first the alive column was named tombstone and had reverse logic, but I decided it would be easier to reason about true/false with this name
+-- alive               boolean not null default true,
 
 TODO: what should add_card() return?
 
@@ -174,9 +175,26 @@ maybe try this stored function to drop all functions from a schema: http://dba.s
 
 # cards_orset
 
-8 user_id +
-16 card_id +
-16 unique_i
+    | header            |   24 |
+    | user_id           |    8 |
+    | card_id           |   16 |
+    | unique_identifier |   16 |
+    | alive             |      |
+    | added_at          |    8 |
+    | removed_at[]      | 24+8 |
+    | due_date          |    8 |
+    | easiness_factor   |    2 |
+    | prev_interval     |    4 |
+    |-------------------+------|
+    |                   |  118 |
+    | ^                 |    x |
+    |-------------------+------|
+    #+TBLFM: $x=vsum(@1..@-1)
+
+
+# intervals
+
+prev_interval uses 4 bytes and it counts minutes, so max interval is 2147483647 / (60*24*365) which is approx 4000 years
 
 
 
