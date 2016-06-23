@@ -175,21 +175,7 @@ maybe try this stored function to drop all functions from a schema: http://dba.s
 
 # cards_orset
 
-    | header            |   24 |
-    | user_id           |    8 |
-    | card_id           |   16 |
-    | unique_identifier |   16 |
-    | alive             |      |
-    | added_at          |    8 |
-    | removed_at[]      | 24+8 |
-    | due_date          |    8 |
-    | easiness_factor   |    2 |
-    | prev_interval     |    4 |
-    |-------------------+------|
-    |                   |  118 |
-    | ^                 |    x |
-    |-------------------+------|
-    #+TBLFM: $x=vsum(@1..@-1)
+
 
 
 # intervals
