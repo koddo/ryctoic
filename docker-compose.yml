@@ -13,7 +13,6 @@ services:
       options:
         max-size: "100k"
         max-file: "10"
-  
 
   postgres:
     build:
@@ -51,9 +50,17 @@ services:
       options:
         max-size: "100k"
         max-file: "10"
-    entrypoint: /bin/true
+    # entrypoint: /bin/true
     network_mode: "bridge"
 
+# docker rmi pgtest:V000a
+# bin/docker-compose.sh stop pgtest && bin/docker-compose.sh rm -f pgtest && bin/docker-compose.sh up -d --no-deps pgtest
+# bin/docker-compose.sh logs pgtest
+###  get container id
+# bin/docker-compose.sh stop pgtest
+# docker commit 392d72534c5e pgtest:V000a
+# docker run -it --rm --name='pgtest' pgtest:V000a
+# ping pgtest.dev.dnsdock
 
 
     

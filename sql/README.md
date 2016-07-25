@@ -1,5 +1,6 @@
 
 !!! never write to-do inside schema migration files, they are meant to be final and unchangeable !!!
+
 !!! write them here !!!
 
 TODO: create a git hook which notifies if migrations have changes 
@@ -14,12 +15,16 @@ see its dockerfile
 # locale
 
 locale is set to C
+
 ## we can use collations later, when needed
+
 debian docker image doesn't have locales other that utf-8, here is how to add one
+
 this worked:
 
-```# localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8```
+     # localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
 
+```
 psql> CREATE COLLATION "fr_FR" (LOCALE = 'fr_FR.utf8');
 psql> select * from pg_collation;
 psql> select initcap('welcome to CHAMPS-ÉLYSÉES' collate "fr_FR");
@@ -31,6 +36,7 @@ this is meant to be an equivalent to localedef, but didn't work for me:
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen --no-archive
+```
 
 
 
@@ -38,10 +44,13 @@ locale-gen --no-archive
 # create role noinherit vs inherit
 
 inherit is the default for backwards compatibility
+
 behavior specified by the SQL standard (most closely approximated): noinherit for users, inherit for groups
+
 http://www.postgresql.org/docs/current/static/sql-createrole.html
 
 we created our clients with inherit for simplicity
+
 to avoid setting role explicitly on login
 
 
@@ -53,17 +62,23 @@ we had this in our functions definitions, but then changed our naming style: `#v
 maybe \set ECHO all
 
 TODO: restrict replication role to min possible privileges, it's going to have an automated passwordless login
+
 TODO: did we really revoke everything from the public role? any better way to revoke all from the public role? can also revoke on domain, foregn data, foreign server, language, large object, type? information_schema, pg_catalog, etc, have some privileges and permissions via the public role --- should we revoke them?
+
 TODO: remove the default postgres database or even don't create it
 
 
 TODO: length constraints for front and back texts
+
 TODO: length constraint for removed_at[] array in the remove_card() function, it should not grow large, we don't mind losing this data, to avoid filling the db with trash --- any better idea?
+
 TODO: save device fingerprint when adding or removing a card, to let a user get more detailed history --- and let's hash it for privacy
+
 TODO: check if a user has a card when she tries to create one
 
 TODO: check for uuid collisions when creating and adding cards 
 
+```
 -- insert into users(identity_provider, provided_id) values('anonymous', '1');
 select create_card('fuck', 'you', null, 1);
 select create_card('sick', 'fuck', null, 1);
@@ -71,6 +86,9 @@ select add_card(1, ''::uuid,    'device');
 select remove_card(1, ''::uuid, 'device');
 select has_card(1, ''::uuid);
 select * from users;     select * from all_cards;     select * from cards_orset;     select * from get_cards(1) as record(card_id uuid);
+
+select * from users;     select * from all_cards;     select * from cards_orset;     select c.*, r.due_date, unpack_progress_data(r.packed_progress_data) from get_cards(3) as r join all_cards as c on r.card_id = c.id;
+```
 
 
 -- get_all_cards
@@ -152,6 +170,10 @@ TODO: I cut the following from V000a__init.sql. Make sure we indeed don't need t
 -- alter default privileges       in schema pgtap    revoke all on functions   from public cascade;
 -- alter default privileges       in schema pgtap    revoke all on types       from public cascade;
 
+
+right now pg-schema-version.py doesn't support running tests, this is work in progress, so run tests like this:
+
+     ./pg-schema-version.py psql --pset pager=off -f V000t__tests.pgtap 
 
 # drop functions
 
