@@ -61,6 +61,8 @@ we had this in our functions definitions, but then changed our naming style: `#v
 
 maybe \set ECHO all
 
+
+
 TODO: restrict replication role to min possible privileges, it's going to have an automated passwordless login
 
 TODO: did we really revoke everything from the public role? any better way to revoke all from the public role? can also revoke on domain, foregn data, foreign server, language, large object, type? information_schema, pg_catalog, etc, have some privileges and permissions via the public role --- should we revoke them?
@@ -79,15 +81,37 @@ TODO: check if a user has a card when she tries to create one
 TODO: check for uuid collisions when creating and adding cards 
 
 ```
--- insert into users(identity_provider, provided_id) values('anonymous', '1');
-select create_card('fuck', 'you', null, 1);
-select create_card('sick', 'fuck', null, 1);
-select add_card(1, ''::uuid,    'device');
-select remove_card(1, ''::uuid, 'device');
-select has_card(1, ''::uuid);
-select * from users;     select * from all_cards;     select * from cards_orset;     select * from get_cards(1) as record(card_id uuid);
+select create_and_add_card(1, null, 'pi',  '3.14', now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'));
+select create_and_add_card(1, null, 'exp', '2.7',  now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'));
+select edit_card_progress(1, ''::uuid, (now()+'1 day'::interval)::date, pack_progress_data(2.4,0,3,0,false,false,0));
+select edit_card_content (1, ''::uuid, 'pi',  '3.1415');
 
-select * from users;     select * from all_cards;     select * from cards_orset;     select c.*, r.due_date, unpack_progress_data(r.packed_progress_data) from get_cards(3) as r join all_cards as c on r.card_id = c.id;
+select * from users; select * from cards; select * from cards_orset; select * from decks; select * from card_decks_orset;
+select get_deck_name_by_id(deck_id) as deck_name,
+    array(select get_deck_name_by_id(deck_id) from get_card_decks(1, c.id) as record(deck_id)),
+    c.id,
+    c.front,
+    c.back,
+    get_user_name_by_id(c.created_by),
+    r.due_date,
+    unpack_progress_data(r.packed_progress_data)
+from get_cards(1) as r 
+    join cards as c on r.card_id = c.id
+    join get_card_decks(1, c.id) as asdf(deck_id) on true
+where true;
+
+select * from get_card_contexts(1, '::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on context_id = ctx.id where s.removed_at is null;
+
+select * from show_all() where now()::date >= due order by random() limit 1;
+select id, front, back from cards where id = ''::uuid;
+select review_card(1, ''::uuid, 5);
+
+TODO: context lenght?
+
+TODO: front and back lenght?
+
+TODO: !!! same now() for added_at and removed_at 
+
 ```
 
 
@@ -113,6 +137,9 @@ at first the alive column was named tombstone and had reverse logic, but I decid
 -- alive               boolean not null default true,
 
 TODO: what should add_card() return?
+
+
+sadly, can't write insert ... on conflict do nothing ... returning ... --- this returns null on conflict
 
 # on delete set null/cascade for cards
 
