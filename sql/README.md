@@ -81,26 +81,14 @@ TODO: check if a user has a card when she tries to create one
 TODO: check for uuid collisions when creating and adding cards 
 
 ```
-select create_and_add_card(1, null, 'pi',  '3.14', now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'));
-select create_and_add_card(1, null, 'exp', '2.7',  now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'));
+select create_and_add_card(1, null, 'pi',  '3.14', now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/Pi'));
+select create_and_add_card(1, null, 'exp', '2.7',  now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/E_(mathematical_constant)'));
+select edit_card_content(1, ''::uuid, 'pi',  '3.1415');
+select edit_card_content(1, ''::uuid, 'exp',  '2.71828');
 select edit_card_progress(1, ''::uuid, (now()+'1 day'::interval)::date, pack_progress_data(2.4,0,3,0,false,false,0));
-select edit_card_content (1, ''::uuid, 'pi',  '3.1415');
 
 select * from users; select * from cards; select * from cards_orset; select * from decks; select * from card_decks_orset;
-select get_deck_name_by_id(deck_id) as deck_name,
-    array(select get_deck_name_by_id(deck_id) from get_card_decks(1, c.id) as record(deck_id)),
-    c.id,
-    c.front,
-    c.back,
-    get_user_name_by_id(c.created_by),
-    r.due_date,
-    unpack_progress_data(r.packed_progress_data)
-from get_cards(1) as r 
-    join cards as c on r.card_id = c.id
-    join get_card_decks(1, c.id) as asdf(deck_id) on true
-where true;
-
-select * from get_card_contexts(1, '::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on context_id = ctx.id where s.removed_at is null;
+select * from get_card_contexts(1, ''::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on s.context_id = ctx.id where s.removed_at is null;
 
 select * from show_all() where now()::date >= due order by random() limit 1;
 select id, front, back from cards where id = ''::uuid;
@@ -138,6 +126,8 @@ at first the alive column was named tombstone and had reverse logic, but I decid
 
 TODO: what should add_card() return?
 
+we have a deck with id=uuid_nil() and name '' for cards, which do not belong to any deck  
+we can't have null for it, because a composite key enforeses not null for every it's column
 
 sadly, can't write insert ... on conflict do nothing ... returning ... --- this returns null on conflict
 
@@ -161,7 +151,8 @@ see on delete set null/cascade
 --     add constraint cards_orset__user_id__fkey   foreign key (user_id)   references users(id)       on delete cascade,
 --     add constraint cards_orset__card_id__fkey   foreign key (card_id)   references all_cards(id)   on delete cascade;
 
-
+we have `index cards_content_by_user_unique_idx` temporarily, probably
+it's to avoid creating duplicate cards manually using cli in the psql
 
 # tests
 
@@ -235,6 +226,30 @@ prev_interval uses 4 bytes and it counts minutes, so max interval is 2147483647 
 
 
 
+# cards and decks positions
+
+```
+-- create table card_position (
+--         user_id                integer  not null references users(id)       on delete cascade,
+--         card_id                uuid     not null references cards(id)       on delete cascade,
+--         inside_the_deck        ,
+--         position_lseq          ,
+--         added_at               timestamptz not null default now(),
+--         removed_at             timestamptz default null,
+--         primary key (user_id, card_id, context_id, added_at)
+--         );
+
+-- create table deck_position (
+--         user_id                integer  not null references users(id)       on delete cascade,
+--         deck_id                uuid     not null references decks(id)       on delete cascade,
+--         inside_the_deck        ,
+--         position_lseq          ,
+--         added_at               timestamptz not null default now(),
+--         removed_at             timestamptz default null,
+--         primary key (user_id, card_id, context_id, added_at)
+--         );
+
+```
 
 
 

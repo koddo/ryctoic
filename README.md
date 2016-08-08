@@ -138,6 +138,11 @@ $ apt-get install -y resolvconf && echo 'nameserver 172.17.0.1' >> /etc/resolvco
 
 and for mac I have a bin/setup_local_ryctoic.sh
 
+## flush dns cache in macosx yosemite >= 10.10.4
+
+``` Shell
+su admin -c 'sudo killall -HUP mDNSResponder'
+```
 
 # application/hal+json
 

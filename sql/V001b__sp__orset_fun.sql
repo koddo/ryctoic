@@ -70,6 +70,12 @@ perform add_card_to_deck(the_user_id, new_card_id, s.deck_id)
       and s.card_id = the_card_id
       and s.removed_at is null;
 perform remove_card_from_all_decks(the_user_id, the_card_id);
+perform add_context_to_card(the_user_id, new_card_id, s.context_id)
+    from card_contexts_orset as s
+    where s.user_id = the_user_id
+      and s.card_id = the_card_id
+      and s.removed_at is null;
+perform remove_all_contexts_from_card(the_user_id, the_card_id);
 return new_card_id;
 end;
 $$ language plpgsql;
@@ -350,7 +356,7 @@ $$ language plpgsql;
 ------------------------------------------------------------
 
 
-create or replace function create_and_add_card(the_user_id integer, the_prev_revision_id uuid, new_front text, new_back text, new_due_date date, new_packed_progress_data bigint, new_deck_id uuid) returns uuid as $$
+create or replace function create_and_add_card(the_user_id integer, the_prev_revision_id uuid, new_front text, new_back text, new_due_date date, new_packed_progress_data bigint, new_deck_id uuid, new_context_id uuid) returns uuid as $$
 declare
     new_card_id uuid;
 begin
@@ -358,6 +364,7 @@ begin
 select * into new_card_id from create_card(the_user_id, the_prev_revision_id, new_front, new_back);
 perform add_card(the_user_id, new_card_id, new_due_date, new_packed_progress_data);
 perform add_card_to_deck(the_user_id, new_card_id, new_deck_id);
+perform add_context_to_card(the_user_id, new_card_id, new_context_id);
 return new_card_id;
 end;
 $$ language plpgsql;
@@ -498,6 +505,9 @@ from get_cards(1) as r
     join get_card_decks(1, c.id) on true
 where true;
 $$ language sql;
+
+
+
   
 
 

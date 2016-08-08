@@ -19,11 +19,11 @@ create table cards (
         id                 uuid primary key default gen_random_uuid(),
         created_at         timestamptz not null default now(),
         created_by         integer  references users(id)     on delete set null,
-        front              text not null    constraint card_front_length check ( 0 < char_length(front)  and  char_length(front) <= 5000 ),
-        back               text not null    constraint card_back_length  check ( 0 < char_length(back)   and  char_length(back)  <= 5000 ),
+        front              text not null    constraint card_front_length check ( 0 < char_length(front)  and  char_length(front) <= 1000 ),
+        back               text not null    constraint card_back_length  check ( 0 < char_length(back)   and  char_length(back)  <= 1000 ),
         prev_revision_id   uuid     references cards(id)     on delete set null
         );
-
+create unique index cards_content_by_user_unique_idx on cards(created_by, md5(lower(front)), md5(lower(back)));
 
 
 create table cards_orset (
@@ -76,31 +76,6 @@ create table card_contexts_orset (
         more_than_one_removed_at   bool not null   default false,
         primary key (user_id, card_id, context_id, added_at)
         );
-
-
-
--- create table card_position (
---         user_id                integer  not null references users(id)       on delete cascade,
---         card_id                uuid     not null references cards(id)       on delete cascade,
---         inside_the_deck        ,
---         position_lseq          ,
---         added_at               timestamptz not null default now(),
---         removed_at             timestamptz default null,
---         primary key (user_id, card_id, context_id, added_at)
---         );
-
--- create table deck_position (
---         user_id                integer  not null references users(id)       on delete cascade,
---         deck_id                uuid     not null references decks(id)       on delete cascade,
---         inside_the_deck        ,
---         position_lseq          ,
---         added_at               timestamptz not null default now(),
---         removed_at             timestamptz default null,
---         primary key (user_id, card_id, context_id, added_at)
---         );
-
-
-
 
 
 
