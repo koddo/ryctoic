@@ -34,36 +34,8 @@ services:
         max-file: "10"
     network_mode: "bridge"
 
-  pgtest:   # for testing migrations
-    build:
-      context: dockerfiles_empty_build_context
-      dockerfile: Dockerfile_postgres
-    expose:
-      - "5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
-      - PGDATA=/var/lib/postgresql/data_outside_the_volume   # this makes pgdata disposable when doing $ docker run --rm
-    volumes:
-      - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-    logging:
-      options:
-        max-size: "100k"
-        max-file: "10"
-    # entrypoint: /bin/true
-    network_mode: "bridge"
-
-# docker rmi pgtest:V000a
-# bin/docker-compose.sh stop pgtest && bin/docker-compose.sh rm -f pgtest && bin/docker-compose.sh up -d --no-deps pgtest
-# bin/docker-compose.sh logs pgtest
-###  get container id
-# bin/docker-compose.sh stop pgtest
-# docker commit 392d72534c5e pgtest:V000a
-# docker run -it --rm --name='pgtest' pgtest:V000a
-# ping pgtest.dev.dnsdock
 
 
-    
 volumes:
   ryctoic_pgdata:
     external: true

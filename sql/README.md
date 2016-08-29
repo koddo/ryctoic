@@ -3,7 +3,7 @@
 
 !!! write them here !!!
 
-TODO: create a git hook which notifies if migrations have changes 
+TODO: create a git hook which notifies if migrations have changed 
 
 
 # pg-schema-version.py
@@ -22,7 +22,9 @@ debian docker image doesn't have locales other that utf-8, here is how to add on
 
 this worked:
 
-     # localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
+``` Shell
+# localedef --no-archive -f UTF-8 -i fr_FR fr_FR.UTF-8
+```
 
 ```
 psql> CREATE COLLATION "fr_FR" (LOCALE = 'fr_FR.utf8');
@@ -61,44 +63,62 @@ we had this in our functions definitions, but then changed our naming style: `#v
 
 maybe \set ECHO all
 
-
-
 TODO: restrict replication role to min possible privileges, it's going to have an automated passwordless login
-
 TODO: did we really revoke everything from the public role? any better way to revoke all from the public role? can also revoke on domain, foregn data, foreign server, language, large object, type? information_schema, pg_catalog, etc, have some privileges and permissions via the public role --- should we revoke them?
-
 TODO: remove the default postgres database or even don't create it
-
-
-TODO: length constraints for front and back texts
-
 TODO: length constraint for removed_at[] array in the remove_card() function, it should not grow large, we don't mind losing this data, to avoid filling the db with trash --- any better idea?
-
 TODO: save device fingerprint when adding or removing a card, to let a user get more detailed history --- and let's hash it for privacy
-
 TODO: check if a user has a card when she tries to create one
-
 TODO: check for uuid collisions when creating and adding cards 
 
 ```
-select create_and_add_card(1, null, 'pi',  '3.14', now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/Pi'));
-select create_and_add_card(1, null, 'exp', '2.7',  now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/E_(mathematical_constant)'));
-select edit_card_content(1, ''::uuid, 'pi',  '3.1415');
-select edit_card_content(1, ''::uuid, 'exp',  '2.71828');
-select edit_card_progress(1, ''::uuid, (now()+'1 day'::interval)::date, pack_progress_data(2.4,0,3,0,false,false,0));
+select create_and_add_card(4, null, 'pi',  '3.14', now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/Pi'));
+select create_and_add_card(4, null, 'exp', '2.7',  now()::date, pack_progress_data(2.5, 0, 0, 0, false, false, 0), get_or_create_deck_id('numbers'), get_or_create_context_id('https://en.wikipedia.org/wiki/E_(mathematical_constant)'));
+select edit_card_content(4, ''::uuid, 'pi',  '3.1415');
+select edit_card_content(4, ''::uuid, 'exp',  '2.71828');
+select edit_card_progress(4, ''::uuid, (now()+'1 day'::interval)::date, pack_progress_data(2.4,0,3,0,false,false,0));
 
-select * from users; select * from cards; select * from cards_orset; select * from decks; select * from card_decks_orset;
-select * from get_card_contexts(1, ''::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on s.context_id = ctx.id where s.removed_at is null;
+select * from users; select * from cards; select * from cards_orset; select * from decks; select * from card_decks_orset; select * from contexts; select * from card_contexts_orset;
+select * from users where id = 1; select * from cards where created_by = 1; select * from cards_orset where user_id = 1; select * from card_decks_orset where user_id = 1; select * from card_contexts_orset where user_id = 1;
+select * from get_card_contexts(4, ''::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on s.context_id = ctx.id where s.removed_at is null;
 
-select * from show_all() where now()::date >= due order by random() limit 1;
+select * from show_all(4) where now()::date >= due order by random() limit 1;
+select id, front       from cards where id = ''::uuid;
 select id, front, back from cards where id = ''::uuid;
-select review_card(1, ''::uuid, 5);
+select review_card(4, ''::uuid, 4);
 
 TODO: context lenght?
 
 TODO: front and back lenght?
 
-TODO: !!! same now() for added_at and removed_at 
+TODO: !!! same now() for added_at and removed_at
+
+select create_and_add_card(4, null, 
+'', 
+'', 
+now()::date, 
+pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
+get_or_create_deck_id(''), 
+get_or_create_context_id(''));
+
+select create_and_add_card(4, null, 
+$$$$, 
+$$$$, 
+now()::date, 
+pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
+get_or_create_deck_id('python --- true, false, and comparisons'), 
+get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#true-false-and-comparisons'));
+
+select create_and_add_card(4, null, 
+$$`if x` vs `if x == True` vs `if x is True`$$, 
+$$Use `if x`; and in extremely rare cases when you really want to explicitly distinguish if `x` is, for example, not `1`, not `[]`, but boolean `True`, check it with `x == True and type(x) is bool`; don't use `x is True`, it will fail in some obscure cases, because `bool` is subclass of `int`.$$, 
+now()::date, 
+pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
+get_or_create_deck_id('python --- true, false, and comparisons'), 
+get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#true-false-and-comparisons'));
+
+
+
 
 ```
 
@@ -191,7 +211,10 @@ TODO: I cut the following from V000a__init.sql. Make sure we indeed don't need t
 
 right now pg-schema-version.py doesn't support running tests, this is work in progress, so run tests like this:
 
-     ./pg-schema-version.py psql --pset pager=off -f V000t__tests.pgtap 
+``` Shell
+./pg-schema-version.py psql --pset pager=off -f V000t__tests.pgtap 
+```
+
 
 # drop functions
 

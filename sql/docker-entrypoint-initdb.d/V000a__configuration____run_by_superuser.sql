@@ -85,7 +85,18 @@ alter default privileges    for role admin_role     revoke all on sequences   fr
 alter default privileges    for role admin_role     revoke all on functions   from public cascade;
 alter default privileges    for role admin_role     revoke all on types       from public cascade;
 ------------------------------------------------------------
-
+-- alter default privileges       in schema app      revoke all on tables      from public cascade;
+-- alter default privileges       in schema app      revoke all on sequences   from public cascade;
+-- alter default privileges       in schema app      revoke all on functions   from public cascade;
+-- alter default privileges       in schema app      revoke all on types       from public cascade;
+-- alter default privileges       in schema misc     revoke all on tables      from public cascade;
+-- alter default privileges       in schema misc     revoke all on sequences   from public cascade;
+-- alter default privileges       in schema misc     revoke all on functions   from public cascade;
+-- alter default privileges       in schema misc     revoke all on types       from public cascade;
+-- alter default privileges       in schema pgtap    revoke all on tables      from public cascade;
+-- alter default privileges       in schema pgtap    revoke all on sequences   from public cascade;
+-- alter default privileges       in schema pgtap    revoke all on functions   from public cascade;
+-- alter default privileges       in schema pgtap    revoke all on types       from public cascade;
 
 
 

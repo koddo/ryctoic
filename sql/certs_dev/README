@@ -34,9 +34,15 @@ if we want it to wait for password to be entered on restart, there is a -w param
 $ pg_ctl start -w
 http://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION
 
-remove password:
-$ openssl rsa -in newkey.pem -out newkey.nopass.pem
 
+```
+$ ./CA.pl.modified_for_dev.pl -newreq
+$ ./CA.pl.modified_for_dev.pl -sign
+$ openssl rsa -in newkey.pem -out newkey.nopassword.pem
+$ mv newcert.pem pg-user-whatever.crt
+$ mv newkey.nopassword.pem pg-user-whatever.nopassword.key
+$ chmod 600 pg-user-whatever.nopassword.key
+```
 
 
 

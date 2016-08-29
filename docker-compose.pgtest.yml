@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+
+  pgtest:   # for testing migrations
+    build:
+      context: dockerfiles_empty_build_context
+      dockerfile: Dockerfile_postgres
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - PGDATA=/var/lib/postgresql/data_outside_the_volume   # this makes pgdata disposable when doing $ docker run --rm
+    volumes:
+      - /home/alex/mnt/ryctoic/sql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    logging:
+      options:
+        max-size: "100k"
+        max-file: "10"
+    network_mode: "bridge"
+
+
+
+# this is a clean postgres container that we use for testing migrations
+
+
+    
+# docker rmi pgtest:V000a
+# bin/docker-compose.sh --file docker-compose.pgtest.yml stop pgtest && bin/docker-compose.sh --file docker-compose.pgtest.yml rm -f pgtest && bin/docker-compose.sh --file docker-compose.pgtest.yml up -d --no-deps pgtest
+# bin/docker-compose.sh --file docker-compose.pgtest.yml logs pgtest
+# docker ps   ###  get container id
+# bin/docker-compose.sh --file docker-compose.pgtest.yml stop pgtest
+# docker commit 012345aa pgtest:V000a
+# docker run -it --name='pgtest' pgtest:V000a
+# ping pgtest.dev.dnsdock
+
+# ./pg-schema-version.py migrate V001b__funcs__orset_fun.sql 
+# ### ^C
+
+# docker ps   ###  get container id
+# docker commit 012345ff pgtest:V001a
+# docker rm pgtest
+# docker run -it --name='pgtest' pgtest:V001a
+
+  

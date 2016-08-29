@@ -474,7 +474,7 @@ $$ language plpgsql;
 
 
 
-create or replace function show_all() returns table(
+create or replace function show_all(the_user_id integer) returns table(
         deck_name text,
         decks_list text[],
         card_id uuid,
@@ -485,7 +485,7 @@ create or replace function show_all() returns table(
         progress_data text
         ) as $$
 select get_deck_name(deck_id) as deck_name,
-    array(select get_deck_name(deck_id) from get_card_decks(1, c.id)),
+    array(select get_deck_name(deck_id) from get_card_decks(the_user_id, c.id)),
     c.id,
     aux_substring_with_dots_at_end(c.front),
     -- aux_substring_with_dots_at_end(c.back),
@@ -500,9 +500,9 @@ select get_deck_name(deck_id) as deck_name,
     -- (unpack_progress_data(r.packed_progress_data)).more_than_one_removed_at    || ',' ||
     -- (unpack_progress_data(r.packed_progress_data)).prev_seconds_spent_on_card
     ')'
-from get_cards(1) as r 
+from get_cards(the_user_id) as r 
     join cards as c on r.card_id = c.id
-    join get_card_decks(1, c.id) on true
+    join get_card_decks(the_user_id, c.id) on true
 where true;
 $$ language sql;
 

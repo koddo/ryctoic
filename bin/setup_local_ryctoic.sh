@@ -45,8 +45,9 @@ su admin -c "sudo sh -c \"sed -i '' 's/^.*local.ryctoic.com/$THE_IP${TAB}local.r
 port unload dnsmasq ; \
 port load dnsmasq ; \
 route -n add 172.17.0.0/16 debian.local ; \
-networksetup -setdnsservers Wi-Fi $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4
-networksetup -setdnsservers Ethernet $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4
+networksetup -setdnsservers Wi-Fi $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
+networksetup -setdnsservers Ethernet $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
+killall -HUP mDNSResponder
 \""
 
 

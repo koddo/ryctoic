@@ -15,6 +15,19 @@ nat port forwarding from host to virtual machine
 --------------------------------------------------
 http://apple.stackexchange.com/questions/80266/nat-port-forwarding-from-host-to-client-in-vmware-fusion-5
 
+edit the `/Library/Preferences/VMware\ Fusion/vmnet8/nat.conf`:
+
+```
+[incomingtcp]
+8443 = 192.168.15.134:8443
+4000 = 192.168.15.134:4000
+```
+
+``` Shell
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --stop
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --start
+```
+
 /etc/hosts
 ------------
 add local.ryctoic.com (vmware ip) to /etc/hosts in mac, because redirect uri must end with a public top-level domain (such as .com or .org)
@@ -137,6 +150,9 @@ $ apt-get install -y resolvconf && echo 'nameserver 172.17.0.1' >> /etc/resolvco
 
 
 and for mac I have a bin/setup_local_ryctoic.sh
+
+we have `network_mode: "bridge"` for sevices, because without this they are not being resolved: <https://github.com/tonistiigi/dnsdock/issues/59>
+
 
 ## flush dns cache in macosx yosemite >= 10.10.4
 
