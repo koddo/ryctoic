@@ -82,10 +82,12 @@ select * from users; select * from cards; select * from cards_orset; select * fr
 select * from users where id = 1; select * from cards where created_by = 1; select * from cards_orset where user_id = 1; select * from card_decks_orset where user_id = 1; select * from card_contexts_orset where user_id = 1;
 select * from get_card_contexts(4, ''::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on s.context_id = ctx.id where s.removed_at is null;
 
+select * from show_all(4);
 select * from show_all(4) where now()::date >= due order by random() limit 1;
 select id, front       from cards where id = ''::uuid;
 select id, front, back from cards where id = ''::uuid;
 select review_card(4, ''::uuid, 4);
+select edit_card_content(4, ''::uuid, '',  '');
 
 TODO: context lenght?
 
@@ -93,29 +95,35 @@ TODO: front and back lenght?
 
 TODO: !!! same now() for added_at and removed_at
 
+
 select create_and_add_card(4, null, 
-'', 
-'', 
+$$$$, 
+$$$$, 
 now()::date, 
 pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
 get_or_create_deck_id(''), 
 get_or_create_context_id(''));
 
-select create_and_add_card(4, null, 
-$$$$, 
-$$$$, 
-now()::date, 
-pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
-get_or_create_deck_id('python --- true, false, and comparisons'), 
-get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#true-false-and-comparisons'));
 
 select create_and_add_card(4, null, 
-$$`if x` vs `if x == True` vs `if x is True`$$, 
-$$Use `if x`; and in extremely rare cases when you really want to explicitly distinguish if `x` is, for example, not `1`, not `[]`, but boolean `True`, check it with `x == True and type(x) is bool`; don't use `x is True`, it will fail in some obscure cases, because `bool` is subclass of `int`.$$, 
+$$$$, 
+$$$$, 
 now()::date, 
 pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
-get_or_create_deck_id('python --- true, false, and comparisons'), 
-get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#true-false-and-comparisons'));
+get_or_create_deck_id('algorithms and data structures --- linked lists'), 
+get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/algorithms-and-data-structures#linked-lists'));
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
