@@ -78,6 +78,15 @@ select edit_card_content(4, ''::uuid, 'pi',  '3.1415');
 select edit_card_content(4, ''::uuid, 'exp',  '2.71828');
 select edit_card_progress(4, ''::uuid, (now()+'1 day'::interval)::date, pack_progress_data(2.4,0,3,0,false,false,0));
 
+select add_card_to_deck(4, '6f2b7ac4-5277-4b34-ad33-41d774bf2e6a'::uuid, get_or_create_deck_id('python --- comprehensions'));
+select add_card_to_deck(4, '8fc6912a-19a1-479b-854f-77a4752e4025'::uuid, get_or_create_deck_id('python --- comprehensions'));
+select remove_card_from_deck(4, '6f2b7ac4-5277-4b34-ad33-41d774bf2e6a'::uuid, get_or_create_deck_id('python --- conditionals and loops'));
+select remove_card_from_deck(4, '8fc6912a-19a1-479b-854f-77a4752e4025'::uuid, get_or_create_deck_id('python --- conditionals and loops'));
+select add_context_to_card(4, '6f2b7ac4-5277-4b34-ad33-41d774bf2e6a'::uuid, get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#comprehensions'));
+select add_context_to_card(4, '8fc6912a-19a1-479b-854f-77a4752e4025'::uuid, get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#comprehensions'));
+select remove_context_from_card(4, '6f2b7ac4-5277-4b34-ad33-41d774bf2e6a'::uuid, get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#conditionals-and-loops'));
+select remove_context_from_card(4, '8fc6912a-19a1-479b-854f-77a4752e4025'::uuid, get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/python#conditionals-and-loops'));
+
 select * from users; select * from cards; select * from cards_orset; select * from decks; select * from card_decks_orset; select * from contexts; select * from card_contexts_orset;
 select * from users where id = 1; select * from cards where created_by = 1; select * from cards_orset where user_id = 1; select * from card_decks_orset where user_id = 1; select * from card_contexts_orset where user_id = 1;
 select * from get_card_contexts(4, ''::uuid) as c join card_contexts_orset as s on c = s.context_id join contexts as ctx on s.context_id = ctx.id where s.removed_at is null;
@@ -104,14 +113,6 @@ pack_progress_data(2.5, 0, 0, 0, false, false, 0),
 get_or_create_deck_id(''), 
 get_or_create_context_id(''));
 
-
-select create_and_add_card(4, null, 
-$$$$, 
-$$$$, 
-now()::date, 
-pack_progress_data(2.5, 0, 0, 0, false, false, 0), 
-get_or_create_deck_id('algorithms and data structures --- linked lists'), 
-get_or_create_context_id('http://my-jekyll.dev.dnsdock:4000/ryctoic/algorithms-and-data-structures#linked-lists'));
 
 
 

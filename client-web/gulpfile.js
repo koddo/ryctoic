@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     LessPluginCleanCSS = require('less-plugin-clean-css'),
     LessPluginAutoPrefix = require('less-plugin-autoprefix'),
     cleancss = new LessPluginCleanCSS({ advanced: true }),
-    autoprefix= new LessPluginAutoPrefix({ browsers: ["last 2 versions"] }),
+    autoprefix = new LessPluginAutoPrefix({ browsers: ["last 2 versions"] }),
     plumber = require('gulp-plumber');
 
 
