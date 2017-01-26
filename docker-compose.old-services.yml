@@ -1,5 +1,5 @@
 nginx:   # TODO: this image runs nginx as root, is this a security issue?
-    build: dockerfiles_empty_build_context       # image: nginx
+    build: dockerfiles       # image: nginx
     dockerfile: Dockerfile_nginx
 
     ports:
@@ -14,7 +14,7 @@ nginx:   # TODO: this image runs nginx as root, is this a security issue?
     
         
 backend:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_backend
 
     working_dir: /home/theuser/ryctoic
@@ -40,7 +40,7 @@ backend:
 
         
 figwheel:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_figwheel
 
     volumes:
@@ -62,7 +62,7 @@ figwheel:
 
 # TODO: replace this data-only container with a named volume, at the moment of writing docker-compose doesn't support this
 pgdata:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_postgres
     volumes:
         - /var/lib/postgresql/data
@@ -73,7 +73,7 @@ pgdata:
 
 # cd /sql && mkdir logs_pgtest && psql --username postgres --echo-all -v ON_ERROR_STOP=1 -f V000a__configuration____run_by_superuser.sql --log-file=logs_pgtest/V000a__configuration____run_by_superuser.sql.log
 pgtest:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_postgres
     expose:
         - "5432"
@@ -93,7 +93,7 @@ pgtest:
 # - /home/alex/mnt/ryctoic/sql/V000a__configuration____run_by_superuser.sql:/docker-entrypoint-initdb.d/baseline.sql
 
 cordova_browser_console_logger:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_cordova_browser_console_logger
     volumes:
         - /home/alex/mnt/ryctoic/bin/cordova_browser_console_logger.py:/home/theuser/cordova_browser_console_logger.py
@@ -104,7 +104,7 @@ cordova_browser_console_logger:
 
 
 gulp:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_gulp
     volumes:
         - /home/alex/mnt/ryctoic/:/home/theuser/ryctoic
@@ -113,7 +113,7 @@ gulp:
 
 
 pg-schema-version:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_pg-schema-version
     volumes:
         - /home/alex/mnt/ryctoic/sql:/home/theuser/ryctoic/sql

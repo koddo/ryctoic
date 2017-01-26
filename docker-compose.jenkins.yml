@@ -1,5 +1,5 @@
 jenkins:
-    build: dockerfiles_empty_build_context
+    build: dockerfiles
     dockerfile: Dockerfile_jenkins
     volumes:
         - ../ryctoic.jenkins_home:/var/jenkins_home

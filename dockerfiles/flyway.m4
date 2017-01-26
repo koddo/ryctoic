@@ -14,7 +14,7 @@ RUN wget https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/3.2.1/fl
 
 ### old docker-compose target:
 # flyway:
-#     build: dockerfiles_empty_build_context
+#     build: dockerfiles
 #     dockerfile: Dockerfile_flyway
 
 #     entrypoint: /bin/true     # bin/docker-compose.sh run --rm --no-deps --entrypoint "/home/theuser/bin/entrypoint-flyway.sh" flyway secrets/flyway.pgtest.conf info

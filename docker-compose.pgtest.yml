@@ -4,7 +4,7 @@ services:
 
   pgtest:   # for testing migrations
     build:
-      context: dockerfiles_empty_build_context
+      context: dockerfiles
       dockerfile: Dockerfile_postgres
     expose:
       - "5432"
