@@ -1,9 +1,7 @@
 # FROM java:openjdk-8u66-jre
 FROM java:openjdk-8u66-jdk
 
-RUN groupadd theuser && useradd --create-home --gid theuser --uid 1000 theuser
-WORKDIR /home/theuser
-USER theuser
+include(`add_theuser.in')
 
 
 # TODO: critical: check signature

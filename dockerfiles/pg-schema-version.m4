@@ -8,10 +8,7 @@ RUN apt-get update && apt-get install -y \
     apt-get -y autoclean && apt-get -y autoremove
 
 
-RUN groupadd theuser && useradd --create-home --gid theuser --uid 1000 theuser
-WORKDIR /home/theuser
-ENV HOME /home/theuser
-USER theuser
+include(`add_theuser.in')
 
 
 RUN wget   https://raw.githubusercontent.com/koddo/pg-schema-version/master/pg-schema-version.py && \
