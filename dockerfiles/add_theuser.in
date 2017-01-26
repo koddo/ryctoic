@@ -1,8 +1,16 @@
+# beginning of add_theuser.in
+
 # TODO: maybe in production for both theuser and root: --shell /bin/false --- http://serverfault.com/questions/519215/what-is-the-difference-between-sbin-nologin-and-bin-false
+
 # at the moment of writing the docker volumes' owner uid is 1000 and can't be changed
+# this was a long time ago, so check if still true
 RUN groupadd theuser && useradd --create-home --gid theuser --uid 1000 theuser
 WORKDIR /home/theuser
 # erl needs this to check ~/.erlang:
 ENV HOME /home/theuser
 USER theuser
+
+# we also had this, don't remember why: docker_gid=esyscmd(`getent group docker | cut -d: -f3')
+
+# end of add_theuser.in
 
