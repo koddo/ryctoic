@@ -35,8 +35,8 @@ fi
 
 
 
-DOCKER_BRIDGE_IP=$(ssh alex@debian.local "ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'")   # dnsdock's port 53 is mapped on it
-# DOCKER_VM_IP=$(ping -c 1 debian.local | awk -F'[()]' '/PING/{print $2}')
+DOCKER_BRIDGE_IP=$(ssh vagrant@vagrant.local "ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+'")   # dnsdock's port 53 is mapped on it
+# DOCKER_VM_IP=$(ping -c 1 vagrant.local | awk -F'[()]' '/PING/{print $2}')
 TAB=$'\t'   # sed doesn't understan
 
 
@@ -44,7 +44,7 @@ TAB=$'\t'   # sed doesn't understan
 su admin -c "sudo sh -c \"sed -i '' 's/^.*local.ryctoic.com/$THE_IP${TAB}local.ryctoic.com/g' /etc/hosts ; \
 port unload dnsmasq ; \
 port load dnsmasq ; \
-route -n add 172.17.0.0/16 debian.local ; \
+route -n add 172.17.0.0/16 vagrant.local ; \
 networksetup -setdnsservers Wi-Fi $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
 networksetup -setdnsservers Ethernet $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
 killall -HUP mDNSResponder

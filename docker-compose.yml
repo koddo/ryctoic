@@ -1,15 +1,16 @@
 version: '2'
 
+
 services:
 
   dnsdock:
-    image: tonistiigi/dnsdock
-    command: -domain dnsdock -environment dev
+    image: aacebedo/dnsdock:latest-amd64
+    command: --domain dnsdock --environment dev
     ports:
       - "172.17.0.1:53:53/udp"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    logging:
+    logging: &logging_anchor
       options:
         max-size: "100k"
         max-file: "10"
@@ -29,16 +30,13 @@ services:
       - ryctoic_pgdata:/var/lib/postgresql/data
       # we can't share files here directly, because at the moment of writing docker doesn't allow to map uids in volumes, so we simply copy these files using a copy.sh script
     logging:
-      options:
-        max-size: "100k"
-        max-file: "10"
-    network_mode: "bridge"
+      <<: *logging_anchor
 
 
 
 volumes:
   ryctoic_pgdata:
-    external: true
+    # external: true
 
 
   
