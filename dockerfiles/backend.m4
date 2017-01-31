@@ -1,21 +1,26 @@
-FROM debian:wheezy
-# FROM debian:jessie
+# FROM debian:wheezy
+FROM debian:jessie
 
-ENV ERLANG_VERSION 1:18.1
-# ENV ERLANG_VERSION 1:17.5.3
+### https://www.erlang-solutions.com/resources/download.html
+### make sure to check the version in links on the download page, sometimes it contains additional versioning, like 19.2-1
+### erlang vs esl-erlang: the latter is a monolithic package, contains everything at once, the former is broken into dependencies
+ENV ERLANG_PACKAGE=erlang
+ENV ERLANG_VERSION=1:19.2-1
+# ENV ERLANG_VERSION 1:18.1
 
 # dockerfile best practices recommends to run apt-get update && apt-get install in a single RUN: https://docs.docker.com/articles/dockerfile_best-practices/#the-dockerfile-instructions
 # and without ca-certificates it won't install erlang-solutions_1.0_all.deb in debian, but in ubuntu it is not required
 RUN apt-get update && apt-get install -y \
             ca-certificates \
             wget \
+            curl \
             git \
             build-essential \
             && \
     wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && \
     dpkg -i erlang-solutions_1.0_all.deb && \
     rm      erlang-solutions_1.0_all.deb && \
-    apt-get update && apt-get install -y erlang=$ERLANG_VERSION && \
+    apt-get update && apt-get install -y $ERLANG_PACKAGE=$ERLANG_VERSION && \
     apt-get -y autoclean && apt-get -y autoremove
 
     

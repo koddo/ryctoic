@@ -2,10 +2,10 @@ version: '2'
 
 
 services:
-
-  dnsdock:
+  
+  dnsdock:   # remove --verbose later
     image: aacebedo/dnsdock:latest-amd64
-    command: --domain dnsdock --environment dev
+    command: --domain dnsdock --environment dev --verbose
     ports:
       - "172.17.0.1:53:53/udp"
     volumes:
@@ -14,7 +14,7 @@ services:
       options:
         max-size: "100k"
         max-file: "10"
-
+    
   postgres:
     build:
       context: dockerfiles
@@ -32,6 +32,18 @@ services:
     logging:
       <<: *logging_anchor
 
+  backend:
+    build:
+      context: dockerfiles
+      dockerfile: Dockerfile_backend
+    working_dir: /home/theuser/ryctoic
+    entrypoint: bash     # was entrypoint: /home/theuser/ryctoic/_rel/hello_world/bin/hello_world     and command: foreground
+    volumes:
+      - /mnt/vmshared/shared/cowboy/examples/hello_world/:/home/theuser/ryctoic
+    ports:
+      - "8080:8080"
+    logging:
+      <<: *logging_anchor
 
 
 volumes:
@@ -39,5 +51,9 @@ volumes:
     # external: true
 
 
-  
+# networks:
+#   custom:
+#     driver_opts:
+#       "com.docker.network.bridge.enable_icc": "false"
+    
   

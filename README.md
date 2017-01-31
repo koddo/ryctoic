@@ -141,7 +141,7 @@ TODO: CRITICAL make sure the modified inappbrowser plugin that ignores ssl error
 I tried skydns+skydock, but had some problems. Can't now remember. I'm sorry.  
 And I had to run two containers instead of one.
 
-in `/lib/systemd/system/docker.service` add `--bip=172.17.0.1/16 --dns=172.17.0.1` to the `ExecStart=`  
+in `/lib/systemd/system/docker.service` add `--bip=172.17.0.1/24 --dns=172.17.0.1` to the `ExecStart=`  
 this is better that adding a dns param to every container
 
 add to the top of /etc/resolv.conf on the host to be able to ping containers:
@@ -150,8 +150,17 @@ $ apt-get install -y resolvconf && echo 'nameserver 172.17.0.1' >> /etc/resolvco
 
 and for mac I have a bin/setup_local_ryctoic.sh
 
-we have `network_mode: "bridge"` for sevices, because without this they are not being resolved: <https://github.com/tonistiigi/dnsdock/issues/59>
+In dev env we want to communicate with containers running inside vm directly from host (e.g., macosx), so allow forwarding packets through nat:
 
+``` Shell
+$ sudo iptables -A FORWARD -i eth0 -s 192.168.15.1 -j ACCEPT
+or, radically
+$ sudo iptables --policy FORWARD ACCEPT
+```
+
+`iptables -L` to check it; to delete, change `-A` to `-D`
+
+Then `$ ping ryctoic_backend.dev.dnsdock`
 
 ## flush dns cache in macosx yosemite >= 10.10.4
 
