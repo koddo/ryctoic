@@ -3,9 +3,9 @@ version: '2'
 
 services:
   
-  dnsdock:   # remove --verbose later
+  dnsdock:
     image: aacebedo/dnsdock:latest-amd64
-    command: --domain dnsdock --environment dev --verbose
+    command: --domain dnsdock --environment dev
     ports:
       - "172.17.0.1:53:53/udp"
     volumes:

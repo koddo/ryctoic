@@ -46,6 +46,13 @@ port unload dnsmasq ; \
 port load dnsmasq ; \
 route -n add 172.17.0.0/24 vagrant.local ; \
 route -n add 172.18.0.0/16 vagrant.local ; \
+route -n add 172.19.0.0/16 vagrant.local ; \
+route -n add 172.20.0.0/16 vagrant.local ; \
+route -n add 172.21.0.0/16 vagrant.local ; \
+route -n add 172.22.0.0/16 vagrant.local ; \
+route -n add 172.23.0.0/16 vagrant.local ; \
+route -n add 172.24.0.0/16 vagrant.local ; \
+route -n add 172.25.0.0/16 vagrant.local ; \
 networksetup -setdnsservers Wi-Fi $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
 networksetup -setdnsservers Ethernet $DOCKER_BRIDGE_IP 8.8.8.8 8.8.4.4 ; \
 killall -HUP mDNSResponder
