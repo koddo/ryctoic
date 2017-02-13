@@ -18,7 +18,8 @@ RUN groupadd docker --gid 120 && gpasswd -a jenkins docker
 
 
 RUN apt-get update && apt-get install -y \
-            docker.io && \
+            docker.io \
+            && \
     apt-get -y autoclean && apt-get -y autoremove
 
 
