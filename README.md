@@ -19,8 +19,8 @@ edit the `/Library/Preferences/VMware\ Fusion/vmnet8/nat.conf`:
 
 ```
 [incomingtcp]
-8443 = 192.168.15.134:8443
-4000 = 192.168.15.134:4000
+8443 = 192.168.15.139:8443
+4000 = 192.168.15.139:4000
 ```
 
 ``` Shell
